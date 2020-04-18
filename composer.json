@@ -1,0 +1,22 @@
+{
+    "name": "chakratos/mhf-save-manager",
+    "description": "Simple tool to Manage and Backup Characters",
+    "type": "project",
+    "authors": [
+        {
+            "name": "benjamin.schaffrath",
+            "email": "chakratoss@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "MHFSaveManager\\": "app/"
+        }
+    },
+
+    "require": {
+        "pecee/simple-router": "4.2.0.6",
+        "doctrine/orm": "*",
+      "ext-json": "*"
+    }
+}
