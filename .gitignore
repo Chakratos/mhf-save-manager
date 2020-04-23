@@ -2,3 +2,13 @@
 vendor
 composer.lock
 config.php
+storage/decomyset/*
+storage/hunternavi/*
+storage/otomoairou/*
+storage/partner/*
+storage/platebox/*
+storage/platedata/*
+storage/platemyset/*
+storage/rengokudata/*
+storage/savedata/*
+storage/savemercenary/*

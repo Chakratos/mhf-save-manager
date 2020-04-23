@@ -17,6 +17,7 @@
     "require": {
         "pecee/simple-router": "4.2.0.6",
         "doctrine/orm": "*",
-      "ext-json": "*"
+      "ext-json": "*",
+        "mdurrant/php-binary-reader": "^1.0"
     }
 }

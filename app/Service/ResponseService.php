@@ -24,4 +24,13 @@ class ResponseService
         header('Content-Type: application/json');
         exit(json_encode(['message' => $message]));
     }
+    
+    public static function SendDownload($path)
+    {
+        header('Content-Type: application/octet-stream');
+        header('Content-Disposition: attachment; filename=' . basename($path));
+        header('Pragma: no-cache');
+        readfile($path);
+        exit();
+    }
 }
