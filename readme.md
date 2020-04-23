@@ -6,7 +6,7 @@ To Use:
 3. run "composer update"
 4. Create a VHost which document_root is the public folder. (Add Allow Override for .htaccess to work)
 
-![Sample Image from GUI](https://imgur.com/Xkp7Vdh.png)
+![Sample Image from GUI](https://imgur.com/I60iLDv.png)
 ![Sample Image from Edit-GUI](https://i.imgur.com/pALZeKb.png)
 
 For now you can:
