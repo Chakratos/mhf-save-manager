@@ -1,5 +1,6 @@
 <?php
 
+use MHFSaveManager\Controller\BinaryController;
 use MHFSaveManager\Controller\CharacterController;
 use MHFSaveManager\Database\EM;
 use MHFSaveManager\Model\Character;
@@ -18,6 +19,17 @@ SimpleRouter::get('/character/{id}', function($id) {
     
     /** @var Character $character */
     CharacterController::Edit($character);
+});
+
+SimpleRouter::get('/character/{id}/edit/{binary}', function($id, $binary) {
+    $character = EM::getInstance()->getRepository('MHF:Character')->find($id);
+    if (!$character && in_array($binary, BinaryController::getBinaryTypes())) {
+        ResponseService::SendNotFound();
+    }
+    
+    $action = 'Edit' . ucfirst(strtolower($binary));
+    /** @var Character $character */
+    BinaryController::$action($character);
 });
 
 SimpleRouter::get('/character/{id}/reset', function($id) {
