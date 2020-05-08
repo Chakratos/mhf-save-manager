@@ -5,6 +5,9 @@ namespace MHFSaveManager\Controller;
 
 
 use MHFSaveManager\Model\Character;
+use MHFSaveManager\Model\Equip;
+use MHFSaveManager\Model\Item;
+use MHFSaveManager\Service\CompressionService;
 use MHFSaveManager\Service\ItemsService;
 use PhpBinaryReader\BinaryReader;
 use PhpBinaryReader\Endian;
@@ -29,99 +32,50 @@ class BinaryController
     
     public static function EditSavedata(Character $character)
     {
-        $cur = "00";
-        $savedata = $character->getSavedata();
-        $br = new BinaryReader($savedata);
-        $br->setPosition(hexdec("13"));
-
-        $gender = $br->readUInt8() ? 'Female' : 'Male';
+        $decompressed = CompressionService::Decompress($character->getSavedata());
+        
+        
+        $br = new BinaryReader($decompressed);
+        $br->setPosition(hexdec("50"));
+        
+        $gender = $br->readBytes(1) == "\x01" ? 'Male' : 'Female';
         printf('Gender: %s <br>', $gender);
-        if ($gender == 'Female') {
-            //Female extra byte 00
-            $br->readBytes(1);
-        }
-        
-        //Unknown Bytes 5-6
-        while ($cur != 'ff') {
-            $cur = bin2hex($br->readBytes(1));
-        }
-        
+
+        $br->setPosition(hexdec("58"));
         $name = hex2bin(explode('00', bin2hex($br->readBytes(12)))[0]);
         printf('Name: %s <br>', $name);
         
-        $br->readBytes(2);
+        $br->setPosition(hexdec("b0"));
         
-        $money = unpack('v', $br->readBytes(3))[1];
+        $money = $br->readUInt32();
         printf('Zenny: %sz <br>', $money);
         
-        //Unknown Bytes
-        $br->readBytes(41);
         
-        //Equipment Box
-        //Equipment = 3 byte ? & 2 byte ID
-        /*
-         * Weapon: 3byte? + 2byte ID + 1byte?
-         * Armour: 3byte? +  2byte ID + 1byte  if > 0 then upgrade level elseif 00 = trennungszeichen
-         */
-        
-        
-        while ($cur != "ff00ff") {
-            $cur = bin2hex($br->readBytes(3));
-        }
-        
-        $cur = bin2hex($br->readBytes(1));
-        
-        while ($cur == "ff" || $cur == "00") {
-            $cur = bin2hex($br->readBytes(1));
-        }
-        
-        $items = [];
-        while (true) {
-            $itemID = strtoupper(bin2hex($br->readBytes(2)));
-            $stackSizeExceeded = $br->readUInt8();
-            $itemQuantity = 0;
-            
-            $tmpQuantity = bin2hex($br->readBytes(1));
-            
-            if ($stackSizeExceeded == 1 && $tmpQuantity == "00") {
-                $br->setPosition($br->getPosition() - 2);
-                $itemQuantity = $br->readUInt16();
-            } else {
-                $br->setPosition($br->getPosition() - 1);
-                if ($stackSizeExceeded >= 3) {
-                    $br->setPosition($br->getPosition() - 1);
-                    $itemQuantity = $br->readUInt16();
-                } else {
-                    $itemQuantity = $br->readUInt16();
-                }
-            }
-            
-            
-            
-            printf('%s x %s | %s <br>', ItemsService::$items[$itemID], $itemQuantity, $stackSizeExceeded);
-            $next = bin2hex($br->readBytes(1));
-            
-            
-            
-            if ($next == "00") {
-                //random additional byte happened
-                $next = bin2hex($br->readBytes(1));
-            }
-            if ($next == "05") {
-                //Next Item will be different
-            } elseif ($next == "04") {
-                //Next Item will be same
-            } elseif ($next == "0D") {
-                //Next Item is empty slot?
-                // if 15 then 2 slots space?
-            }
-            
-            if ($next == "ff") {
-                //If its end of Itembox
+        $br->setPosition(hexdec("120"));
+        $equips = [];
+        while(true) {
+            $equip = new Equip($br->readBytes(16));
+            if ($equip->getId() === "0000") {
                 break;
             }
+            $equips[] = $equip;
+        }
+        foreach ($equips as $equip) {
+            printf("%s <br>", $equip);
         }
 
-        var_dump(true);
+        $br->setPosition(hexdec("11a60"));
+        
+        $items = [];
+        while(true) {
+            $item = new Item($br->readBytes(8));
+            if ($item->getId() === "0000") {
+                break;
+            }
+            $items[] = $item;
+        }
+        foreach ($items as $item) {
+            printf("%s <br>", $item);
+        }
     }
 }

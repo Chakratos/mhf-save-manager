@@ -4,6 +4,7 @@ use MHFSaveManager\Controller\BinaryController;
 use MHFSaveManager\Controller\CharacterController;
 use MHFSaveManager\Database\EM;
 use MHFSaveManager\Model\Character;
+use MHFSaveManager\Service\CompressionService;
 use MHFSaveManager\Service\ResponseService;
 use Pecee\SimpleRouter\SimpleRouter;
 
@@ -40,6 +41,18 @@ SimpleRouter::get('/character/{id}/reset', function($id) {
     
     /** @var Character $character */
     CharacterController::Reset($character);
+});
+
+SimpleRouter::get('/character/{id}/decompress', function($id) {
+    /** @var Character $character */
+    $character = EM::getInstance()->getRepository('MHF:Character')->find($id);
+    if (!$character) {
+        ResponseService::SendNotFound();
+    }
+    
+    file_put_contents(sprintf('%s\\tmp\\%s.bin', ROOT_DIR, $id), CompressionService::Decompress($character->getSavedata()));
+    
+    ResponseService::SendOk();
 });
 
 SimpleRouter::post('/character/{id}/backup/{binary}', function($id, $binary) {
