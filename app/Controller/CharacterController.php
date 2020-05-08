@@ -63,8 +63,10 @@ class CharacterController
             mkdir($savePath);
         }
         
+        $binaryMethod = "get" . ucfirst($binary);
+        $test = $character->$binaryMethod();
         $success = file_put_contents(sprintf('%s/%s_%s.bin', $savePath, date("Y-m-d_H-i-s"),
-            $binary), $character->getSavedata());
+            $binary), $character->$binaryMethod());
         
         if (!$success) {
             return false;

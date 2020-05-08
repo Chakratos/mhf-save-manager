@@ -50,7 +50,7 @@ SimpleRouter::get('/character/{id}/decompress', function($id) {
         ResponseService::SendNotFound();
     }
     
-    file_put_contents(sprintf('%s\\tmp\\%s.bin', ROOT_DIR, $id), CompressionService::Decompress($character->getSavedata()));
+    file_put_contents(sprintf('%s\\tmp\\%s.bin', ROOT_DIR, $id), CompressionService::Decompress($character->getDecomyset()));
     
     ResponseService::SendOk();
 });
