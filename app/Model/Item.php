@@ -43,6 +43,13 @@ class Item extends AbstractBinaryModel
     public function __construct($binary)
     {
         $this->binaryString = $binary;
+        if (strlen(bin2hex($binary)) == 4) {
+            $this->id = $this->read(2, false);
+            $this->name = ItemsService::$items[strtoupper($this->id)];
+            
+            return;
+        }
+        
         $this->read(4); //Padding?
         $this->id = $this->read(2, false);
         $this->name = ItemsService::$items[strtoupper($this->id)];
@@ -63,6 +70,13 @@ class Item extends AbstractBinaryModel
     public function getQuantity(): int
     {
         return $this->quantity;
+    }
+    
+    public function setQuantity(int $quantity)
+    {
+        $this->quantity = $quantity;
+        
+        return $this;
     }
     
     /**
