@@ -9,6 +9,8 @@ use MHFSaveManager\Model\Item;
 use MHFSaveManager\Model\ItemPreset;
 use PhpBinaryReader\BinaryReader;
 
+//RengokuData == Road
+
 //Contains names and decorations for equip sets
 class DecomysetController
 {
