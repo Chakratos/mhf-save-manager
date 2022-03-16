@@ -38,9 +38,9 @@ class SaveDataController
     public static function GetGZenny(string $saveData)
     {
         $br = new BinaryReader($saveData);
-        $br->setPosition(hexdec("00"));
+        $br->setPosition(hexdec("1FF64"));
     
-        return "Not Yet Implemented!";
+        return $br->readUInt32();
     }
     
     public static function GetEquipmentBox(string $saveData)
