@@ -30,6 +30,7 @@ class EM
             'password' => DBPASS,
             'host' => DBHOST,
             'driver' => DBDRIVER,
+            'port' => DBPORT,
         ];
         $config = Setup::createAnnotationMetadataConfiguration($paths, $isDevMode, null, null, false);
         $config->addEntityNamespace('MHF', 'MHFSaveManager\model');
