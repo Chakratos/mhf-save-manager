@@ -18,6 +18,7 @@
         "pecee/simple-router": "4.2.0.6",
         "doctrine/orm": "*",
       "ext-json": "*",
-        "mdurrant/php-binary-reader": "^1.0"
+        "mdurrant/php-binary-reader": "^1.0",
+        "doctrine/cache": "1.11.3"
     }
 }

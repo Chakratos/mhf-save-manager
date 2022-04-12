@@ -1,5 +1,13 @@
 A simple Webapplication created to manage Character savedata user by the MHF Server Emulator Erupe.
 
+NOOB SETUP METHOD!
+1. Download "MHFSaveManager.7z" from releases
+2. Unzip it anywhere
+3. Go into MHFSaveManager/www
+4. Rename config.sample.php -> config.php
+5. Fill out config.php with your Postgresql credentials
+6. Run MHFSaveManager/phpdesktop-chrome.exe
+
 To Use:
 1. Rename config.sample.php -> config.php
 2. Fill out config.php with your Postgresql credentials
