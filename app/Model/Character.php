@@ -522,18 +522,18 @@ class Character
     /**
      * @return resource
      */
-    public function getPladedata()
+    public function getPlatedata()
     {
-        return $this->pladedata;
+        return $this->platedata;
     }
     
     /**
-     * @param resource $pladedata
+     * @param resource $platedata
      * @return Character
      */
-    public function setPladedata($pladedata)
+    public function setPlatedata($platedata)
     {
-        $this->pladedata = $pladedata;
+        $this->platedata = $platedata;
         
         return $this;
     }
