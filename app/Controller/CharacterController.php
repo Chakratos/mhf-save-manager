@@ -109,7 +109,13 @@ class CharacterController
             $BinaryBackupFiles[$binary] = [];
             $path = sprintf('%s/%s/%s', $storagePath, $binary, $character->getId());
             if (is_dir($path)) {
-                $tmp = array_values(DirectoryService::ScanDirByModified($path));
+                $files = DirectoryService::ScanDirByModified($path);
+    
+                if ($files === false) {
+                    continue;
+                }
+                
+                $tmp = array_values($files);
                 
                 if (count($tmp) === 0) {
                     continue;

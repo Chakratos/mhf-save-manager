@@ -97,6 +97,7 @@ SimpleRouter::post('/character/{id}/replace/{binary}', function($id, $binary) {
 
 SimpleRouter::post('/character/{id}/upload', function($id) {
     $character = EM::getInstance()->getRepository('MHF:Character')->find($id);
+
     if (!$character) {
         ResponseService::SendNotFound();
     }
