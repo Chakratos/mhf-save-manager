@@ -33,7 +33,7 @@ class EM
             'port' => DBPORT,
         ];
         $config = Setup::createAnnotationMetadataConfiguration($paths, $isDevMode, null, null, false);
-        $config->addEntityNamespace('MHF', 'MHFSaveManager\model');
+        $config->addEntityNamespace('MHF', 'MHFSaveManager\Model');
         self::$entityManager = EntityManager::create($dbParams, $config);
     }
     
