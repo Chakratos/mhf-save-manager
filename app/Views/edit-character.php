@@ -4,6 +4,7 @@
     <title>MHF Character Manager</title>
 </head>
 <body>
+<?php include_once "topnav.php"?>
 <div class="container">
     <table class="table" id="CharactersTable">
         <thead>
