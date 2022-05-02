@@ -34,11 +34,6 @@ class Character
      */
     protected $is_new_character;
     /**
-     * @ORM\Column(type="smallint")
-     * @var int
-     */
-    protected $small_gr_level;
-    /**
      * @ORM\Column(type="boolean")
      * @var boolean
      */
@@ -211,25 +206,6 @@ class Character
     public function setIsNewCharacter($is_new_character)
     {
         $this->is_new_character = $is_new_character;
-        
-        return $this;
-    }
-    
-    /**
-     * @return int
-     */
-    public function getSmallGrLevel()
-    {
-        return $this->small_gr_level;
-    }
-    
-    /**
-     * @param int $small_gr_level
-     * @return Character
-     */
-    public function setSmallGrLevel($small_gr_level)
-    {
-        $this->small_gr_level = $small_gr_level;
         
         return $this;
     }
