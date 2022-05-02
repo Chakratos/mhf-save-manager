@@ -27,6 +27,15 @@ class SaveDataController extends AbstractSaveController
         return hex2bin(explode('00', bin2hex($br->readBytes(12)))[0]);
     }
     
+    public static function SetName(string $saveData, string $name)
+    {
+        if (strlen($name) > 12) {
+            throw new \Exception('Name can only be 12 characters long!');
+        }
+        $nameHex = str_pad(self::stringToHex($name), 24, "0");
+        return self::writeToFile($saveData, "58", $nameHex);
+    }
+    
     public static function GetZenny(string $saveData)
     {
         $br = new BinaryReader($saveData);
@@ -34,13 +43,25 @@ class SaveDataController extends AbstractSaveController
     
         return $br->readUInt32();
     }
+    
+    public static function SetZenny(string $saveData, $value)
+    {
+        $value = min($value, 9999999);
+        return self::writeToFile($saveData, "b0", self::numberConvertEndian($value));
+    }
 
-    public static function GetGZenny(string $saveData)
+    public static function GetGzenny(string $saveData)
     {
         $br = new BinaryReader($saveData);
         $br->setPosition(hexdec("1FF64"));
     
         return $br->readUInt32();
+    }
+    
+    public static function SetGzenny(string $saveData, $value)
+    {
+        $value = min($value, 9999999);
+        return self::writeToFile($saveData, "1FF64", self::numberConvertEndian($value));
     }
     
     public static function GetEquipmentBox(string $saveData)
@@ -163,7 +184,7 @@ class SaveDataController extends AbstractSaveController
         return [$tmpEquip[0], $tmpEquip[2], $tmpEquip[3], $tmpEquip[4], $tmpEquip[5], $tmpEquip[1]]; //Sorting gear like it would be in game
     }
     
-    public static function GetKeyQuestFlag($saveData)
+    public static function GetKeyquestflag($saveData)
     {
         $br = new BinaryReader($saveData);
         $br->setPosition(hexdec("23D20"));
@@ -171,12 +192,17 @@ class SaveDataController extends AbstractSaveController
         return bin2hex($br->readBytes(8));
     }
     
-    public static function SetKeyQuestFlag($saveData, string $hexValue)
+    public static function SetKeyquestflag($saveData, string $hexValue)
     {
         if (strlen($hexValue) != 16) {
             throw new \Exception('Key Quest Flag needs to be 8 Bytes');
         }
         
         return self::writeToFile($saveData, "23D20", $hexValue);
+    }
+    
+    public static function SetStylevouchers($saveData, $value)
+    {
+        return self::writeToFile($saveData, "20104", "030000F4");
     }
 }

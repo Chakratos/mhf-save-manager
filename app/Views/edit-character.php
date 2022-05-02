@@ -59,25 +59,61 @@
                 </div>
                 <div class="col-1"></div>
                 <div class="border border-dark rounded col-3 py-2">
-                    <!--<div class="form-inline">
-                        <label>
+                    <div class="form-inline">
+                        <label class="font-weight-bold">
                             Name:
                         </label>
-                        <input id="name" type="text" placeholder="Character Name" value="<?php /*echo $name */?>">
-                        <button id="setname" class="btn btn-success"><i class="fa fa-save"></i></button>
-                    </div>-->
+                        <input id="name" type="text" placeholder="Character Name" value="<?php echo $name ?>">
+                        <div class="input-group-append">
+                            <button id="setname" class="btn btn-success"><i class="fa fa-save"></i></button>
+                        </div>
+                    </div>
 
-                    <div class="form-inline">
-                        <label>
+                    <div class="input-group">
+                        <label class="font-weight-bold">
                             Keyquestflag:
                         </label>
                         <input id="keyquestflag" type="text" placeholder="0000000000000000" value="<?php echo $keyquestFlag ?>">
-                        <button id="setkeyquestflag" class="btn btn-success"><i class="fa fa-save"></i></button>
+                        <div class="input-group-append">
+                            <button id="setkeyquestflag" class="btn btn-success"><i class="fa fa-save"></i></button>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="tab-pane fade" id="nav-points" role="tabpanel" aria-labelledby="nav-points-tab">...</div>
+        <div class="tab-pane fade" id="nav-points" role="tabpanel" aria-labelledby="nav-points-tab">
+            <div class="row">
+                <div class="border border-dark rounded col-3 py-2">
+                    <div class="input-group">
+                        <label class="font-weight-bold">
+                            zenny:
+                        </label>
+                        <input id="zenny" type="text" placeholder="0" value="<?php echo $zenny ?>">
+                        <div class="input-group-append">
+                            <button id="setzenny" class="btn btn-success"><i class="fa fa-save"></i></button>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label class="font-weight-bold">
+                            gZenny:
+                        </label>
+                        <input id="gzenny" type="text" placeholder="0" value="<?php echo $gZenny ?>">
+                        <div class="input-group-append">
+                            <button id="setgzenny" class="btn btn-success"><i class="fa fa-save"></i></button>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label class="font-weight-bold">
+                            Style Vouchers:
+                        </label>
+                        <input id="stylevouchers" type="hidden" placeholder="0" value="99">
+                        <button id="setstylevouchers" class="btn btn-success w-100">Set to 99</button>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="tab-pane fade" id="nav-items" role="tabpanel" aria-labelledby="nav-items-tab">...</div>
         <div class="tab-pane fade" id="nav-equipment" role="tabpanel" aria-labelledby="nav-equipment-tab">...</div>
     </div>

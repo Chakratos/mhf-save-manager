@@ -34,45 +34,10 @@ class Character
      */
     protected $is_new_character;
     /**
-     * @ORM\Column(type="boolean")
-     * @var boolean
-     */
-    protected $gr_override_mode;
-    /**
      * @ORM\Column(type="string", length=15)
      * @var string
      */
     protected $name;
-    /**
-     * @ORM\Column(type="string", length=31)
-     * @var string
-     */
-    protected $unk_desc_string;
-    /**
-     * @ORM\Column(type="integer")
-     * @var int
-     */
-    protected $gr_override_level;
-    /**
-     * @ORM\Column(type="smallint")
-     * @var int
-     */
-    protected $gr_override_unk0;
-    /**
-     * @ORM\Column(type="smallint")
-     * @var int
-     */
-    protected $gr_override_unk1;
-    /**
-     * @ORM\Column(type="integer")
-     * @var int
-     */
-    protected $exp;
-    /**
-     * @ORM\Column(type="integer")
-     * @var int
-     */
-    protected $weapon;
     /**
      * @ORM\Column(type="integer")
      * @var int

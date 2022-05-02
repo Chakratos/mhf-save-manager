@@ -37,16 +37,31 @@ SimpleRouter::get('/character/{id}/edit', function($id) {
     CharacterController::Edit($character);
 });
 
-SimpleRouter::post('/character/{id}/edit/setkeyquestflag/{hexvalue}', function($id, $hexvalue) {
+SimpleRouter::post('/character/{id}/edit/setname/{name}', function($id, $name) {
+    /** @var Character $character */
     $character = EM::getInstance()->getRepository('MHF:Character')->find($id);
     if (!$character) {
         ResponseService::SendNotFound();
     }
     
-    /** @var Character $character */
-    CharacterController::WriteToSavedata($character, "SetKeyQuestFlag", $hexvalue);
+    CharacterController::WriteToSavedata($character, "SetName", $name);
+    $character->setName($name);
+    EM::getInstance()->flush();
     ResponseService::SendOk();
 });
+
+SimpleRouter::post('/character/{id}/edit/{property}/{value}', function($id, $property, $value) {
+    /** @var Character $character */
+    $character = EM::getInstance()->getRepository('MHF:Character')->find($id);
+    if (!$character) {
+        ResponseService::SendNotFound();
+    }
+    
+    CharacterController::WriteToSavedata($character, "Set" . ucfirst(substr($property, 3)), $value);
+    ResponseService::SendOk();
+});
+
+
 
 /*SimpleRouter::get('/character/{id}/edit/{binary}', function($id, $binary) {
     $character = EM::getInstance()->getRepository('MHF:Character')->find($id);

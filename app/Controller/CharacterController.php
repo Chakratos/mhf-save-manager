@@ -20,6 +20,8 @@ class CharacterController
         $decompressed = CompressionService::Decompress($character->getSavedata());
         $currentGear = SaveDataController::GetCurrentEquip($decompressed);
         $name = SaveDataController::GetName($decompressed);
+        $zenny = SaveDataController::GetZenny($decompressed);
+        $gZenny = SaveDataController::GetGZenny($decompressed);
         $keyquestFlag = SaveDataController::GetKeyQuestFlag($decompressed);
         
         include_once ROOT_DIR . '/app/Views/edit-character.php';
