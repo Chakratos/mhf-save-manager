@@ -387,11 +387,11 @@ class Character
     }
     
     /**
-     * @return int
+     * @return mixed
      */
-    public function getLastLogin()
+    public function getLastLogin($fancyFormat = true)
     {
-        return $this->last_login;
+        return $fancyFormat ? date('F j, Y, G:i', $this->last_login) : $this->last_login;
     }
     
     /**

@@ -23,21 +23,36 @@
             </select>
         </div>
         <div class="btn-group" role="group">
+            <button data-binary="<?php echo $binaryName ?>" data-charid="<?php echo $character->getId() ?>"
+                    class="backupChar btn btn-sm btn-outline-secondary">
+                <i class="fas fa-edit"></i> Create
+            </button>
+            
+            <button data-binary="<?php echo $binaryName ?>" data-charid="<?php echo $character->getId() ?>"
+                    class="backupCharDecompressed btn btn-sm btn-outline-secondary">
+                <i class="fas fa-edit"></i> Create decomp
+            </button>
 
+            <button data-binary="<?php echo $binaryName ?>" data-charid="<?php echo $character->getId() ?>"
+                    class="compressEntry btn btn-sm btn-outline-secondary">
+                <i class="fas fa-edit"></i> Compress entry
+            </button>
+        </div>
+        <div class="btn-group" role="group">
+            <button data-binary="<?php echo $binaryName ?>" data-charid="<?php echo $character->getId() ?>"
+                    class="decompEntry btn btn-sm btn-outline-secondary">
+                <i class="fas fa-edit"></i> Decomp entry
+            </button>
+            
+            <button data-binary="<?php echo $binaryName ?>" data-charid="<?php echo $character->getId() ?>"
+                    class="applyBackup btn btn-sm btn-outline-secondary">
+                <i class="fas fa-play"></i> Apply
+            </button>
             <button class="uploadBinaryButton btn btn-sm btn-outline-secondary" data-binary="<?php echo $binaryName ?>">
                 <i class='fas fa-file-upload'></i> Upload
             </button>
             <input type="file" class="uploadBinaryInput" data-charid="<?php echo $character->getId() ?>"
                    data-binary="<?php echo $binaryName ?>" style="display: none" accept="bin/*">
-
-            <button data-binary="<?php echo $binaryName ?>" data-charid="<?php echo $character->getId() ?>"
-                    class="backupChar btn btn-sm btn-outline-secondary">
-                <i class="fas fa-edit"></i> Create
-            </button>
-            <button data-binary="<?php echo $binaryName ?>" data-charid="<?php echo $character->getId() ?>"
-                    class="applyBackup btn btn-sm btn-outline-secondary">
-                <i class="fas fa-play"></i> Apply
-            </button>
             <button data-binary="<?php echo $binaryName ?>" data-charid="<?php echo $character->getId() ?>"
                     class="downloadBackup btn btn-sm btn-outline-secondary">
                 <i class="fas fa-file-download"></i> Download

@@ -4,6 +4,7 @@ namespace MHFSaveManager\Controller;
 
 use MHFSaveManager\Database\EM;
 use MHFSaveManager\Model\Character;
+use MHFSaveManager\Service\CompressionService;
 use MHFSaveManager\Service\DirectoryService;
 use MHFSaveManager\Service\ResponseService;
 
@@ -16,7 +17,29 @@ class CharacterController
     
     public static function Edit(Character $character)
     {
+        $decompressed = CompressionService::Decompress($character->getSavedata());
+        $currentGear = SaveDataController::GetCurrentEquip($decompressed);
+        $name = SaveDataController::GetName($decompressed);
+        $keyquestFlag = SaveDataController::GetKeyQuestFlag($decompressed);
+        
         include_once ROOT_DIR . '/app/Views/edit-character.php';
+    }
+    
+    public static function WriteToSavedata(Character $character, string $function, string $value)
+    {
+        $decompressed = CompressionService::Decompress($character->getSavedata());
+        $savefile = SaveDataController::$function($decompressed, $value);
+        $compressed = CompressionService::Compress($savefile);
+        $handle = fopen('php://memory', 'br+');
+        fwrite($handle, $compressed);
+        rewind($handle);
+        $character->setSavedata($handle);
+        EM::getInstance()->flush();
+    }
+    
+    public static function Backup(Character $character)
+    {
+        include_once ROOT_DIR . '/app/Views/backup-character.php';
     }
     
     public static function Reset(Character $character)
@@ -51,7 +74,7 @@ class CharacterController
         }
     }
 
-    public static function CreateBackup(Character $character, string $binary)
+    public static function CreateBackup(Character $character, string $binary, $decomp = false)
     {
         $savePath = sprintf('%s/storage/%s',ROOT_DIR, $binary);
         if (!is_dir($savePath)) {
@@ -64,15 +87,42 @@ class CharacterController
         }
         
         $binaryMethod = "get" . ucfirst($binary);
-        $test = $character->$binaryMethod();
-        $success = file_put_contents(sprintf('%s/%s_%s.bin', $savePath, date("Y-m-d_H-i-s"),
-            $binary), $character->$binaryMethod());
+        $success = file_put_contents(sprintf('%s/%s%s_%s.bin', $savePath, $decomp ? "decompressed_" : "" ,date("Y-m-d_H-i-s"),
+            $binary), $decomp ? CompressionService::Decompress($character->$binaryMethod()) : $character->$binaryMethod());
         
         if (!$success) {
             return false;
         }
         
         return true;
+    }
+    
+    public static function EntryCompression(Character $character, string $binary, $decomp)
+    {
+        $savePath = sprintf('%s/storage/%s',ROOT_DIR, $binary);
+        if (!is_dir($savePath)) {
+            ResponseService::SendNotFound();
+        }
+        
+        $savePath .= '/' . $character->getId();
+        if (!is_dir($savePath)) {
+            mkdir($savePath);
+        }
+    
+        $entryPath = sprintf('%s/storage/%s/%s/%s',ROOT_DIR, $binary, $character->getId(), $_POST['entry']);
+        
+        if ($decomp) {
+            $data = CompressionService::Decompress(file_get_contents($entryPath));
+        } else {
+            $data = CompressionService::Compress(file_get_contents($entryPath));
+        }
+        $success = file_put_contents(sprintf('%s/%scompressed_%s.bin', $savePath, $decomp ? "de" : "", $_POST['entry']), $data);
+        
+        if (!$success) {
+            ResponseService::SendServerError('Missing write permissions on file system!');
+        }
+    
+        ResponseService::SendOk();
     }
     
     public static function UploadSavedata(Character $character)

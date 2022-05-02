@@ -16,6 +16,7 @@
             <th>is_new_character</th>
             <th>last_login</th>
             <th>Edit</th>
+            <th>Backup</th>
             <th>Reset</th>
         </tr>
         </thead>
@@ -32,7 +33,8 @@
                     <td>%s</td>
                     <td>%s</td>
                     <td>%s</td>
-                    <td><a href="/character/%s" class="btn"><i class="fas fa-user-edit"></i></a></td>
+                    <td><a href="/character/%s/edit" class="btn"><i class="fas fa-user-edit"></i></a></td>
+                    <td><a href="/character/%s" class="btn"><i class="fas fa-floppy-disk"></i></a></td>
                     <td><button class="resetChar btn" data-charid="%s"><i class="fa fa-undo"></i></button></td>
                 </tr>',
                 $character->getId(),
@@ -41,6 +43,7 @@
                 $character->isFemale() ? '<i class="fas fa-venus"></i>' : '<i class="fas fa-mars"></i>',
                 $character->isNewCharacter() ? 'True' : 'False',
                 $character->getLastLogin(),
+                $character->getId(),
                 $character->getId(),
                 $character->getId()
             );

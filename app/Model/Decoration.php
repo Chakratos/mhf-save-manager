@@ -26,4 +26,28 @@ class Decoration extends Item
         $this->name = ItemsService::$items[strtoupper($this->id)];
         $this->quantity = 1;
     }
+    
+    /**
+     * @return string
+     */
+    public function getId(): string
+    {
+        return $this->id;
+    }
+    
+    /**
+     * @return int
+     */
+    public function getQuantity(): int
+    {
+        return $this->quantity;
+    }
+    
+    /**
+     * @return string
+     */
+    public function getName(): string
+    {
+        return $this->name;
+    }
 }
