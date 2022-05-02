@@ -34,50 +34,10 @@ class Character
      */
     protected $is_new_character;
     /**
-     * @ORM\Column(type="smallint")
-     * @var int
-     */
-    protected $small_gr_level;
-    /**
-     * @ORM\Column(type="boolean")
-     * @var boolean
-     */
-    protected $gr_override_mode;
-    /**
      * @ORM\Column(type="string", length=15)
      * @var string
      */
     protected $name;
-    /**
-     * @ORM\Column(type="string", length=31)
-     * @var string
-     */
-    protected $unk_desc_string;
-    /**
-     * @ORM\Column(type="integer")
-     * @var int
-     */
-    protected $gr_override_level;
-    /**
-     * @ORM\Column(type="smallint")
-     * @var int
-     */
-    protected $gr_override_unk0;
-    /**
-     * @ORM\Column(type="smallint")
-     * @var int
-     */
-    protected $gr_override_unk1;
-    /**
-     * @ORM\Column(type="integer")
-     * @var int
-     */
-    protected $exp;
-    /**
-     * @ORM\Column(type="integer")
-     * @var int
-     */
-    protected $weapon;
     /**
      * @ORM\Column(type="integer")
      * @var int
@@ -211,25 +171,6 @@ class Character
     public function setIsNewCharacter($is_new_character)
     {
         $this->is_new_character = $is_new_character;
-        
-        return $this;
-    }
-    
-    /**
-     * @return int
-     */
-    public function getSmallGrLevel()
-    {
-        return $this->small_gr_level;
-    }
-    
-    /**
-     * @param int $small_gr_level
-     * @return Character
-     */
-    public function setSmallGrLevel($small_gr_level)
-    {
-        $this->small_gr_level = $small_gr_level;
         
         return $this;
     }
