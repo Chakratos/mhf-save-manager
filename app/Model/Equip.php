@@ -75,12 +75,14 @@ class Equip extends AbstractBinaryModel
             $this->decorations[] = new Decoration($decorationId);
         }
         
-        if ($this->getTypeAsString() == "Ranged") {
-            $this->weaponType = EquipService::$rangedType[strtoupper($this->id)];
-            $this->name = EquipService::$rangedName[strtoupper($this->id)];
-        } elseif ($this->getTypeAsString() == "Melee") {
-            $this->weaponType = EquipService::$meleeType[strtoupper($this->id)];
-            $this->name = EquipService::$meleeName[strtoupper($this->id)];
+        if ($this->getTypeAsString() == "Ranged" || $this->getTypeAsString() == "Melee") {
+            $arrayName = lcfirst($this->getTypeAsString()) . 'Name';
+            $arrayType = lcfirst($this->getTypeAsString()) . 'Type';
+            $this->weaponType = (EquipService::$$arrayType)[strtoupper($this->id)];
+            $this->name = (EquipService::$$arrayName)[strtoupper($this->id)];
+        } else {
+            $arrayName = lcfirst($this->getTypeAsString()) . 'Name';
+            $this->name = (EquipService::$$arrayName)[strtoupper($this->id)];
         }
     }
     
@@ -132,7 +134,7 @@ class Equip extends AbstractBinaryModel
         return $this->name;
     }
     
-    public function getTypeAsString()
+    public function getTypeAsString(): string
     {
         return EquipService::$types[$this->getType()];
     }
@@ -148,7 +150,7 @@ class Equip extends AbstractBinaryModel
     /**
      * @return string
      */
-    protected function getWeaponType(): string
+    public function getWeaponType(): string
     {
         return $this->weaponType;
     }

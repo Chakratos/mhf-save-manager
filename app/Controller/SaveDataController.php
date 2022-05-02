@@ -9,7 +9,7 @@ use MHFSaveManager\Model\Item;
 use MHFSaveManager\Model\ItemPreset;
 use PhpBinaryReader\BinaryReader;
 
-class SaveDataController
+class SaveDataController extends AbstractSaveController
 {
     public static function GetGender(string $saveData)
     {
@@ -151,15 +151,32 @@ class SaveDataController
         $br->setPosition(hexdec("1F604"));
         
         
-        $curEquip = [];
+        $tmpEquip = [];
         for ($i = 0; $i <= 5; $i++) {
             $equip = new Equip($br->readBytes(16));
             if ($equip->getId() === "0000") {
-                break;
+                //continue;
             }
-            $curEquip[] = $equip;
+            $tmpEquip[] = $equip;
         }
         
-        return $curEquip;
+        return [$tmpEquip[0], $tmpEquip[2], $tmpEquip[3], $tmpEquip[4], $tmpEquip[5], $tmpEquip[1]]; //Sorting gear like it would be in game
+    }
+    
+    public static function GetKeyQuestFlag($saveData)
+    {
+        $br = new BinaryReader($saveData);
+        $br->setPosition(hexdec("23D20"));
+    
+        return bin2hex($br->readBytes(8));
+    }
+    
+    public static function SetKeyQuestFlag($saveData, string $hexValue)
+    {
+        if (strlen($hexValue) != 16) {
+            throw new \Exception('Key Quest Flag needs to be 8 Bytes');
+        }
+        
+        return self::writeToFile($saveData, "23D20", $hexValue);
     }
 }
