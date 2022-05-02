@@ -15,14 +15,23 @@ To Use:
 4. Create a VHost which document_root is the public folder. (Add Allow Override for .htaccess to work)
 
 ![Sample Image from GUI](https://imgur.com/I60iLDv.png)
-![Sample Image from Edit-GUI](https://i.imgur.com/pALZeKb.png)
+![Sample Image from Backup-GUI](https://i.imgur.com/pALZeKb.png)
+![Sample Image from Edit-GUI](https://i.imgur.com/qi7hXVd.png)
 
 For now you can:
 * Search through all Characters
 * Reset the Character so the user has to create a new one.
 * Manage all Binary Saves for each character
+* Easily compress / decompress your saves
+* View the currently worn gear for each character
+* Edit your Keyquest Flag (Needed for rebalance patch)
 
 
 Todo:
 * Edit the Character Row (Name, Gender, etc)
-* Reverse Engineer the Savedata to do some real edits
+* Reverse Engineer the Savedata for more edits
+
+Credits:
+A big thanks to everyone who helped translating MHF
+Also a big thanks to Fist who helped me get on track 2 years ago when i started this project!
+And a big thanks to SephVII, Rhob and others who continously give feedback and nag me to do stuff :D
