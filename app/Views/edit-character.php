@@ -59,23 +59,19 @@
                 </div>
                 <div class="col-1"></div>
                 <div class="border border-dark rounded col-3 py-2">
-                    <div class="form-inline">
-                        <label class="font-weight-bold">
-                            Name:
-                        </label>
-                        <input id="name" type="text" placeholder="Character Name" value="<?php echo $name ?>">
+                    <h6>Name:</h6>
+                    <div class="input-group mb-2">
+                        <input type="text" class="form-control" id="name" placeholder="Character Name" value="<?php echo $name ?>">
                         <div class="input-group-append">
-                            <button id="setname" class="btn btn-success"><i class="fa fa-save"></i></button>
+                            <div id="setname" class="input-group-text btn btn-success text-white bg-success"><i class="fa fa-save"></i></div>
                         </div>
                     </div>
 
-                    <div class="input-group">
-                        <label class="font-weight-bold">
-                            Keyquestflag:
-                        </label>
-                        <input id="keyquestflag" type="text" placeholder="0000000000000000" value="<?php echo $keyquestFlag ?>">
+                    <h6>Keyquestflag:</h6>
+                    <div class="input-group mb-2">
+                        <input id="keyquestflag" type="text" class="form-control" placeholder="0000000000000000" value="<?php echo $keyquestFlag ?>">
                         <div class="input-group-append">
-                            <button id="setkeyquestflag" class="btn btn-success"><i class="fa fa-save"></i></button>
+                            <div id="setkeyquestflag" class="input-group-text btn btn-success text-white bg-success"><i class="fa fa-save"></i></div>
                         </div>
                     </div>
                 </div>
@@ -84,28 +80,24 @@
         <div class="tab-pane fade" id="nav-points" role="tabpanel" aria-labelledby="nav-points-tab">
             <div class="row">
                 <div class="border border-dark rounded col-3 py-2">
-                    <div class="input-group">
-                        <label class="font-weight-bold">
-                            zenny:
-                        </label>
-                        <input id="zenny" type="text" placeholder="0" value="<?php echo $zenny ?>">
+                    <h6>Zenny:</h6>
+                    <div class="input-group mb-2">
+                        <input id="zenny" type="text" class="form-control" placeholder="0" value="<?php echo $zenny ?>">
                         <div class="input-group-append">
-                            <button id="setzenny" class="btn btn-success"><i class="fa fa-save"></i></button>
+                            <div id="setzenny" class="input-group-text btn btn-success text-white bg-success"><i class="fa fa-save"></i></div>
+                        </div>
+                    </div>
+
+                    <h6>gZenny:</h6>
+                    <div class="input-group mb-2">
+                        <input id="gzenny" type="text" class="form-control" placeholder="0" value="<?php echo $gZenny ?>">
+                        <div class="input-group-append">
+                            <div id="setgzenny" class="input-group-text btn btn-success text-white bg-success"><i class="fa fa-save"></i></div>
                         </div>
                     </div>
 
                     <div class="input-group">
-                        <label class="font-weight-bold">
-                            gZenny:
-                        </label>
-                        <input id="gzenny" type="text" placeholder="0" value="<?php echo $gZenny ?>">
-                        <div class="input-group-append">
-                            <button id="setgzenny" class="btn btn-success"><i class="fa fa-save"></i></button>
-                        </div>
-                    </div>
-
-                    <div class="input-group">
-                        <label class="font-weight-bold">
+                        <label>
                             Style Vouchers:
                         </label>
                         <input id="stylevouchers" type="hidden" placeholder="0" value="99">
