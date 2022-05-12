@@ -6,6 +6,7 @@ use MHFSaveManager\Database\EM;
 use MHFSaveManager\Model\Character;
 use MHFSaveManager\Service\CompressionService;
 use MHFSaveManager\Service\DirectoryService;
+use MHFSaveManager\Service\ItemsService;
 use MHFSaveManager\Service\ResponseService;
 
 class CharacterController
@@ -23,11 +24,12 @@ class CharacterController
         $zenny = SaveDataController::GetZenny($decompressed);
         $gZenny = SaveDataController::GetGZenny($decompressed);
         $keyquestFlag = SaveDataController::GetKeyQuestFlag($decompressed);
+        $itembox = SaveDataController::GetItembox($decompressed);
         
         include_once ROOT_DIR . '/app/Views/edit-character.php';
     }
     
-    public static function WriteToSavedata(Character $character, string $function, string $value)
+    public static function WriteToSavedata(Character $character, string $function, $value)
     {
         $decompressed = CompressionService::Decompress($character->getSavedata());
         $savefile = SaveDataController::$function($decompressed, $value);
@@ -124,6 +126,24 @@ class CharacterController
             ResponseService::SendServerError('Missing write permissions on file system!');
         }
     
+        ResponseService::SendOk();
+    }
+    
+    public static function EntryDelete(Character $character, string $binary)
+    {
+        $savePath = sprintf('%s/storage/%s',ROOT_DIR, $binary);
+        if (!is_dir($savePath)) {
+            ResponseService::SendNotFound();
+        }
+        
+        $entryPath = sprintf('%s/storage/%s/%s/%s',ROOT_DIR, $binary, $character->getId(), $_POST['entry']);
+        
+        $success = unlink($entryPath);
+        
+        if (!$success) {
+            ResponseService::SendServerError('Missing permissions on file system!');
+        }
+        
         ResponseService::SendOk();
     }
     

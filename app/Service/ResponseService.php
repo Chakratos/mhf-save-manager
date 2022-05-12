@@ -25,6 +25,12 @@ class ResponseService
         exit(json_encode(['message' => $message]));
     }
     
+    public static function SendUnprocessableEntity($message = "Could not process entity!") {
+        http_response_code(422);
+        header('Content-Type: application/json');
+        exit(json_encode(['message' => $message]));
+    }
+    
     public static function SendDownload($path)
     {
         header('Content-Type: application/octet-stream');

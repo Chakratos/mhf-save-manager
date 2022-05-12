@@ -22,14 +22,13 @@ abstract class AbstractSaveController
         return $handle;
     }
     
-    protected static function numberConvertEndian($number)
+    protected static function numberConvertEndian($number, $byteSize)
     {
+        $hexChars = $byteSize * 2;
         $data = dechex((float)$number);
-    
-        if (strlen($data) <= 2) {
-            return $number;
-        }
-    
+        
+        $data = str_pad($data, $hexChars, '0', STR_PAD_LEFT);
+        
         $unpack = unpack("H*", strrev(pack("H*", $data)));
     
         return $unpack[1];
@@ -37,6 +36,24 @@ abstract class AbstractSaveController
     
     protected static function stringToHex($string)
     {
-        return implode("",array_map(fn($x) => sprintf("%02s",strtoupper(dechex(ord($x)))),str_split($string)));
+        $output = "";
+        foreach (mb_str_split($string) as $char) {
+            $char = self::uniord($char);
+            if ($char > 255) {
+                $char = self::numberConvertEndian($char,2);
+            } else {
+                $char = dechex($char);
+            }
+            $output .= sprintf("%02s",strtoupper($char));
+        }
+        
+        return $output;
     }
+    
+    protected static function uniord($u) {
+            $k = mb_convert_encoding($u, 'SJIS', 'UTF-8');
+            $k1 = ord(substr($k, 0, 1));
+            $k2 = ord(substr($k, 1, 1));
+            return $k2 * 256 + $k1;
+        }
 }

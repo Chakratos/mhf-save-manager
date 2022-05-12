@@ -1,0 +1,11 @@
+.item-icon {
+    width: 40px;
+}
+
+.item-row .item-col {
+    border: 1px solid #000;
+}
+
+.item-row {
+    padding-bottom: 0.05em;
+}
