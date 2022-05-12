@@ -14,24 +14,28 @@ To Use:
 3. run "composer update"
 4. Create a VHost which document_root is the public folder. (Add Allow Override for .htaccess to work)
 
-![Sample Image from GUI](https://imgur.com/I60iLDv.png)
-![Sample Image from Backup-GUI](https://i.imgur.com/pALZeKb.png)
-![Sample Image from Edit-GUI](https://i.imgur.com/qi7hXVd.png)
+![Sample Image from GUI](https://i.imgur.com/z3F8q6B.png)
+![Sample Image from Backup-GUI](https://i.imgur.com/SfAQC2f.png)
+![Sample Image from Edit-GUI](https://i.imgur.com/Nn1ZJCV.png)
+![Sample Image from Edit-Itembox-GUI](https://i.imgur.com/6xR7JGH.png)
 
 For now you can:
-* Search through all Characters
-* Reset the Character so the user has to create a new one.
+* Reset characters so the user has to create a new one on next login.
 * Manage all Binary Saves for each character
 * Easily compress / decompress your saves
-* View the currently worn gear for each character
+* Check character stats like gear and items
+* Edit your Itembox! (Some icons are missing)
+* Edit currency and points (z / Gz / Restyle Points)
 * Edit your Keyquest Flag (Needed for rebalance patch)
 
 
 Todo:
-* Edit the Character Row (Name, Gender, etc)
+* Roadshop Manager
+* Equipmentbox Editor
+* Quest reset for stuff like G Experience Quests
 * Reverse Engineer the Savedata for more edits
 
 Credits:
-A big thanks to everyone who helped translating MHF
-Also a big thanks to Fist who helped me get on track 2 years ago when i started this project!
-And a big thanks to SephVII, Rhob and others who continously give feedback and nag me to do stuff :D
+* Everyone who helped translating MHF!
+* Fist who helped me get on track 2 years ago when I started this project!
+* Last but not least SephVII, Rhob and others who continously give feedback and nag me to do stuff :D

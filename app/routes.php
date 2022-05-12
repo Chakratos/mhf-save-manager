@@ -37,16 +37,31 @@ SimpleRouter::get('/character/{id}/edit', function($id) {
     CharacterController::Edit($character);
 });
 
-SimpleRouter::post('/character/{id}/edit/setname/{name}', function($id, $name) {
+SimpleRouter::post('/character/{id}/edit/setname/', function($id) {
+    /** @var Character $character */
+    $character = EM::getInstance()->getRepository('MHF:Character')->find($id);
+    if (!$character || !isset($_POST['name'])) {
+        ResponseService::SendNotFound();
+    }
+    $name = $_POST['name'];
+    CharacterController::WriteToSavedata($character, "SetName", $name);
+    $character->setName($name);
+    EM::getInstance()->flush();
+    ResponseService::SendOk();
+});
+
+SimpleRouter::post('/character/{id}/edit/item/{box}/{slot}', function($id, $boxtype, $slot) {
     /** @var Character $character */
     $character = EM::getInstance()->getRepository('MHF:Character')->find($id);
     if (!$character) {
         ResponseService::SendNotFound();
     }
     
-    CharacterController::WriteToSavedata($character, "SetName", $name);
-    $character->setName($name);
-    EM::getInstance()->flush();
+    if (!isset($_POST['item_id']) || !isset($_POST['item_quantity'])) {
+        ResponseService::SendUnprocessableEntity('Could not process entity! Data missing!');
+    }
+    
+    CharacterController::WriteToSavedata($character, "Set" . ucfirst($boxtype). "Slot", $slot);
     ResponseService::SendOk();
 });
 
@@ -171,6 +186,16 @@ SimpleRouter::post('/character/{id}/compressentry/{binary}', function($id, $bina
     
     /** @var Character $character */
     CharacterController::EntryCompression($character, $binary, $_POST['decomp']);
+});
+
+SimpleRouter::post('/character/{id}/deleteentry/{binary}', function($id, $binary) {
+    $character = EM::getInstance()->getRepository('MHF:Character')->find($id);
+    if (!$character) {
+        ResponseService::SendNotFound();
+    }
+    
+    /** @var Character $character */
+    CharacterController::EntryDelete($character, $binary);
 });
 
 SimpleRouter::post('/character/{id}/upload', function($id) {

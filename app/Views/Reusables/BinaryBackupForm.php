@@ -37,6 +37,10 @@
                     class="compressEntry btn btn-sm btn-outline-secondary">
                 <i class="fas fa-edit"></i> Compress entry
             </button>
+            <button data-binary="<?php echo $binaryName ?>" data-charid="<?php echo $character->getId() ?>"
+                    class="deleteEntry btn btn-sm btn-outline-danger">
+                <i class="fas fa-trash-can"></i>
+            </button>
         </div>
         <div class="btn-group" role="group">
             <button data-binary="<?php echo $binaryName ?>" data-charid="<?php echo $character->getId() ?>"

@@ -110,6 +110,30 @@ $(document).ready(function () {
         });
     });
 
+    $('.deleteEntry').click(function() {
+        let formdata = new FormData();
+        let selected = $('#select' + $(this).attr('data-binary') + 'Backup').val();
+        if (selected == null) {
+            return
+        }
+        formdata.append("entry", selected);
+
+        if (!window.confirm("Are you sure you want to delete: " + "\r\n" + selected)) {
+            return;
+        }
+
+        $.ajax({
+            url: "/character/"+ $(this).attr('data-charid') +"/deleteentry/" + $(this).attr('data-binary'),
+            type: "POST",
+            data: formdata,
+            processData: false,
+            contentType: false,
+            success: function (result) {
+                location.reload();
+            }
+        });
+    });
+
     $('.downloadBackup').click(function() {
         let binary = $(this).attr('data-binary');
         let selected = $('#select' + binary + 'Backup').val();

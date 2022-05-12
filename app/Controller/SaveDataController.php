@@ -14,7 +14,7 @@ class SaveDataController extends AbstractSaveController
     public static function GetGender(string $saveData)
     {
         $br = new BinaryReader($saveData);
-        $br->setPosition(hexdec("50"));
+        $br->setPosition(0x50);
     
         return $br->readBytes(1) == "\x01" ? 'Male' : 'Female';
     }
@@ -22,24 +22,26 @@ class SaveDataController extends AbstractSaveController
     public static function GetName(string $saveData)
     {
         $br = new BinaryReader($saveData);
-        $br->setPosition(hexdec("58"));
+        $br->setPosition(0x58);
         
-        return hex2bin(explode('00', bin2hex($br->readBytes(12)))[0]);
+        return mb_convert_encoding(hex2bin(explode('00', bin2hex($br->readBytes(12)))[0]), 'UTF-8','SJIS');
     }
     
     public static function SetName(string $saveData, string $name)
     {
-        if (strlen($name) > 12) {
+        $nameHex = str_pad(self::stringToHex($name), 24, "0");
+        
+        if (strlen($nameHex) > 24) {
             throw new \Exception('Name can only be 12 characters long!');
         }
-        $nameHex = str_pad(self::stringToHex($name), 24, "0");
+        
         return self::writeToFile($saveData, "58", $nameHex);
     }
     
     public static function GetZenny(string $saveData)
     {
         $br = new BinaryReader($saveData);
-        $br->setPosition(hexdec("b0"));
+        $br->setPosition(0xb0);
     
         return $br->readUInt32();
     }
@@ -47,13 +49,13 @@ class SaveDataController extends AbstractSaveController
     public static function SetZenny(string $saveData, $value)
     {
         $value = min($value, 9999999);
-        return self::writeToFile($saveData, "b0", self::numberConvertEndian($value));
+        return self::writeToFile($saveData, "b0", self::numberConvertEndian($value, 4));
     }
 
     public static function GetGzenny(string $saveData)
     {
         $br = new BinaryReader($saveData);
-        $br->setPosition(hexdec("1FF64"));
+        $br->setPosition(0x1FF64);
     
         return $br->readUInt32();
     }
@@ -61,13 +63,13 @@ class SaveDataController extends AbstractSaveController
     public static function SetGzenny(string $saveData, $value)
     {
         $value = min($value, 9999999);
-        return self::writeToFile($saveData, "1FF64", self::numberConvertEndian($value));
+        return self::writeToFile($saveData, "1FF64", self::numberConvertEndian($value, 4));
     }
     
     public static function GetEquipmentBox(string $saveData)
     {
         $br = new BinaryReader($saveData);
-        $br->setPosition(hexdec("120"));
+        $br->setPosition(0x120);
         $equips = [];
         while(true) {
             $equip = new Equip($br->readBytes(16));
@@ -80,27 +82,37 @@ class SaveDataController extends AbstractSaveController
         return $equips;
     }
     
-    public static function GetItemBox(string $saveData)
+    public static function GetItembox(string $saveData)
     {
         $br = new BinaryReader($saveData);
-        $br->setPosition(hexdec("11a60"));
+        $br->setPosition(0x11a60);
     
         $items = [];
-        while(true) {
+        for($i = 0; $i < 2000; $i++) {
             $item = new Item($br->readBytes(8));
             if ($item->getId() === "0000") {
-                break;
+                //continue;
             }
+            $item->setSlot($i);
             $items[] = $item;
         }
         
         return $items;
     }
     
+    public static function SetItemboxSlot($saveData, int $slot)
+    {
+        $firstItemStart = 0x11a60;
+        $itemByteSize = 0x8;
+        $offsetForItem = $slot * $itemByteSize + $firstItemStart;
+        
+        return self::writeToFile($saveData, dechex((float)$offsetForItem), sprintf("00000000%s%s", $_POST['item_id'], self::numberConvertEndian($_POST['item_quantity'], 2)));
+    }
+    
     public static function GetItemPouch(string $saveData)
     {
         $br = new BinaryReader($saveData);
-        $br->setPosition(hexdec("23E74"));
+        $br->setPosition(0x23E74);
     
         $items = ['items' => [], 'ammo' => []];
         for ($i = 0; $i <= 20 ; $i++) {
@@ -128,7 +140,7 @@ class SaveDataController extends AbstractSaveController
         $itemPresets = [];
         
         //getNames 20byte name
-        $br->setPosition(hexdec("23F68"));
+        $br->setPosition(0x23F68);
         for ($i = 0; $i <= 24; $i++) {
             $tmpName = hex2bin(explode('00', bin2hex($br->readBytes(20)))[0]);
             if ($tmpName == "") {
@@ -138,8 +150,8 @@ class SaveDataController extends AbstractSaveController
             $itemPresets[$i] = new ItemPreset($tmpName);
         }
         
-        $itemPresetsItemsLocation = hexdec("24148");
-        $itemPresetsQuantityLocation = hexdec("246E8");
+        $itemPresetsItemsLocation = 0x24148;
+        $itemPresetsQuantityLocation = 0x246E8;
         foreach(array_keys($itemPresets) as $itemPresetCount) {
             //getItems 2byte ID's
             $br->setPosition($itemPresetsItemsLocation + ((30 * 2) * $itemPresetCount));
@@ -169,7 +181,7 @@ class SaveDataController extends AbstractSaveController
     public static function GetCurrentEquip(string $saveData)
     {
         $br = new BinaryReader($saveData);
-        $br->setPosition(hexdec("1F604"));
+        $br->setPosition(0x1F604);
         
         
         $tmpEquip = [];
@@ -187,7 +199,7 @@ class SaveDataController extends AbstractSaveController
     public static function GetKeyquestflag($saveData)
     {
         $br = new BinaryReader($saveData);
-        $br->setPosition(hexdec("23D20"));
+        $br->setPosition(0x23D20);
     
         return bin2hex($br->readBytes(8));
     }

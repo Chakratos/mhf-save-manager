@@ -5,6 +5,11 @@
 </head>
 <body>
 <?php include_once "topnav.php"?>
+<style>
+    .btn-sm {
+        font-size: .800rem;
+    }
+</style>
 <div class="container">
     <table class="table" id="CharactersTable">
         <thead>
