@@ -94,6 +94,11 @@ class Character
      */
     protected $savemercenary;
     /**
+     * @ORM\Column(type="blob")
+     * @var resource
+     */
+    protected $skin_hist;
+    /**
      * @ORM\Column(type="boolean")
      * @var boolean
      */
@@ -532,6 +537,25 @@ class Character
     public function setSavemercenary($savemercenary)
     {
         $this->savemercenary = $savemercenary;
+        
+        return $this;
+    }
+    
+    /**
+     * @return resource
+     */
+    public function getSkinhist()
+    {
+        return $this->savemercenary;
+    }
+    
+    /**
+     * @param resource $skinhist
+     * @return Character
+     */
+    public function setSkinhist($skinhist)
+    {
+        $this->skin_hist = $skinhist;
         
         return $this;
     }
