@@ -9,7 +9,7 @@ use MHFSaveManager\Model\Item;
 use MHFSaveManager\Model\ItemPreset;
 use PhpBinaryReader\BinaryReader;
 
-class SaveDataController extends AbstractSaveController
+class SaveDataController extends AbstractController
 {
     public static function GetGender(string $saveData)
     {
@@ -88,7 +88,8 @@ class SaveDataController extends AbstractSaveController
         $br->setPosition(0x11a60);
     
         $items = [];
-        for($i = 0; $i < 2000; $i++) {
+        $itemsToRead = defined(ITEMBOX_ITEMS_READ) ? ITEMBOX_ITEMS_READ : 4000;
+        for($i = 0; $i < $itemsToRead; $i++) {
             $item = new Item($br->readBytes(8));
             if ($item->getId() === "0000") {
                 //continue;
