@@ -1,5 +1,9 @@
 A simple Webapplication created to manage Character savedata user by the MHF Server Emulator Erupe.
 
+### Note: This tool is only meant for Server admins. This cannot be used if you play on a server thats hosted by someone else!
+
+## To fix the Urgent quest bug you need to set your Keyquestflag to 0000000000000000 (16 0s)
+
 NOOB SETUP METHOD!
 1. Download "MHFSaveManager.7z" from releases
 2. Unzip it anywhere
