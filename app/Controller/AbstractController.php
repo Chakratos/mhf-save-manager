@@ -4,7 +4,7 @@
 namespace MHFSaveManager\Controller;
 
 
-abstract class AbstractSaveController
+abstract class AbstractController
 {
     protected static function writeToFile($saveData, string $hexOffset, string $hexValue)
     {
@@ -31,7 +31,7 @@ abstract class AbstractSaveController
         
         $unpack = unpack("H*", strrev(pack("H*", $data)));
     
-        return $unpack[1];
+        return strtoupper($unpack[1]);
     }
     
     protected static function stringToHex($string)

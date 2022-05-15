@@ -1,16 +1,53 @@
 <?php
 
+use Doctrine\Common\Collections\Criteria;
 use MHFSaveManager\Controller\BinaryController;
 use MHFSaveManager\Controller\CharacterController;
 use MHFSaveManager\Controller\SaveDataController;
+use MHFSaveManager\Controller\ServertoolsController;
 use MHFSaveManager\Database\EM;
 use MHFSaveManager\Model\Character;
+use MHFSaveManager\Model\NormalShopItem;
 use MHFSaveManager\Service\CompressionService;
 use MHFSaveManager\Service\ResponseService;
 use Pecee\SimpleRouter\SimpleRouter;
 
 SimpleRouter::get('/', function() {
     CharacterController::Index();
+});
+
+SimpleRouter::get('/servertools/roadshop', function() {
+    ServertoolsController::Index();
+});
+
+SimpleRouter::post('/servertools/roadshop/save', function() {
+    if (!isset($_POST['item']) ||
+        !isset($_POST['category']) ||
+        !isset($_POST['cost']) ||
+        !isset($_POST['grank']) ||
+        !isset($_POST['tradeQuantity']) ||
+        !isset($_POST['maximumQuantity']) ||
+        !isset($_POST['boughtQuantity']) ||
+        !isset($_POST['roadFloors']) ||
+        !isset($_POST['fatalis'])) {
+        ResponseService::SendUnprocessableEntity();
+    }
+    
+    ServertoolsController::EditRoadShopItem();
+});
+
+SimpleRouter::post('/servertools/roadshop/delete/{id}', function($id) {
+    ResponseService::SendOk();
+    /** @var NormalShopItem $item */
+    $item = EM::getInstance()->getRepository('MHF:NormalShopItem')->find($id);
+    if (!$item) {
+        ResponseService::SendNotFound();
+    }
+    $em = EM::getInstance();
+    $em->remove($item);
+    $em->flush();
+    
+    ResponseService::SendOk();
 });
 
 SimpleRouter::get('/character/{id}/reset', function($id) {
