@@ -36,6 +36,18 @@ SimpleRouter::post('/servertools/roadshop/save', function() {
     ServertoolsController::EditRoadShopItem();
 });
 
+SimpleRouter::get('/servertools/roadshop/export', function() {
+    ServertoolsController::ExportRoadShopItems();
+});
+
+SimpleRouter::post('/servertools/roadshop/import', function() {
+    if ($_FILES["roadShopCSV"]["error"] != UPLOAD_ERR_OK) {
+        ResponseService::SendServerError('Error while uploading, check storage permissions for the TMP folder!');
+    }
+    
+    ServertoolsController::ImportRoadShopItems();
+});
+
 SimpleRouter::post('/servertools/roadshop/delete/{id}', function($id) {
     ResponseService::SendOk();
     /** @var NormalShopItem $item */

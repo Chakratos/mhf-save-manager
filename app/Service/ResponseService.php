@@ -39,4 +39,13 @@ class ResponseService
         readfile($path);
         exit();
     }
+    
+    public static function SendDownloadResource($resource, $filename = "bug.csv")
+    {
+        header('Content-Type: application/octet-stream');
+        header('Content-Disposition: attachment; filename=' . $filename);
+        header('Pragma: no-cache');
+        echo stream_get_contents($resource);
+        exit();
+    }
 }

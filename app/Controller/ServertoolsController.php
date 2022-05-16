@@ -49,4 +49,50 @@ class ServertoolsController extends AbstractController
         
         ResponseService::SendOk($item->getItemhash());
     }
+    
+    public static function ExportRoadShopItems()
+    {
+        $records = EM::getInstance()->getRepository('MHF:NormalShopItem')->matching(
+        Criteria::create()->where(Criteria::expr()->eq('shoptype', '10')));
+    
+        if($records->count()) {
+            $handle = fopen('php://memory', 'w');
+            
+            /*
+             * Really really smelly cheese to get names of protected properties!
+             */
+            fputcsv($handle, array_map(fn($value) => ltrim(substr($value, 2)), array_keys((array)$records->first())));
+            foreach($records as $record) {
+                $data = (array) $record;
+                fputcsv($handle, $data);
+            }
+            rewind($handle);
+            ResponseService::SendDownloadResource($handle, 'RoadShopItems.csv');
+        }
+    }
+    
+    public static function ImportRoadShopItems()
+    {
+        $lines = preg_split('/\r\n|\r|\n/',  file_get_contents($_FILES["roadShopCSV"]["tmp_name"]));
+        $attributes = str_getcsv($lines[0]);
+        unset($lines[0]);
+        $em = EM::getInstance();
+        foreach ($lines as $line) {
+            if ($line == "") {
+                continue;
+            }
+            
+            $lineValues = str_getcsv($line);
+            $item = new NormalShopItem();
+            foreach ($attributes as $key => $attribute) {
+                $setter = "set".ucfirst($attribute);
+                $item->$setter($lineValues[$key]);
+            }
+            $em->persist($item);
+        }
+        $em->createQuery('delete from MHFSaveManager\Model\NormalShopItem n where n.shoptype = 10')->execute();
+        $em->flush();
+        
+        ResponseService::SendOk();
+    }
 }
