@@ -142,6 +142,9 @@
         </tbody>
     </table>
     <button id="createRoadItem" class="btn btn-success">Create Roadshop Item</button>
+    <a class="btn btn-primary" href="/servertools/roadshop/export">Export</a>
+    <button id="importRoadShop" class="btn btn-warning">Import</button>
+    <input type="file" id="importRoadShopInput" style="display: none" accept=".csv">
 </div>
 
 <script src="/js/roadshop.js"></script>

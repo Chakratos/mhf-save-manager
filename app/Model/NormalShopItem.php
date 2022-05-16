@@ -18,6 +18,8 @@ class NormalShopItem
      */
     protected $itemhash;
     
+    // SHOP TYPES:
+    // 01 = Running Gachas, 02 = actual gacha, 04 = N Points, 05 = GCP, 07 = Item to GCP, 08 = Diva Defense, 10 = Hunter's Road
     /**
      * @ORM\Column(type="integer")
      * @var int

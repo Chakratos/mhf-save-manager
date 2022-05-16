@@ -138,4 +138,32 @@ $(document).ready(function () {
             }
         });
     });
+
+    $('#importRoadShop').click(function() {
+        $('#importRoadShopInput').trigger('click');
+    });
+
+    $('#importRoadShopInput').change(function() {
+        let formdata = new FormData();
+        if($(this).prop('files').length <= 0) {
+            return;
+        }
+
+        let file =$(this).prop('files')[0];
+        formdata.append("roadShopCSV", file);
+
+        $.ajax({
+            url: "/servertools/roadshop/import",
+            type: "POST",
+            data: formdata,
+            processData: false,
+            contentType: false,
+            error: function (result) {
+                alert(result.responseJSON.message)
+            },
+            success: function () {
+                location.reload();
+            }
+        });
+    });
 });
