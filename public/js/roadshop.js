@@ -140,6 +140,10 @@ $(document).ready(function () {
     });
 
     $('#importRoadShop').click(function() {
+        if (!window.confirm("This will overwrite every Roadshop Item. Beware!")) {
+            return;
+        }
+
         $('#importRoadShopInput').trigger('click');
     });
 
