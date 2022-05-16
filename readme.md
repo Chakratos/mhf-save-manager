@@ -12,7 +12,7 @@ NOOB SETUP METHOD!
 5. Fill out config.php with your Postgresql credentials
 6. Run MHFSaveManager/phpdesktop-chrome.exe
 
-To Use:
+Advanced Setup method:
 1. Rename config.sample.php -> config.php
 2. Fill out config.php with your Postgresql credentials
 3. run "composer update"
@@ -31,12 +31,14 @@ For now you can:
 * Edit your Itembox! (Some icons are missing)
 * Edit currency and points (z / Gz / Restyle Points)
 * Edit your Keyquest Flag (Needed for rebalance patch)
+* Manage your Roadshop!
 
 
 Todo:
-* Roadshop Manager
 * Equipmentbox Editor
+* Distributions Manager
 * Quest reset for stuff like G Experience Quests
+* Reset one time quest flags. (G Experience)
 * Reverse Engineer the Savedata for more edits
 
 Credits:
