@@ -7,13 +7,14 @@ class EquipService
 {
     public static $types = [
         "00" => "Legs",
-        "02" => "Helmet",
-        "03" => "Torso",
-        "04" => "Hands",
+        "02" => "Head",
+        "03" => "Chest",
+        "04" => "Arms",
         "05" => "Waist",
         "06" => "Melee",
         "07" => "Ranged",
     ];
+    
     public static $meleeType = [
         "0000" => "GS",
         "0100" => "GS",
@@ -43607,7 +43608,7 @@ class EquipService
         '7610' => 'Gray・Pashupata',
     ];
     
-    public static $helmetName = [
+    public static $headName = [
         '0000' => 'No Equipment',
         '0100' => 'Leather Helm',
         '0200' => 'Chainmail Helm',
@@ -58204,7 +58205,7 @@ class EquipService
         '0139' => 'G Khezu D Festa',
     ];
     
-    public static $torsoName = [
+    public static $chestName = [
         '0000' => 'No Equipment',
         '0100' => 'Leather Mail',
         '0200' => 'Chainmail Mail',
@@ -71669,7 +71670,7 @@ class EquipService
         '9534' => 'Hope D Mail',
     ];
     
-    public static $handsName = [
+    public static $armsName = [
         '0000' => 'No Equipment',
         '0100' => 'Leather Arms',
         '0200' => 'Chainmail Arms',

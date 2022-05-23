@@ -12,7 +12,7 @@
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                     <a class="dropdown-item" href="/servertools/roadshop">Roadshop Editor</a>
-                    <a class="dropdown-item" href="#">Distributions Editor (Coming Soon)</a>
+                    <a class="dropdown-item" href="/servertools/distributions">Distributions Editor</a>
                 </div>
             </li>
         </ul>

@@ -7,7 +7,7 @@ use MHFSaveManager\Database\EM;
 use MHFSaveManager\Model\NormalShopItem;
 use MHFSaveManager\Service\ResponseService;
 
-class ServertoolsController extends AbstractController
+class RoadShopController extends AbstractController
 {
     public static function Index()
     {
@@ -54,25 +54,14 @@ class ServertoolsController extends AbstractController
     {
         $records = EM::getInstance()->getRepository('MHF:NormalShopItem')->matching(
         Criteria::create()->where(Criteria::expr()->eq('shoptype', '10')));
-    
-        if($records->count()) {
-            $handle = fopen('php://memory', 'w');
-            
-            /*
-             * Really really smelly cheese to get names of protected properties!
-             */
-            fputcsv($handle, array_map(fn($value) => ltrim(substr($value, 2)), array_keys((array)$records->first())));
-            foreach($records as $record) {
-                $data = (array) $record;
-                fputcsv($handle, $data);
-            }
-            rewind($handle);
-            ResponseService::SendDownloadResource($handle, 'RoadShopItems.csv');
-        }
+        self::arrayOfModelsToCSVDownload($records, "RoadShopItems");
     }
     
     public static function ImportRoadShopItems()
     {
+        self::importFromCSV('roadShopCSV', NormalShopItem::class, 'delete from MHFSaveManager\Model\NormalShopItem n where n.shoptype = 10');
+        
+        exit();
         $lines = preg_split('/\r\n|\r|\n/',  file_get_contents($_FILES["roadShopCSV"]["tmp_name"]));
         $attributes = str_getcsv($lines[0]);
         unset($lines[0]);
