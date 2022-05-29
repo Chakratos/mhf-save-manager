@@ -143,7 +143,7 @@
                         <select class="form-control distributionSelect d-none" id="distributionItemSelect">
                             <?php
                             foreach (\MHFSaveManager\Service\ItemsService::$items as $id => $item) {
-                                printf('<option value="%s">%s</option>', $id, $item['name']);
+                                printf('<option value="%s">[%1$s] %s</option>', $id, $item['name']);
                             }
                             ?>
                         </select>
@@ -152,7 +152,7 @@
                             printf('<select class="form-control distributionSelect d-none" id="distribution%sSelect">', $type);
                             $tmp = lcfirst($type).'Name';
                             foreach (EquipService::$$tmp as $id => $item) {
-                                printf('<option value="%s">%s</option>', $id, $item);
+                                printf('<option value="%s">[%1$s] %s</option>', $id, $item);
                             }
                             printf('</select>
     ');
