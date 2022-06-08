@@ -8,6 +8,7 @@ use MHFSaveManager\Controller\SaveDataController;
 use MHFSaveManager\Controller\RoadShopController;
 use MHFSaveManager\Database\EM;
 use MHFSaveManager\Model\Character;
+use MHFSaveManager\Model\Distribution;
 use MHFSaveManager\Model\NormalShopItem;
 use MHFSaveManager\Service\CompressionService;
 use MHFSaveManager\Service\ResponseService;
@@ -54,6 +55,19 @@ SimpleRouter::post('/servertools/distributions/import', function() {
     DistributionsController::ImportDistributions();
 });
 
+SimpleRouter::post('/servertools/distributions/delete/{id}', function($id) {
+    /** @var Distribution $dist */
+    $dist = EM::getInstance()->getRepository('MHF:Distribution')->find($id);
+    if (!$dist) {
+        ResponseService::SendNotFound();
+    }
+    $em = EM::getInstance();
+    $em->remove($dist);
+    $em->flush();
+    
+    ResponseService::SendOk();
+});
+
 SimpleRouter::get('/servertools/roadshop', function() {
     RoadShopController::Index();
 });
@@ -87,7 +101,6 @@ SimpleRouter::post('/servertools/roadshop/import', function() {
 });
 
 SimpleRouter::post('/servertools/roadshop/delete/{id}', function($id) {
-    ResponseService::SendOk();
     /** @var NormalShopItem $item */
     $item = EM::getInstance()->getRepository('MHF:NormalShopItem')->find($id);
     if (!$item) {

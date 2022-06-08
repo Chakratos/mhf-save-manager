@@ -113,6 +113,33 @@ $(document).ready(function () {
         $('#distributionModal').modal('show');
 
     });
+
+    $('#distributiontable').on('click', '.deleteDistribution', function () {
+        let formdata = new FormData();
+        let distId = $(this).attr('data-id');
+        formdata.append("distribution", distId);
+
+        if (!window.confirm("Are you sure you want to delete the entry with the ID : " + distId)) {
+            return;
+        }
+
+        let rowToRemove = $(this).parents('tr');
+
+        $.ajax({
+            url: "/servertools/distributions/delete/" + distId,
+            type: "POST",
+            data: formdata,
+            processData: false,
+            contentType: false,
+            success: function (result) {
+                table.row(rowToRemove).remove().draw();
+            },
+            error: function (result) {
+                alert(result.responseJSON.message);
+            }
+        });
+    });
+
     $('#distributiontable').on('click', '.editDistribution', function () {
         $('#distributionTitle > b')[0].innerHTML = $(this).data('id');
         $('#distributionTypeSelect').val($(this).data('type'));
