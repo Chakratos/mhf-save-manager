@@ -113,7 +113,7 @@ $(document).ready(function () {
         });
     });
 
-    $('.deleteRoadItem').click(function() {
+    $('#roadshoptable').on('click', '.deleteRoadItem', function () {
         let formdata = new FormData();
         let itemId = $(this).attr('data-id');
         formdata.append("item", itemId);

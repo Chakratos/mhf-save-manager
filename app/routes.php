@@ -3,10 +3,12 @@
 use Doctrine\Common\Collections\Criteria;
 use MHFSaveManager\Controller\BinaryController;
 use MHFSaveManager\Controller\CharacterController;
+use MHFSaveManager\Controller\DistributionsController;
 use MHFSaveManager\Controller\SaveDataController;
-use MHFSaveManager\Controller\ServertoolsController;
+use MHFSaveManager\Controller\RoadShopController;
 use MHFSaveManager\Database\EM;
 use MHFSaveManager\Model\Character;
+use MHFSaveManager\Model\Distribution;
 use MHFSaveManager\Model\NormalShopItem;
 use MHFSaveManager\Service\CompressionService;
 use MHFSaveManager\Service\ResponseService;
@@ -16,8 +18,58 @@ SimpleRouter::get('/', function() {
     CharacterController::Index();
 });
 
+SimpleRouter::get('/servertools/distributions', function() {
+    DistributionsController::Index();
+});
+
+SimpleRouter::post('/servertools/distributions/save', function() {
+    if (!isset($_POST['id']) ||
+        !isset($_POST['type']) ||
+        !isset($_POST['characterId']) ||
+        !isset($_POST['timesacceptable']) ||
+        !isset($_POST['name']) ||
+        !isset($_POST['desc']) ||
+        !isset($_POST['deadline']) ||
+        !isset($_POST['minhr']) ||
+        !isset($_POST['maxhr']) ||
+        !isset($_POST['minsr']) ||
+        !isset($_POST['maxsr']) ||
+        !isset($_POST['mingr']) ||
+        !isset($_POST['maxgr']) ||
+        !isset($_POST['items'])) {
+        ResponseService::SendUnprocessableEntity();
+    }
+    
+    DistributionsController::EditDistribution();
+});
+
+SimpleRouter::get('/servertools/distributions/export', function() {
+    DistributionsController::ExportDistributions();
+});
+
+SimpleRouter::post('/servertools/distributions/import', function() {
+    if ($_FILES["distributionCSV"]["error"] != UPLOAD_ERR_OK) {
+        ResponseService::SendServerError('Error while uploading, check storage permissions for the TMP folder!');
+    }
+    
+    DistributionsController::ImportDistributions();
+});
+
+SimpleRouter::post('/servertools/distributions/delete/{id}', function($id) {
+    /** @var Distribution $dist */
+    $dist = EM::getInstance()->getRepository('MHF:Distribution')->find($id);
+    if (!$dist) {
+        ResponseService::SendNotFound();
+    }
+    $em = EM::getInstance();
+    $em->remove($dist);
+    $em->flush();
+    
+    ResponseService::SendOk();
+});
+
 SimpleRouter::get('/servertools/roadshop', function() {
-    ServertoolsController::Index();
+    RoadShopController::Index();
 });
 
 SimpleRouter::post('/servertools/roadshop/save', function() {
@@ -33,11 +85,11 @@ SimpleRouter::post('/servertools/roadshop/save', function() {
         ResponseService::SendUnprocessableEntity();
     }
     
-    ServertoolsController::EditRoadShopItem();
+    RoadShopController::EditRoadShopItem();
 });
 
 SimpleRouter::get('/servertools/roadshop/export', function() {
-    ServertoolsController::ExportRoadShopItems();
+    RoadShopController::ExportRoadShopItems();
 });
 
 SimpleRouter::post('/servertools/roadshop/import', function() {
@@ -45,11 +97,10 @@ SimpleRouter::post('/servertools/roadshop/import', function() {
         ResponseService::SendServerError('Error while uploading, check storage permissions for the TMP folder!');
     }
     
-    ServertoolsController::ImportRoadShopItems();
+    RoadShopController::ImportRoadShopItems();
 });
 
 SimpleRouter::post('/servertools/roadshop/delete/{id}', function($id) {
-    ResponseService::SendOk();
     /** @var NormalShopItem $item */
     $item = EM::getInstance()->getRepository('MHF:NormalShopItem')->find($id);
     if (!$item) {

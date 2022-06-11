@@ -12,7 +12,7 @@ NOOB SETUP METHOD!
 5. Fill out config.php with your Postgresql credentials
 6. Run MHFSaveManager/phpdesktop-chrome.exe
 
-To Use:
+Advanced Setup method:
 1. Rename config.sample.php -> config.php
 2. Fill out config.php with your Postgresql credentials
 3. run "composer update"
@@ -22,21 +22,22 @@ To Use:
 ![Sample Image from Backup-GUI](https://i.imgur.com/SfAQC2f.png)
 ![Sample Image from Edit-GUI](https://i.imgur.com/Nn1ZJCV.png)
 ![Sample Image from Edit-Itembox-GUI](https://i.imgur.com/6xR7JGH.png)
+![Sample Image from Roadshop-GUI](https://i.imgur.com/w1QzjT4.png)
+![Sample Image from Distribution-GUI](https://i.imgur.com/OwToDZd.png)
 
 For now you can:
-* Reset characters so the user has to create a new one on next login.
 * Manage all Binary Saves for each character
 * Easily compress / decompress your saves
 * Check character stats like gear and items
-* Edit your Itembox! (Some icons are missing)
-* Edit currency and points (z / Gz / Restyle Points)
+* Edit Itembox, currency and points (z / Gz / Restyle Points)
 * Edit your Keyquest Flag (Needed for rebalance patch)
+* Manage your Roadshop!
+* Manage your Distributions! (Guide Gal)
 
 
 Todo:
-* Roadshop Manager
 * Equipmentbox Editor
-* Quest reset for stuff like G Experience Quests
+* Reset one time quest flags. (G Experience)
 * Reverse Engineer the Savedata for more edits
 
 Credits:
