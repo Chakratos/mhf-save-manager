@@ -194,7 +194,19 @@ class Distribution
      */
     public function getEventName(): string
     {
-        return $this->event_name;
+        if (!preg_match('/^~C(\d\d)/', $this->event_name)) {
+            return $this->event_name;
+        }
+    
+        return substr($this->event_name, 4);
+    }
+    
+    public function getEventNameColor(): string
+    {
+        $matches = [];
+        preg_match('/^~C(\d\d)/', $this->event_name, $matches);
+        
+        return count($matches) > 1 ? $matches[1] : "";
     }
     
     /**
@@ -203,8 +215,11 @@ class Distribution
      */
     public function setEventName(string $event_name): Distribution
     {
+        if (!preg_match('/^~C(\d\d)/', $event_name)) {
+            $event_name = '~C01' . $event_name;
+        }
         $this->event_name = $event_name;
-        
+    
         return $this;
     }
     
@@ -213,7 +228,19 @@ class Distribution
      */
     public function getDescription(): string
     {
-        return $this->description;
+        if (!preg_match('/^~C(\d\d)/', $this->description)) {
+            return $this->description;
+        }
+    
+        return substr($this->description, 4);
+    }
+    
+    public function getDescriptionColor(): string
+    {
+        $matches = [];
+        preg_match('/^~C(\d\d)/', $this->description, $matches);
+    
+        return count($matches) > 1 ? $matches[1] : "";
     }
     
     /**
@@ -222,6 +249,9 @@ class Distribution
      */
     public function setDescription(string $description): Distribution
     {
+        if (!preg_match('/^~C(\d\d)/', $description)) {
+            $description = '~C01' . $description;
+        }
         $this->description = $description;
         
         return $this;

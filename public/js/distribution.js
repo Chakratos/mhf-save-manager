@@ -102,13 +102,15 @@ $(document).ready(function () {
         $('#distributionTimesAcceptable').val(null);
         $('#distributionName').val(null);
         $('#distributionDesc').val(null);
+        $('#distributionNameColor').val(null);
+        $('#distributionDescColor').val(null);
         $('#distributionDeadline').val(null);
-        $('#distributionMinHR').val(null);
-        $('#distributionMaxHR').val(null);
-        $('#distributionMinSR').val(null);
-        $('#distributionMaxSR').val(null);
-        $('#distributionMinGR').val(null);
-        $('#distributionMaxGR').val(null);
+        $('#distributionMinHR').val(65535);
+        $('#distributionMaxHR').val(65535);
+        $('#distributionMinSR').val(65535);
+        $('#distributionMaxSR').val(65535);
+        $('#distributionMinGR').val(65535);
+        $('#distributionMaxGR').val(65535);
         $('#distributionItemsSelect').empty();
         $('#distributionModal').modal('show');
 
@@ -156,6 +158,8 @@ $(document).ready(function () {
         $('#distributionMaxSR').val($(this).data('maxsr'));
         $('#distributionMinGR').val($(this).data('mingr'));
         $('#distributionMaxGR').val($(this).data('maxgr'));
+        $('#distributionNameColor').val($(this).data('namecolor'));
+        $('#distributionDescColor').val($(this).data('desccolor'));
         $('#distributionItemsSelect').empty();
 
         $.each(DistributionItems[$(this).data('id')], function (i, item) {
@@ -179,13 +183,15 @@ $(document).ready(function () {
         return '<option data-type="' + type + '" data-itemid="' + id + '" data-amount="' + amount + '">' + i + ". " + amount + "x " + typeFancy + name + '</option>';
     }
 
+    $('#colorsButton').tooltip({ trigger: 'click'});
+
     $('#distributionSave').click(function() {
         let id = $('#distributionTitle > b')[0].innerHTML;
         let type = $('#distributionTypeSelect').val();
         let characterId = $('#distributionCharacterSelect').val();
         let timesacceptable = $('#distributionTimesAcceptable').val();
-        let name = $('#distributionName').val();
-        let desc = $('#distributionDesc').val();
+        let name = '~C' + $('#distributionNameColor').val() + $('#distributionName').val();
+        let desc = '~C' + $('#distributionDescColor').val() + $('#distributionDesc').val();
         let deadline = $('#distributionDeadline').val();
         let minhr = $('#distributionMinHR').val();
         let maxhr = $('#distributionMaxHR').val();
@@ -204,7 +210,7 @@ $(document).ready(function () {
 
         let saveButton = $(this);
         saveButton.prop('disabled', true);
-        if (minhr === "" || maxhr === "" || minsr === "" || maxsr === "" || mingr === "" || maxgr === "" || characterId === "" || name === "" || desc === "" || timesacceptable === "") {
+        if (minhr === "" || maxhr === "" || minsr === "" || maxsr === "" || mingr === "" || maxgr === "" || characterId === "" || name === "" || desc === "" || timesacceptable === "" || $('#distributionNameColor').val() === null || $('#distributionNameColor').val() === null) {
             alert("Please fill all fields with valid data!");
             saveButton.prop('disabled', false);
             return;

@@ -10,6 +10,12 @@
     <title>MHF Character Manager</title>
 </head>
 
+<style>
+    .tooltip-inner {
+        max-width: inherit;
+    }
+</style>
+
 <?php include_once "topnav.php"?>
 <div id="distributionModal" class="modal fade" data-backdrop="static">
     <div class="modal-dialog modal-dialog-centered modal-lg">
@@ -20,17 +26,37 @@
             <div class="modal-body">
                 <div class="row">
                     <div class="col-6">
-                        <h6>Name:</h6>
+                        <span class="pr-4">Color:</span><span>Name:</span>
                         <div class="input-group mb-2">
+                            <select id="distributionNameColor">
+                                <?php
+                                for ($i = 1; $i < 91; $i++) {
+                                    printf('
+                                    <option value="%1$02s">
+                                        ~C%1$02s
+                                    </option>', $i);
+                                }
+                                ?>
+                            </select>
                             <input type="text" class="form-control" id="distributionName">
                         </div>
-        
-                        <h6>Description:</h6>
+
+                        <span class="pr-4">Color:</span><span>Description:</span>
                         <div class="input-group mb-2">
+                            <select id="distributionDescColor">
+                                <?php
+                                for ($i = 0; $i <= 91; $i++) {
+                                    printf('
+                                    <option value="%1$02s">
+                                        ~C%1$02s
+                                    </option>', $i);
+                                }
+                                ?>
+                            </select>
                             <input type="text" class="form-control" id="distributionDesc">
                         </div>
                         
-                        <h6>Deadline:</h6>
+                        <h6>Deadline: (Optional)</h6>
                         <div class="input-group mb-2">
                             <input style="cursor: text !important;" type="text" class="form-control datetimepicker-input" id="distributionDeadline" data-toggle="datetimepicker" data-target="#distributionDeadline"/>
                             <div class="input-group-append" data-target="#distributionDeadline" data-toggle="datetimepicker">
@@ -108,6 +134,9 @@
                 </div>
             </div>
             <div class="modal-footer">
+                <button type="button" class="btn btn-secondary mr-auto" id="colorsButton" style="background-color: lightseagreen"
+                        data-placement="top" data-html="true" data-original-title="<img src='/img/colors.png'>">Colors Table
+                </button>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 <button type="button" class="btn btn-primary" id="distributionSave">Save</button>
             </div>
@@ -206,7 +235,7 @@
                 <td>%17$s</td>
                 <td>%18$s</td>
                 <td>
-                <button data-id="%1$s" data-characterid="%2$s" data-type="%3$s" data-deadline="%4$s" data-name="%5$s" data-desc="%6$s" data-timesacceptable="%7$s" data-minhr="%8$s" data-maxhr="%9$s" data-minsr="%10$s" data-maxsr="%11$s" data-mingr="%12$s" data-maxgr="%13$s" class="editDistribution btn btn-sm btn-outline-success">
+                <button data-id="%1$s" data-characterid="%2$s" data-type="%3$s" data-deadline="%4$s" data-name="%5$s" data-desc="%6$s" data-timesacceptable="%7$s" data-minhr="%8$s" data-maxhr="%9$s" data-minsr="%10$s" data-maxsr="%11$s" data-mingr="%12$s" data-maxgr="%13$s" data-namecolor="%19$s" data-desccolor="%20$s" class="editDistribution btn btn-sm btn-outline-success">
                     <i class="fas fa-pencil"></i>
                 </button>
                 <button data-id="%1$s" class="deleteDistribution btn btn-sm btn-outline-danger">
@@ -232,7 +261,9 @@
             $distribution->getMinHr() != 65535 ? : '-',
             $distribution->getMaxHr() != 65535 ? : '-',
             $distribution->getMinGr() != 65535 ? : '-',
-            $distribution->getMaxGr() != 65535 ? : '-'
+            $distribution->getMaxGr() != 65535 ? : '-',
+            $distribution->getEventNameColor(),
+            $distribution->getDescriptionColor()
             );
         }
         ?>
@@ -256,10 +287,13 @@
                 }
                 
                 printf('%s: {', $distribution->getId());
-                
+                try {
                 for ($i = 0; $i < $numberOfItems; $i++) {
                     $item = new DistributionItem(bin2hex(fread($data, 13)));
                     printf('%s: {type: "%s", itemId: "%s", amount: "%s"},', $i, $item->getType(), $item->getItemId(), $item->getAmount());
+                }
+                } catch (\Exception $e) {
+                    continue;
                 }
                 echo '},';
             }
