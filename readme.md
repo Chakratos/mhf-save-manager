@@ -23,7 +23,7 @@ Advanced Setup method:
 ![Sample Image from Edit-GUI](https://i.imgur.com/Nn1ZJCV.png)
 ![Sample Image from Edit-Itembox-GUI](https://i.imgur.com/6xR7JGH.png)
 ![Sample Image from Roadshop-GUI](https://i.imgur.com/w1QzjT4.png)
-![Sample Image from Distribution-GUI](https://i.imgur.com/frs6eEt.png)
+![Sample Image from Distribution-GUI](https://i.imgur.com/OwToDZd.png)
 
 For now you can:
 * Manage all Binary Saves for each character
