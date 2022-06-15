@@ -30,7 +30,7 @@
                         <div class="input-group mb-2">
                             <select id="distributionNameColor">
                                 <?php
-                                for ($i = 1; $i < 91; $i++) {
+                                for ($i = 0; $i < 91; $i++) {
                                     printf('
                                     <option value="%1$02s">
                                         ~C%1$02s
