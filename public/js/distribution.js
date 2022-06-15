@@ -20,8 +20,8 @@ $(document).ready(function () {
         $('#distributionItemTitle > b')[0].innerHTML = $(this).index()+1;
         $('#distributionItemTypeSelect').val($(this).data('type'));
         $('#distributionItemTypeSelect').trigger('change');
-        if ($(this).data('type') <= 7) {
-            let typefancy = $('#distributionItemTypeSelect :selected').text();
+        if ($(this).data('type') <= 7 || $(this).data('type') == 15) {
+            let typefancy = $('#distributionItemTypeSelect :selected').text().replace(/\s/g,'');
             $('#distribution' + typefancy + 'Select').val($(this).data('itemid'));
             $('#distribution' + typefancy + 'Select').trigger('change');
         } else if ($(this).data('type') == 8) {
@@ -35,9 +35,9 @@ $(document).ready(function () {
         $('#selectgroup').addClass('d-none');
         $('#selectgroup > div > span').addClass('d-none');
 
-        if ($(this).val() <= 7) {
+        if ($(this).val() <= 7 || $(this).val() == 15) {
             $('#selectgroup').removeClass('d-none');
-            $('#distribution' + $('#distributionItemTypeSelect :selected').text() + 'Select').next().removeClass('d-none');
+            $('#distribution' + $('#distributionItemTypeSelect :selected').text().replace(/\s/g,'') + 'Select').next().removeClass('d-none');
         } else if ($(this).val() == 8) {
             $('#selectgroup').removeClass('d-none');
             $('#distributionFurnitureInput').removeClass('d-none');
@@ -71,8 +71,8 @@ $(document).ready(function () {
 
         let value = "0000";
 
-        if ($('#distributionItemTypeSelect').val() <= 7) {
-            value = $('#distribution' + $('#distributionItemTypeSelect :selected').text() + 'Select').val();
+        if ($('#distributionItemTypeSelect').val() <= 7 || $('#distributionItemTypeSelect').val() == 15) {
+            value = $('#distribution' + $('#distributionItemTypeSelect :selected').text().replace(/\s/g,'') + 'Select').val();
         } else if ($('#distributionItemTypeSelect').val() == 8) {
             value = $('#distributionFurnitureInput').val();
         }
@@ -170,12 +170,12 @@ $(document).ready(function () {
 
     function generateOption(type, id, amount, i)
     {
-        typeFancy = $("#distributionItemTypeSelect option[value='" + type + "']").text();
+        typeFancy = $("#distributionItemTypeSelect option[value='" + type + "']").text().replace(/\s/g,'');
         let name = "";
 
-        if (type <= 7) {
+        if (type <= 7 || type == 15) {
 
-            name = " | " + $("#distribution" + typeFancy + "Select option[value='" + id + "']").text();
+            name = " | " + $("#distribution" + typeFancy + "Select option[value='" + id + "']").text().replace(/\s/g,'');
         } else if (type == 8) {
             name = " | " + id;
         }

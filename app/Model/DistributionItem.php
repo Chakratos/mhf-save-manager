@@ -49,7 +49,7 @@ class DistributionItem
         8 => 'Furniture',
         11 => 'Festi Points',
         12 => 'Zenny',
-        15 => 'My Tore Points',
+        15 => 'Poogie Outfits',
         16 => 'Restyle Points',
         17 => 'N Points',
         19 => 'Gacha Coins',

@@ -176,6 +176,13 @@
                             }
                             ?>
                         </select>
+                        <select class="form-control distributionSelect d-none" id="distributionPoogieOutfitsSelect">
+                            <?php
+                            foreach (\MHFSaveManager\Service\PoogieOutfitService::$outfits as $id => $item) {
+                                printf('<option value="%s">[%1$s] %s</option>', $id, $item['name']);
+                            }
+                            ?>
+                        </select>
                         <?php
                         foreach (EquipService::$types as $type) {
                             printf('<select class="form-control distributionSelect d-none" id="distribution%sSelect">', $type);
