@@ -53,7 +53,7 @@
                                 }
                                 ?>
                             </select>
-                            <input type="text" class="form-control" id="distributionDesc">
+                            <textarea type="text" class="form-control" id="distributionDesc" rows="1"></textarea>
                         </div>
                         
                         <h6>Deadline: (Optional)</h6>
