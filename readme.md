@@ -43,4 +43,4 @@ Todo:
 Credits:
 * Everyone who helped translating MHF!
 * Fist who helped me get on track 2 years ago when I started this project!
-* Last but not least SephVII, Rhob and others who continously give feedback and nag me to do stuff :D
+* Last but not least SephVII, Rhob, Malckyor and others who continously give feedback and nag me to do stuff :D
