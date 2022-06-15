@@ -79,13 +79,15 @@ $(document).ready(function () {
     });
 
     $('#itemboxSlotSave').click(function() {
-        $(this).attr('disabled', 'disabled');
+        var button = $(this);
+        button.prop("disabled", true);
+        console.log(button);
         let item = $('#itemboxSlotItem').find(':selected');
         let quantity = $('#itemboxSlotQuantity').val();
         let slot = $('#itemboxSlotEditTitle > b')[0].innerHTML;
 
         if (item.length === 0 || quantity === "" || slot === "") {
-            $(this).attr('disabled', 'false');
+            button.prop("disabled", false);
             alert("Please fill all fields with valid data!");
             return;
         }
@@ -99,10 +101,10 @@ $(document).ready(function () {
             $('.item-col[data-slot="' + slot +'"]>img').attr('src', '/img/item/'+item.data('icon')+item.data('color')+'.png')
             $('.item-col[data-slot="' + slot +'"]>span')[0].innerHTML = '<b>[x' + quantity + ']</b> ' + item.text()
             $('#itemboxSlotEdit').modal('hide');
-            $(this).attr('disabled', 'false');
+            button.prop("disabled", false);
         }).catch(function(response) {
             alert(response.message);
-            $(this).attr('disabled', 'false');
+            button.prop("disabled", false);
         });
     });
 });

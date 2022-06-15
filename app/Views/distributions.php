@@ -30,7 +30,7 @@
                         <div class="input-group mb-2">
                             <select id="distributionNameColor">
                                 <?php
-                                for ($i = 1; $i < 91; $i++) {
+                                for ($i = 0; $i < 91; $i++) {
                                     printf('
                                     <option value="%1$02s">
                                         ~C%1$02s
@@ -53,7 +53,7 @@
                                 }
                                 ?>
                             </select>
-                            <input type="text" class="form-control" id="distributionDesc">
+                            <textarea type="text" class="form-control" id="distributionDesc" rows="1"></textarea>
                         </div>
                         
                         <h6>Deadline: (Optional)</h6>
@@ -172,6 +172,13 @@
                         <select class="form-control distributionSelect d-none" id="distributionItemSelect">
                             <?php
                             foreach (\MHFSaveManager\Service\ItemsService::$items as $id => $item) {
+                                printf('<option value="%s">[%1$s] %s</option>', $id, $item['name']);
+                            }
+                            ?>
+                        </select>
+                        <select class="form-control distributionSelect d-none" id="distributionPoogieOutfitsSelect">
+                            <?php
+                            foreach (\MHFSaveManager\Service\PoogieOutfitService::$outfits as $id => $item) {
                                 printf('<option value="%s">[%1$s] %s</option>', $id, $item['name']);
                             }
                             ?>
