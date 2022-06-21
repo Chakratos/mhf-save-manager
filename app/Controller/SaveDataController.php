@@ -218,4 +218,17 @@ class SaveDataController extends AbstractController
     {
         return self::writeToFile($saveData, "20104", "030000F4");
     }
+    
+    public static function GetDailyguild($saveData)
+    {
+        $br = new BinaryReader($saveData);
+        $br->setPosition(0x21562);
+    
+        return bin2hex($br->readBytes(2));
+    }
+    
+    public static function SetDailyguild($saveData, $value)
+    {
+        return self::writeToFile($saveData, "21562", "0000");
+    }
 }
