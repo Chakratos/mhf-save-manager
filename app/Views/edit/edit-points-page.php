@@ -23,5 +23,12 @@
             <input id="stylevouchers" type="hidden" placeholder="0" value="99">
             <button id="setstylevouchers" class="btn btn-success w-100">Set to 99</button>
         </div>
+
+        <div class="input-group">
+            <label>
+                Daily Guild Reward:
+            </label>
+            <button id="resetdailyguild" class="btn btn-success w-100">Reset</button>
+        </div>
     </div>
 </div>

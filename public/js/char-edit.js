@@ -51,7 +51,11 @@ $(document).ready(function () {
     $('#setstylevouchers').click(function() {
         let stylevouchers = $('#stylevouchers').val();
 
-        postData("setstylevouchers", stylevouchers);
+        postData("setstylevouchers", stylevouchers, false, true);
+    });
+
+    $('#resetdailyguild').click(function() {
+        postData("setdailyguild", "0", false, true);
     });
 
     $('#setzenny').click(function() {

@@ -100,7 +100,7 @@ $(document).ready(function () {
                 cells[8].innerHTML = roadFloors;
                 cells[9].innerHTML = fatalis;
                 saveButton.prop('disabled', false);
-                table.row(button.parents('tr')).invalidate().draw();
+                table.row(button.parents('tr')).invalidate().draw(false);
             } else {
                 location.reload()
                 //table.row.add(['ID VOM RESPOONSE', category.text(), item.text(), cost, grank, tradeQuantity, maximumQuantity, boughtQuantity, roadFloors, fatalis]).draw();

@@ -171,7 +171,6 @@ SimpleRouter::post('/character/{id}/edit/{property}/{value}', function($id, $pro
     if (!$character) {
         ResponseService::SendNotFound();
     }
-    
     CharacterController::WriteToSavedata($character, "Set" . ucfirst(substr($property, 3)), $value);
     ResponseService::SendOk();
 });
