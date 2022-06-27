@@ -546,7 +546,7 @@ class Character
      */
     public function getSkinhist()
     {
-        return $this->savemercenary;
+        return $this->skin_hist;
     }
     
     /**
