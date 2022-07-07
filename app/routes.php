@@ -165,14 +165,36 @@ SimpleRouter::post('/character/{id}/edit/item/{box}/{slot}', function($id, $boxt
     ResponseService::SendOk();
 });
 
+SimpleRouter::post('/character/{id}/edit/resetloginboost', function($id) {
+    /** @var Character $character */
+    $character = EM::getInstance()->getRepository('MHF:Character')->find($id);
+    if (!$character) {
+        ResponseService::SendNotFound();
+    }
+    
+    CharacterController::ResetLoginboost($character);
+});
+
 SimpleRouter::post('/character/{id}/edit/{property}/{value}', function($id, $property, $value) {
     /** @var Character $character */
     $character = EM::getInstance()->getRepository('MHF:Character')->find($id);
     if (!$character) {
         ResponseService::SendNotFound();
     }
-    CharacterController::WriteToSavedata($character, "Set" . ucfirst(substr($property, 3)), $value);
-    ResponseService::SendOk();
+    
+    $method = "Set" . ucfirst(substr($property, 3));
+    
+    if (method_exists(Character::class, $method)) {
+        $character->$method($value);
+        EM::getInstance()->flush();
+        ResponseService::SendOk();
+    } elseif (method_exists(SaveDataController::class, $method)) {
+        CharacterController::WriteToSavedata($character, $method, $value);
+        ResponseService::SendOk();
+    } else {
+        ResponseService::SendNotFound();
+    }
+    
 });
 
 
