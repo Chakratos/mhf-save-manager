@@ -44,6 +44,36 @@ class Character
      */
     protected $last_login;
     /**
+     * @ORM\Column(type="integer")
+     * @var int
+     */
+    protected $gcp;
+    /**
+     * @ORM\Column(type="integer")
+     * @var int
+     */
+    protected $netcafe_points;
+    /**
+     * @ORM\Column(type="integer")
+     * @var int
+     */
+    protected $frontier_points;
+    /**
+     * @ORM\Column(type="integer")
+     * @var int
+     */
+    protected $kouryou_point;
+    /**
+     * @ORM\Column(type="integer")
+     * @var int
+     */
+    protected $gacha_trial;
+    /**
+     * @ORM\Column(type="integer")
+     * @var int
+     */
+    protected $gacha_prem;
+    /**
      * @ORM\Column(type="blob")
      * @var resource
      */
@@ -575,6 +605,120 @@ class Character
     public function setRestrictGuildScout($restrict_guild_scout)
     {
         $this->restrict_guild_scout = $restrict_guild_scout;
+        
+        return $this;
+    }
+    
+    /**
+     * @return int
+     */
+    public function getGcp()
+    {
+        return $this->gcp;
+    }
+    
+    /**
+     * @param int $gcp
+     * @return Character
+     */
+    public function setGcp(int $gcp): Character
+    {
+        $this->gcp = $gcp;
+        
+        return $this;
+    }
+    
+    /**
+     * @return int
+     */
+    public function getNetcafepoints()
+    {
+        return $this->netcafe_points;
+    }
+    
+    /**
+     * @param int $netcafe_points
+     * @return Character
+     */
+    public function setNetcafepoints(int $netcafe_points): Character
+    {
+        $this->netcafe_points = $netcafe_points;
+        
+        return $this;
+    }
+    
+    /**
+     * @return int
+     */
+    public function getFrontierpoints()
+    {
+        return $this->frontier_points;
+    }
+    
+    /**
+     * @param int $frontier_points
+     * @return Character
+     */
+    public function setFrontierpoints(int $frontier_points): Character
+    {
+        $this->frontier_points = $frontier_points;
+        
+        return $this;
+    }
+    
+    /**
+     * @return int
+     */
+    public function getKouryoupoint()
+    {
+        return $this->kouryou_point;
+    }
+    
+    /**
+     * @param int $kouryou_point
+     * @return Character
+     */
+    public function setKouryoupoint(int $kouryou_point): Character
+    {
+        $this->kouryou_point = $kouryou_point;
+        
+        return $this;
+    }
+    
+    /**
+     * @return int
+     */
+    public function getGachatrial()
+    {
+        return $this->gacha_trial;
+    }
+    
+    /**
+     * @param int $gacha_trial
+     * @return Character
+     */
+    public function setGachatrial(int $gacha_trial): Character
+    {
+        $this->gacha_trial = $gacha_trial;
+        
+        return $this;
+    }
+    
+    /**
+     * @return int
+     */
+    public function getGachaprem()
+    {
+        return $this->gacha_prem;
+    }
+    
+    /**
+     * @param int $gacha_prem
+     * @return Character
+     */
+    public function setGachaprem(int $gacha_prem): Character
+    {
+        $this->gacha_prem = $gacha_prem;
         
         return $this;
     }

@@ -12,9 +12,9 @@ $(document).ready(function () {
         $('#slidetext').html(text);
     });
 
-    function postData(funcname, value, reload = false, alertResponse = false, data = {}) {
+    function postData(funcname, value, reload = false, alertResponse = true, data = {}) {
         return $.ajax({
-            url: "/character/"+ charid +"/edit/" + funcname + "/" + value,
+            url: value === null ? "/character/"+ charid +"/edit/" + funcname : "/character/"+ charid +"/edit/" + funcname + "/" + value,
             type: "POST",
             data: data,
             complete: function (result) {
@@ -68,6 +68,46 @@ $(document).ready(function () {
         let gzenny = $('#gzenny').val();
 
         postData("setgzenny", gzenny);
+    });
+
+    $('#setgcp').click(function() {
+        let gcp = $('#gcp').val();
+
+        postData("setgcp", gcp);
+    });
+
+    $('#setnpoints').click(function() {
+        let npoints = $('#npoints').val();
+
+        postData("setnetcafepoints", npoints);
+    });
+
+    $('#setfrontierpoints').click(function() {
+        let frontierpoints = $('#frontierpoints').val();
+
+        postData("setfrontierpoints", frontierpoints);
+    });
+
+    $('#setkouryou').click(function() {
+        let kouryou = $('#kouryou').val();
+
+        postData("setkouryoupoint", kouryou);
+    });
+
+    $('#setgachatrial').click(function() {
+        let gachatrial = $('#gachatrial').val();
+
+        postData("setgachatrial", gachatrial);
+    });
+
+    $('#setgachaprem').click(function() {
+        let gachaprem = $('#gachaprem').val();
+
+        postData("setgachaprem", gachaprem);
+    });
+
+    $('#resetloginboost').click(function() {
+        postData("resetloginboost", null, false, true);
     });
 
     $('#itemboxSlotItem').select2({

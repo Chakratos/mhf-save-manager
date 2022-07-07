@@ -25,6 +25,12 @@ class CharacterController
         $gZenny = SaveDataController::GetGZenny($decompressed);
         $keyquestFlag = SaveDataController::GetKeyQuestFlag($decompressed);
         $itembox = SaveDataController::GetItembox($decompressed);
+        $gcp = $character->getGcp();
+        $npoints = $character->getNetcafePoints();
+        $frontierPoints = $character->getFrontierPoints();
+        $kouryou = $character->getKouryouPoint();
+        $gachaTrial = $character->getGachaTrial();
+        $gachaPrem = $character->getGachaPrem();
         
         include_once ROOT_DIR . '/app/Views/edit-character.php';
     }
@@ -202,5 +208,18 @@ class CharacterController
         }
         
         return $BinaryBackupFiles;
+    }
+    
+    public static function ResetLoginboost(Character $character)
+    {
+        $em = EM::getInstance();
+        $em->getConnection()->prepare(sprintf('UPDATE login_boost_state
+                                                      SET available = true, end_time = 0, week_count = 0
+                                                      WHERE char_id = %s',
+            $character->getId()
+        ))->execute();
+        $em->flush();
+    
+        ResponseService::SendOk();
     }
 }
