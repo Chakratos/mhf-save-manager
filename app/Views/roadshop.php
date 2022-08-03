@@ -71,6 +71,13 @@
                 <div class="input-group mb-2">
                     <input type="number" class="form-control" id="roadshopFatalis" placeholder="0-999" min="1" max="999">
                 </div>
+                <!--<h6>Item only available at specific week/s of month:</h6>
+                <div class="input-group mb-2">
+                    <label for="firstWeek" style="margin-right: 1em;">First Week <input type="checkbox" class="form-control" id="firstWeek"></label>
+                    <label for="secondWeek" style="margin-right: 1em;">Second Week <input type="checkbox" class="form-control" id="secondWeek"></label>
+                    <label for="thirdWeek" style="margin-right: 1em;">Third Week <input type="checkbox" class="form-control" id="thirdWeek"></label>
+                    <label for="fourthWeek">Fourth Week <input type="checkbox" class="form-control" id="fourthWeek"></label>
+                </div>-->
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
