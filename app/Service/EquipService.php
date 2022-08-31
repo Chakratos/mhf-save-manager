@@ -21830,18 +21830,20 @@ class EquipService
             return self::$$category;
         }
         $fileName = ucfirst(str_replace('Name', '', $category));
-        $names = require(LOCALE_DIR . $fileName . '.php');
-        $fallbackNames = require(I18N_DIR . 'en_GB'. DIRECTORY_SEPARATOR . $fileName . '.php');
+        $names = LOCALE_DIR . $fileName . '.php';
+        $fallbackNames = I18N_DIR . 'en_GB'. DIRECTORY_SEPARATOR . $fileName . '.php';
         if (!file_exists($names)) {
             $names = $fallbackNames;
         }
+        
+        $names = require($names);
+        $fallbackNames = require($fallbackNames);
         
         foreach ($fallbackNames as $key => $fallbackName) {
             if (!isset($names[$key])) {
                 $names[$key] = $fallbackName;
             }
         }
-        //todo: foreach en_GB overwrite with JP stuff so missing ones stay english
         self::$$category = $names;
         
         return self::$$category;

@@ -13,11 +13,15 @@ class ItemsService
             return self::$localeArray;
         }
         
-        $names = require(LOCALE_DIR . 'Items.php');
-        $fallbackNames = require(I18N_DIR . 'en_GB'. DIRECTORY_SEPARATOR . 'Items.php');
+        $names = LOCALE_DIR . 'Items.php';
+        $fallbackNames = I18N_DIR . 'en_GB'. DIRECTORY_SEPARATOR . 'Items.php';
         if (!file_exists($names)) {
             $names = $fallbackNames;
         }
+    
+        $names = require($names);
+        $fallbackNames = require($fallbackNames);
+        
         self::$localeArray = self::$items;
         
         foreach (self::$localeArray as $key => $value) {
