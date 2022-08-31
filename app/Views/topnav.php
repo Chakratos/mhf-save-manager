@@ -15,6 +15,16 @@
                     <a class="dropdown-item" href="/servertools/distributions">Distributions Editor</a>
                 </div>
             </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
+                   aria-haspopup="true" aria-expanded="false">
+                    Language
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="/language/en_GB">English</a>
+                    <a class="dropdown-item" href="/language/ja_JP">日本語</a>
+                </div>
+            </li>
         </ul>
     </div>
 </nav>

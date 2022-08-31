@@ -22,7 +22,7 @@
         </thead>
         <tbody>
         <?php
-        $charRepo = \MHFSaveManager\Database\EM::getInstance()->getRepository('MHF:Character');
+        $charRepo = \MHFSaveManager\Database\EM::getInstance()->getRepository('MHFSaveManager\Model\Character');
         $characters = $charRepo->findAll();
         /** @var \MHFSaveManager\Model\Character $character */
         foreach ($characters as $character) {

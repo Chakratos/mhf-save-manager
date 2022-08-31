@@ -76,14 +76,10 @@ class Equip extends AbstractBinaryModel
         }
         
         if ($this->getTypeAsString() == "Ranged" || $this->getTypeAsString() == "Melee") {
-            $arrayName = lcfirst($this->getTypeAsString()) . 'Name';
             $arrayType = lcfirst($this->getTypeAsString()) . 'Type';
             $this->weaponType = (EquipService::$$arrayType)[strtoupper($this->id)];
-            $this->name = (EquipService::$$arrayName)[strtoupper($this->id)];
-        } else {
-            $arrayName = lcfirst($this->getTypeAsString()) . 'Name';
-            $this->name = (EquipService::$$arrayName)[strtoupper($this->id)];
         }
+        $this->name = (EquipService::getForLocale(lcfirst($this->getTypeAsString()) . 'Name'))[strtoupper($this->id)];
     }
     
     /**

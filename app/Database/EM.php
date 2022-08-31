@@ -4,6 +4,7 @@
 namespace MHFSaveManager\Database;
 
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\ORMSetup;
 use Doctrine\ORM\Tools\Setup;
 
 class EM
@@ -32,8 +33,7 @@ class EM
             'driver' => DBDRIVER,
             'port' => DBPORT,
         ];
-        $config = Setup::createAnnotationMetadataConfiguration($paths, $isDevMode, null, null, false);
-        $config->addEntityNamespace('MHF', 'MHFSaveManager\Model');
+        $config = ORMSetup::createAnnotationMetadataConfiguration($paths, $isDevMode);
         self::$entityManager = EntityManager::create($dbParams, $config);
     }
     

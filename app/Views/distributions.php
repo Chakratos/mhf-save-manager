@@ -171,14 +171,14 @@
                     <div class="input-group mb-2">
                         <select class="form-control distributionSelect d-none" id="distributionItemSelect">
                             <?php
-                            foreach (\MHFSaveManager\Service\ItemsService::$items as $id => $item) {
+                            foreach (\MHFSaveManager\Service\ItemsService::getForLocale() as $id => $item) {
                                 printf('<option value="%s">[%1$s] %s</option>', $id, $item['name']);
                             }
                             ?>
                         </select>
                         <select class="form-control distributionSelect d-none" id="distributionPoogieOutfitsSelect">
                             <?php
-                            foreach (\MHFSaveManager\Service\PoogieOutfitService::$outfits as $id => $item) {
+                            foreach (\MHFSaveManager\Service\PoogieOutfitService::getForLocale() as $id => $item) {
                                 printf('<option value="%s">[%1$s] %s</option>', $id, $item['name']);
                             }
                             ?>
@@ -186,8 +186,7 @@
                         <?php
                         foreach (EquipService::$types as $type) {
                             printf('<select class="form-control distributionSelect d-none" id="distribution%sSelect">', $type);
-                            $tmp = lcfirst($type).'Name';
-                            foreach (EquipService::$$tmp as $id => $item) {
+                            foreach (EquipService::getForLocale(lcfirst($type).'Name') as $id => $item) {
                                 printf('<option value="%s">[%1$s] %s</option>', $id, $item);
                             }
                             printf('</select>

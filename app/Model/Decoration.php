@@ -23,7 +23,7 @@ class Decoration extends Item
     public function __construct($id)
     {
         $this->id = $id;
-        $this->name = ItemsService::$items[strtoupper($this->id)]['name'];
+        $this->name = ItemsService::getForLocale()[strtoupper($this->id)]['name'];
         $this->quantity = 1;
     }
     

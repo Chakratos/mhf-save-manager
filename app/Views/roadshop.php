@@ -30,7 +30,7 @@
                 <div class="input-group mb-2">
                     <select class="form-control" id="roadshopItemSelect">
                         <?php
-                        foreach (\MHFSaveManager\Service\ItemsService::$items as $id => $item) {
+                        foreach (\MHFSaveManager\Service\ItemsService::getForLocale() as $id => $item) {
                             printf('<option data-icon="%s" data-color="%s" value="%s">%s</option>', $item['icon'], $item['color'], $id, $item['name']);
                         }
                         ?>
@@ -108,7 +108,7 @@
         /** @var \MHFSaveManager\Model\NormalShopItem $item */
         foreach ($roadItems as $item) {
             $itemId = self::numberConvertEndian($item->getItemid(), 2);
-            $itemData = ItemsService::$items[$itemId];
+            $itemData = ItemsService::getForLocale()[$itemId];
             printf('
             <tr>
                 <td>%1$s</td>

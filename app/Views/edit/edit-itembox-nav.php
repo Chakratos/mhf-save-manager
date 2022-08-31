@@ -20,7 +20,7 @@
                 <div class="input-group mb-2">
                     <select class="form-control" id="itemboxSlotItem">
                         <?php
-                        foreach (\MHFSaveManager\Service\ItemsService::$items as $id => $item) {
+                        foreach (\MHFSaveManager\Service\ItemsService::getForLocale() as $id => $item) {
                             printf('<option data-icon="%s" data-color="%s" value="%s">%s</option>', $item['icon'], $item['color'], $id, $item['name']);
                         }
                         ?>
@@ -59,7 +59,7 @@
                 if ($itemCount == 0) {
                     echo '<div class="row item-row">';
                 }
-                $tmpItem = \MHFSaveManager\Service\ItemsService::$items[$item->getId()];
+                $tmpItem = \MHFSaveManager\Service\ItemsService::getForLocale()[$item->getId()];
                 printf('
                             <div class="col item-col" data-id="%s" data-quantity="%s" data-slot="%s">
                                 <img class="item-icon" src="/img/item/%s%s.png">
