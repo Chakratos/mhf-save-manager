@@ -8,17 +8,17 @@
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
                    aria-haspopup="true" aria-expanded="false">
-                    Server Tools
+                    <?php echo $UILocale['Server Tools']?>
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="/servertools/roadshop">Roadshop Editor</a>
-                    <a class="dropdown-item" href="/servertools/distributions">Distributions Editor</a>
+                    <a class="dropdown-item" href="/servertools/roadshop"><?php echo $UILocale['Roadshop Editor']?></a>
+                    <a class="dropdown-item" href="/servertools/distributions"><?php echo $UILocale['Distribution Editor']?></a>
                 </div>
             </li>
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
                    aria-haspopup="true" aria-expanded="false">
-                    Language
+                    <?php echo $UILocale['Language']?>
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                     <a class="dropdown-item" href="/language/en_GB">English</a>

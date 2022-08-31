@@ -1,7 +1,7 @@
 <div class="col-md-4">
     <div class="form-group">
         <div class="mb-1">
-            <label for="selectDatabaseBackup"><?php echo $binaryName ?>-Backups</label>
+            <label for="selectDatabaseBackup"><?php echo $binaryName . '-' . $UILocale['Backups'] ?></label>
             <select class="form-control form-control-sm backup-list"
                     id="select<?php echo $binaryName ?>Backup" size="5">
                 <?php
@@ -16,7 +16,7 @@
                     );
                 }
                 if (empty($binaryBackups)) {
-                    echo '<option disabled>----NONE_YET----</option>';
+                    echo '<option disabled>' . $UILocale['----NONE_YET----'] . '</option>';
                 }
                 ?>
 
@@ -25,17 +25,17 @@
         <div class="btn-group" role="group">
             <button data-binary="<?php echo $binaryName ?>" data-charid="<?php echo $character->getId() ?>"
                     class="backupChar btn btn-sm btn-outline-secondary">
-                <i class="fas fa-edit"></i> Create
+                <i class="fas fa-edit"></i> <?php echo $UILocale['Create']?>
             </button>
             
             <button data-binary="<?php echo $binaryName ?>" data-charid="<?php echo $character->getId() ?>"
                     class="backupCharDecompressed btn btn-sm btn-outline-secondary">
-                <i class="fas fa-edit"></i> Create decomp
+                <i class="fas fa-edit"></i> <?php echo $UILocale['Create decomp']?>
             </button>
 
             <button data-binary="<?php echo $binaryName ?>" data-charid="<?php echo $character->getId() ?>"
                     class="compressEntry btn btn-sm btn-outline-secondary">
-                <i class="fas fa-edit"></i> Compress entry
+                <i class="fas fa-edit"></i> <?php echo $UILocale['Compress entry']?>
             </button>
             <button data-binary="<?php echo $binaryName ?>" data-charid="<?php echo $character->getId() ?>"
                     class="deleteEntry btn btn-sm btn-outline-danger">
@@ -45,21 +45,21 @@
         <div class="btn-group" role="group">
             <button data-binary="<?php echo $binaryName ?>" data-charid="<?php echo $character->getId() ?>"
                     class="decompEntry btn btn-sm btn-outline-secondary">
-                <i class="fas fa-edit"></i> Decomp entry
+                <i class="fas fa-edit"></i> <?php echo $UILocale['Decomp entry']?>
             </button>
             
             <button data-binary="<?php echo $binaryName ?>" data-charid="<?php echo $character->getId() ?>"
                     class="applyBackup btn btn-sm btn-outline-secondary">
-                <i class="fas fa-play"></i> Apply
+                <i class="fas fa-play"></i> <?php echo $UILocale['Apply']?>
             </button>
             <button class="uploadBinaryButton btn btn-sm btn-outline-secondary" data-binary="<?php echo $binaryName ?>">
-                <i class='fas fa-file-upload'></i> Upload
+                <i class='fas fa-file-upload'></i> <?php echo $UILocale['Upload']?>
             </button>
             <input type="file" class="uploadBinaryInput" data-charid="<?php echo $character->getId() ?>"
                    data-binary="<?php echo $binaryName ?>" style="display: none" accept="bin/*">
             <button data-binary="<?php echo $binaryName ?>" data-charid="<?php echo $character->getId() ?>"
                     class="downloadBackup btn btn-sm btn-outline-secondary">
-                <i class="fas fa-file-download"></i> Download
+                <i class="fas fa-file-download"></i> <?php echo $UILocale['Download']?>
             </button>
         </div>
     </div>

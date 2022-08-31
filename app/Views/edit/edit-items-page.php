@@ -1,9 +1,9 @@
 <nav>
     <div class="nav nav-tabs" id="nav-tab" role="tablist">
-        <a class="nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-box" role="tab" aria-controls="nav-home" aria-selected="true">Box</a>
-        <a class="nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-pouch" role="tab" aria-controls="nav-profile" aria-selected="false">Pouch</a>
-        <a class="nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-ammopouch" role="tab" aria-controls="nav-contact" aria-selected="false">Ammo Pouch</a>
-        <a class="nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-warehouse" role="tab" aria-controls="nav-contact" aria-selected="false">Warehouse</a>
+        <a class="nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-box" role="tab" aria-controls="nav-home" aria-selected="true"><?php echo $UILocale['Itembox']?></a>
+        <a class="nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-pouch" role="tab" aria-controls="nav-profile" aria-selected="false"><?php echo $UILocale['Pouch']?></a>
+        <a class="nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-ammopouch" role="tab" aria-controls="nav-contact" aria-selected="false"><?php echo $UILocale['Ammo Pouch']?></a>
+        <a class="nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-warehouse" role="tab" aria-controls="nav-contact" aria-selected="false"><?php echo $UILocale['Warehouse']?></a>
     </div>
 </nav>
 <div class="row">

@@ -12,10 +12,10 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="roadShopItemTitle">Editing Roadshop Item: <b></b></h5>
+                <h5 class="modal-title" id="roadShopItemTitle"><?php echo $UILocale['Editing Roadshop Item']?>: <b></b></h5>
             </div>
             <div class="modal-body">
-                <h6>Category:</h6>
+                <h6><?php echo $UILocale['Category']?>:</h6>
                 <div class="input-group mb-2">
                     <select class="form-control" id="roadshopCategorySelect">
                         <?php
@@ -37,37 +37,37 @@
                     </select>
                 </div>
 
-                <h6>Cost:</h6>
+                <h6><?php echo $UILocale['Cost']?>:</h6>
                 <div class="input-group mb-2">
                     <input type="number" class="form-control" id="roadshopCost" placeholder="0-999" min="1" max="999">
                 </div>
 
-                <h6>QRank Req:</h6>
+                <h6><?php echo $UILocale['QRank Req']?>:</h6>
                 <div class="input-group mb-2">
                     <input type="number" class="form-control" id="roadshopGRank" placeholder="0-999" min="1" max="999">
                 </div>
 
-                <h6>Trade Quantity:</h6>
+                <h6><?php echo $UILocale['Trade Quantity']?>:</h6>
                 <div class="input-group mb-2">
                     <input type="number" class="form-control" id="roadshopTradeQuantity" placeholder="0-999" min="1" max="999">
                 </div>
 
-                <h6>Maximum Quantity:</h6>
+                <h6><?php echo $UILocale['Maximum Quantity']?>:</h6>
                 <div class="input-group mb-2">
                     <input type="number" class="form-control" id="roadshopMaximumQuantity" placeholder="0-999" min="1" max="999">
                 </div>
 
-                <h6>Bought Quantity:</h6>
+                <h6><?php echo $UILocale['Bought Quantity']?>:</h6>
                 <div class="input-group mb-2">
                     <input type="number" class="form-control" id="roadshopBoughtQuantity" placeholder="0-999" min="1" max="999">
                 </div>
 
-                <h6>Road Floors Req:</h6>
+                <h6><?php echo $UILocale['Road Floors Req']?>:</h6>
                 <div class="input-group mb-2">
                     <input type="number" class="form-control" id="roadshopRoadFloors" placeholder="0-999" min="1" max="999">
                 </div>
 
-                <h6>Weekly Fatalis Kills:</h6>
+                <h6><?php echo $UILocale['Weekly Fatalis Kills']?>:</h6>
                 <div class="input-group mb-2">
                     <input type="number" class="form-control" id="roadshopFatalis" placeholder="0-999" min="1" max="999">
                 </div>
@@ -80,8 +80,8 @@
                 </div>-->
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" id="roadshopSave">Save</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal"><?php echo $UILocale['Close']?></button>
+                <button type="button" class="btn btn-primary" id="roadshopSave"><?php echo $UILocale['Save']?></button>
             </div>
         </div>
     </div>
@@ -90,17 +90,17 @@
     <table id="roadshoptable" class="table table-striped table-bordered" style="width:100%">
         <thead>
         <tr>
-            <th>Id</th>
-            <th>Category</th>
-            <th>Item</th>
-            <th>Cost</th>
-            <th>GRank Req</th>
-            <th>Trade Quantity</th>
-            <th>Maximum Quantity</th>
-            <th>Bought Quantity</th>
-            <th>Road Floors Req</th>
-            <th>Weekly Fatalis Kills</th>
-            <th>Actions</th>
+            <th><?php echo $UILocale['ID']?></th>
+            <th><?php echo $UILocale['Category']?></th>
+            <th><?php echo $UILocale['Item']?></th>
+            <th><?php echo $UILocale['Cost']?></th>
+            <th><?php echo $UILocale['GRank Req']?></th>
+            <th><?php echo $UILocale['Trade Quantity']?></th>
+            <th><?php echo $UILocale['Maximum Quantity']?></th>
+            <th><?php echo $UILocale['Bought Quantity']?></th>
+            <th><?php echo $UILocale['Road Floors Req']?></th>
+            <th><?php echo $UILocale['Weekly Fatalis Kills']?></th>
+            <th><?php echo $UILocale['Actions']?></th>
         </tr>
         </thead>
         <tbody>
@@ -132,7 +132,7 @@
             </tr>
             ',
             $item->getItemhash(),
-            $itemData['name'] ? : 'No Translation!',
+            $itemData['name'] ? : $UILocale['No Translation!'],
             $item->getPoints(),
             $item->getRankreqg(),
             $item->getTradequantity(),
@@ -148,9 +148,9 @@
         ?>
         </tbody>
     </table>
-    <button id="createRoadItem" class="btn btn-success">Create Roadshop Item</button>
-    <a class="btn btn-primary" href="/servertools/roadshop/export">Export</a>
-    <button id="importRoadShop" class="btn btn-warning">Import</button>
+    <button id="createRoadItem" class="btn btn-success"><?php echo $UILocale['Create Roadshop Item']?></button>
+    <a class="btn btn-primary" href="/servertools/roadshop/export"><?php echo $UILocale['Export']?></a>
+    <button id="importRoadShop" class="btn btn-warning"><?php echo $UILocale['Import']?></button>
     <input type="file" id="importRoadShopInput" style="display: none" accept=".csv">
 </div>
 

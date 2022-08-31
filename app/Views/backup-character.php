@@ -20,8 +20,8 @@
             <th>gender</th>
             <th>is_new_character</th>
             <th>last_login</th>
-            <th>Backup-All</th>
-            <th>Reset</th>
+            <th><?php echo $UILocale['Backup-All']?></th>
+            <th><?php echo $UILocale['Reset']?></th>
         </tr>
         </thead>
         <tbody>
@@ -41,7 +41,7 @@
             $character->getUserId(),
             $character->getName(),
             $character->isFemale() ? '<i class="fa fa-venus"></i>' : '<i class="fa fa-mars"></i>',
-            $character->isNewCharacter() ? 'True' : 'False',
+            $character->isNewCharacter() ? $UILocale['True'] : $UILocale['False'],
             $character->getLastLogin(),
             $character->getId(),
             $character->getId()

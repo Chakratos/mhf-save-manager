@@ -13,10 +13,10 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="itemboxSlotEditTitle">Editing Itemslot: <b></b></h5>
+                <h5 class="modal-title" id="itemboxSlotEditTitle"><?php echo $UILocale['Editing Itemslot']?>: <b></b></h5>
             </div>
             <div class="modal-body">
-                <h6>Item:</h6>
+                <h6><?php echo $UILocale['Item']?>:</h6>
                 <div class="input-group mb-2">
                     <select class="form-control" id="itemboxSlotItem">
                         <?php
@@ -27,14 +27,14 @@
                     </select>
                 </div>
                 
-                <h6>Quantity:</h6>
+                <h6><?php echo $UILocale['Quantity']?>:</h6>
                 <div class="input-group mb-2">
                     <input type="number" class="form-control" id="itemboxSlotQuantity" placeholder="999" min="1" max="999">
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" id="itemboxSlotSave">Save</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal"><?php echo $UILocale['Close']?></button>
+                <button type="button" class="btn btn-primary" id="itemboxSlotSave"><?php echo $UILocale['Save']?></button>
             </div>
         </div>
     </div>

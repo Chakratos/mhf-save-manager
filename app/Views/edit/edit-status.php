@@ -3,7 +3,7 @@
         <div class="col-auto">
             <img src="/img/equip/<?php printf("%s", $gear->isWeapon() ? "weapon/". $gear->getWeaponType() : "armor/" . $gear->getTypeAsString());  ?>.png" style="width: 3rem; height: 3rem;">
             <br>
-            <span class="px-2"> Level <span class="font-weight-bold border border-dark rounded px-1"><?php echo $gear->getUpgradeLevel() ?></span></span>
+            <span class="px-2"> <?php echo $UILocale['Level']?> <span class="font-weight-bold border border-dark rounded px-1"><?php echo $gear->getUpgradeLevel() ?></span></span>
         </div>
         <div class="col-5 my-auto">
             <h5><?php echo $gear->getName();  ?></h5>

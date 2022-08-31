@@ -9,15 +9,15 @@
     <table class="table" id="CharactersTable">
         <thead>
         <tr>
-            <th>id</th>
-            <th>user_id</th>
-            <th>name</th>
-            <th>gender</th>
-            <th>is_new_character</th>
-            <th>last_login</th>
-            <th>Edit</th>
-            <th>Backup</th>
-            <th>Reset</th>
+            <th><?php echo $UILocale['ID']?></th>
+            <th><?php echo $UILocale['User ID']?></th>
+            <th><?php echo $UILocale['Name']?></th>
+            <th><?php echo $UILocale['Gender']?></th>
+            <th><?php echo $UILocale['New Character']?></th>
+            <th><?php echo $UILocale['Last Login']?></th>
+            <th><?php echo $UILocale['Edit']?></th>
+            <th><?php echo $UILocale['Backup']?></th>
+            <th><?php echo $UILocale['Reset']?></th>
         </tr>
         </thead>
         <tbody>
@@ -41,7 +41,7 @@
                 $character->getUserId(),
                 $character->getName(),
                 $character->isFemale() ? '<i class="fas fa-venus"></i>' : '<i class="fas fa-mars"></i>',
-                $character->isNewCharacter() ? 'True' : 'False',
+                $character->isNewCharacter() ? $UILocale['True'] : $UILocale['False'],
                 $character->getLastLogin(),
                 $character->getId(),
                 $character->getId(),
