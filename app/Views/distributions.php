@@ -306,5 +306,21 @@
         ?>
     };
 </script>
-
+<script>
+    $(document).ready(function () {
+        $('#distributiontable').DataTable({
+            "columnDefs": [
+                {"width": "20%", "targets": 5},
+                {"width": "15%", "targets": 4},
+            ],
+            language: {
+                <?php
+                if ($_SESSION['locale'] == 'ja_JP') {
+                    echo "url: '//cdn.datatables.net/plug-ins/1.12.1/i18n/ja.json'";
+                }
+                ?>
+            }
+        });
+    });
+</script>
 <script src="/js/distribution.js"></script>

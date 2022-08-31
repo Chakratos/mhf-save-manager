@@ -1,13 +1,6 @@
 $(document).ready(function () {
     let currentlyEditedItem = null;
-
-    const table = $('#distributiontable').DataTable({
-        "columnDefs": [
-            { "width": "20%", "targets": 5 },
-            { "width": "15%", "targets": 4 },
-        ]
-    });
-
+    const table = $('#distributiontable').DataTable();
     $('select.form-control:not(#distributionItemsSelect)').select2({
         theme: 'bootstrap4',
     });

@@ -154,4 +154,21 @@
     <input type="file" id="importRoadShopInput" style="display: none" accept=".csv">
 </div>
 
+<script>
+    $(document).ready(function () {
+        $('#roadshoptable').DataTable({
+            "columnDefs": [
+                {"width": "20%", "targets": 2},
+                {"width": "15%", "targets": 1},
+            ],
+            language: {
+                <?php
+                if ($_SESSION['locale'] == 'ja_JP') {
+                    echo "url: '//cdn.datatables.net/plug-ins/1.12.1/i18n/ja.json'";
+                }
+                ?>
+            }
+        });
+    });
+</script>
 <script src="/js/roadshop.js"></script>
