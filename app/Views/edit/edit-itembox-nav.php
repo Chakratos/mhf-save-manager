@@ -71,7 +71,7 @@
                     $tmpItem['icon'],
                     $tmpItem['color'],
                     $item->getQuantity(),
-                    ucwords(implode(' ',preg_split('/(?=[A-Z][^A-Z][^A-Z])/', $item->getName())))
+                    implode(' ',preg_split('/(?=[A-Z][^A-Z][^A-Z])/', $item->getName()))
                 );
                 if (++$itemCount >= 10) {
                     echo '</div>';
