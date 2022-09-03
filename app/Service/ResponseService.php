@@ -48,4 +48,16 @@ class ResponseService
         echo stream_get_contents($resource);
         exit();
     }
+    
+    public static function SendBackToOrigin()
+    {
+        if (isset($_SERVER['HTTP_REFERER']) && !empty($_SERVER['HTTP_REFERER']) && parse_url($_SERVER['HTTP_REFERER'], PHP_URL_HOST) == parse_url($_SERVER['HTTP_HOST'], PHP_URL_HOST)) {
+            header( 'Cache-Control: no-cache, must-revalidate' );
+            header(sprintf('Location: %s',$_SERVER['HTTP_REFERER']), true, 301);
+        } else {
+            header( 'Cache-Control: no-cache, must-revalidate', true, 301);
+            header(sprintf('Location: %s://%s', $_SERVER['REQUEST_SCHEME'], $_SERVER['HTTP_HOST']));
+        }
+        exit();
+    }
 }

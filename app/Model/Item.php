@@ -49,14 +49,14 @@ class Item extends AbstractBinaryModel
         $this->binaryString = $binary;
         if (strlen(bin2hex($binary)) == 4) {
             $this->id = strtoupper($this->read(2, false));
-            $this->name = ItemsService::$items[strtoupper($this->id)]['name'];
+            $this->name = ItemsService::getForLocale()[strtoupper($this->id)]['name'];
             
             return;
         }
         
         $this->read(4); //Padding?
         $this->id = strtoupper($this->read(2, false));
-        $this->name = ItemsService::$items[strtoupper($this->id)]['name'];
+        $this->name = ItemsService::getForLocale()[strtoupper($this->id)]['name'];
         $this->quantity = unpack('v', $this->read(2, true))[1];
     }
     
@@ -96,7 +96,7 @@ class Item extends AbstractBinaryModel
     public function getName(): string
     {
         if ($this->name == null && $this->id > 0) {
-            $this->name = ItemsService::$items[strtoupper($this->id)]['name'];
+            $this->name = ItemsService::getForLocale()[strtoupper($this->id)]['name'];
         }
         
         return $this->name ? $this->name : 'No Translation!';

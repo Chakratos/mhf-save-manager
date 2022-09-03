@@ -18,6 +18,16 @@ SimpleRouter::get('/', function() {
     CharacterController::Index();
 });
 
+SimpleRouter::get('/language/{locale}', function($locale) {
+    if (!is_dir(LOCALE_DIR)) {
+        ResponseService::SendNotFound('Language not found: ' . $locale);
+    }
+    
+    $_SESSION['locale'] = $locale;
+    ResponseService::SendBackToOrigin();
+});
+
+
 SimpleRouter::get('/servertools/distributions', function() {
     DistributionsController::Index();
 });
@@ -57,7 +67,7 @@ SimpleRouter::post('/servertools/distributions/import', function() {
 
 SimpleRouter::post('/servertools/distributions/delete/{id}', function($id) {
     /** @var Distribution $dist */
-    $dist = EM::getInstance()->getRepository('MHF:Distribution')->find($id);
+    $dist = EM::getInstance()->getRepository('MHFSaveManager\Model\Distribution')->find($id);
     if (!$dist) {
         ResponseService::SendNotFound();
     }
@@ -102,7 +112,7 @@ SimpleRouter::post('/servertools/roadshop/import', function() {
 
 SimpleRouter::post('/servertools/roadshop/delete/{id}', function($id) {
     /** @var NormalShopItem $item */
-    $item = EM::getInstance()->getRepository('MHF:NormalShopItem')->find($id);
+    $item = EM::getInstance()->getRepository('MHFSaveManager\Model\NormalShopItem')->find($id);
     if (!$item) {
         ResponseService::SendNotFound();
     }
@@ -114,7 +124,7 @@ SimpleRouter::post('/servertools/roadshop/delete/{id}', function($id) {
 });
 
 SimpleRouter::get('/character/{id}/reset', function($id) {
-    $character = EM::getInstance()->getRepository('MHF:Character')->find($id);
+    $character = EM::getInstance()->getRepository('MHFSaveManager\Model\Character')->find($id);
     if (!$character) {
         ResponseService::SendNotFound();
     }
@@ -128,7 +138,7 @@ SimpleRouter::get('/character/{id}/reset', function($id) {
 */
 
 SimpleRouter::get('/character/{id}/edit', function($id) {
-    $character = EM::getInstance()->getRepository('MHF:Character')->find($id);
+    $character = EM::getInstance()->getRepository('MHFSaveManager\Model\Character')->find($id);
     if (!$character) {
         ResponseService::SendNotFound();
     }
@@ -139,7 +149,7 @@ SimpleRouter::get('/character/{id}/edit', function($id) {
 
 SimpleRouter::post('/character/{id}/edit/setname/', function($id) {
     /** @var Character $character */
-    $character = EM::getInstance()->getRepository('MHF:Character')->find($id);
+    $character = EM::getInstance()->getRepository('MHFSaveManager\Model\Character')->find($id);
     if (!$character || !isset($_POST['name'])) {
         ResponseService::SendNotFound();
     }
@@ -152,7 +162,7 @@ SimpleRouter::post('/character/{id}/edit/setname/', function($id) {
 
 SimpleRouter::post('/character/{id}/edit/item/{box}/{slot}', function($id, $boxtype, $slot) {
     /** @var Character $character */
-    $character = EM::getInstance()->getRepository('MHF:Character')->find($id);
+    $character = EM::getInstance()->getRepository('MHFSaveManager\Model\Character')->find($id);
     if (!$character) {
         ResponseService::SendNotFound();
     }
@@ -167,7 +177,7 @@ SimpleRouter::post('/character/{id}/edit/item/{box}/{slot}', function($id, $boxt
 
 SimpleRouter::post('/character/{id}/edit/resetloginboost', function($id) {
     /** @var Character $character */
-    $character = EM::getInstance()->getRepository('MHF:Character')->find($id);
+    $character = EM::getInstance()->getRepository('MHFSaveManager\Model\Character')->find($id);
     if (!$character) {
         ResponseService::SendNotFound();
     }
@@ -177,7 +187,7 @@ SimpleRouter::post('/character/{id}/edit/resetloginboost', function($id) {
 
 SimpleRouter::post('/character/{id}/edit/{property}/{value}', function($id, $property, $value) {
     /** @var Character $character */
-    $character = EM::getInstance()->getRepository('MHF:Character')->find($id);
+    $character = EM::getInstance()->getRepository('MHFSaveManager\Model\Character')->find($id);
     if (!$character) {
         ResponseService::SendNotFound();
     }
@@ -200,7 +210,7 @@ SimpleRouter::post('/character/{id}/edit/{property}/{value}', function($id, $pro
 
 
 /*SimpleRouter::get('/character/{id}/edit/{binary}', function($id, $binary) {
-    $character = EM::getInstance()->getRepository('MHF:Character')->find($id);
+    $character = EM::getInstance()->getRepository('MHFSaveManager\Model\Character')->find($id);
     if (!$character && in_array($binary, BinaryController::getBinaryTypes())) {
         ResponseService::SendNotFound();
     }
@@ -215,7 +225,7 @@ SimpleRouter::post('/character/{id}/edit/{property}/{value}', function($id, $pro
 */
 
 SimpleRouter::get('/character/{id}', function($id) {
-    $character = EM::getInstance()->getRepository('MHF:Character')->find($id);
+    $character = EM::getInstance()->getRepository('MHFSaveManager\Model\Character')->find($id);
     if (!$character) {
         ResponseService::SendNotFound();
     }
@@ -226,7 +236,7 @@ SimpleRouter::get('/character/{id}', function($id) {
 
 SimpleRouter::get('/character/{id}/decompress', function($id) {
     /** @var Character $character */
-    $character = EM::getInstance()->getRepository('MHF:Character')->find($id);
+    $character = EM::getInstance()->getRepository('MHFSaveManager\Model\Character')->find($id);
     if (!$character) {
         ResponseService::SendNotFound();
     }
@@ -238,7 +248,7 @@ SimpleRouter::get('/character/{id}/decompress', function($id) {
 
 SimpleRouter::get('/character/{id}/compress', function($id) {
     /** @var Character $character */
-    $character = EM::getInstance()->getRepository('MHF:Character')->find($id);
+    $character = EM::getInstance()->getRepository('MHFSaveManager\Model\Character')->find($id);
     if (!$character) {
         ResponseService::SendNotFound();
     }
@@ -249,7 +259,7 @@ SimpleRouter::get('/character/{id}/compress', function($id) {
 });
 
 SimpleRouter::post('/character/{id}/backup/{binary}', function($id, $binary) {
-    $character = EM::getInstance()->getRepository('MHF:Character')->find($id);
+    $character = EM::getInstance()->getRepository('MHFSaveManager\Model\Character')->find($id);
     if (!$character) {
         ResponseService::SendNotFound();
     }
@@ -267,7 +277,7 @@ SimpleRouter::post('/character/{id}/backup/{binary}', function($id, $binary) {
 });
 
 SimpleRouter::post('/character/{id}/backupdecomp/{binary}', function($id, $binary) {
-    $character = EM::getInstance()->getRepository('MHF:Character')->find($id);
+    $character = EM::getInstance()->getRepository('MHFSaveManager\Model\Character')->find($id);
     if (!$character) {
         ResponseService::SendNotFound();
     }
@@ -279,7 +289,7 @@ SimpleRouter::post('/character/{id}/backupdecomp/{binary}', function($id, $binar
 });
 
 SimpleRouter::get('/character/{id}/backup/{binary}/{backup_file}', function($id, $binary, $backup_file) {
-    $character = EM::getInstance()->getRepository('MHF:Character')->find($id);
+    $character = EM::getInstance()->getRepository('MHFSaveManager\Model\Character')->find($id);
     if (!$character ||
         !file_exists($path = sprintf('%s/storage/%s/%s/%s',ROOT_DIR, $binary, $character->getId(), $backup_file)))
     {
@@ -290,7 +300,7 @@ SimpleRouter::get('/character/{id}/backup/{binary}/{backup_file}', function($id,
 }, ['defaultParameterRegex' => '[\w\-\.]+']);
 
 SimpleRouter::post('/character/{id}/replace/{binary}', function($id, $binary) {
-    $character = EM::getInstance()->getRepository('MHF:Character')->find($id);
+    $character = EM::getInstance()->getRepository('MHFSaveManager\Model\Character')->find($id);
     if (!$character) {
         ResponseService::SendNotFound();
     }
@@ -300,7 +310,7 @@ SimpleRouter::post('/character/{id}/replace/{binary}', function($id, $binary) {
 });
 
 SimpleRouter::post('/character/{id}/compressentry/{binary}', function($id, $binary) {
-    $character = EM::getInstance()->getRepository('MHF:Character')->find($id);
+    $character = EM::getInstance()->getRepository('MHFSaveManager\Model\Character')->find($id);
     if (!$character) {
         ResponseService::SendNotFound();
     }
@@ -310,7 +320,7 @@ SimpleRouter::post('/character/{id}/compressentry/{binary}', function($id, $bina
 });
 
 SimpleRouter::post('/character/{id}/deleteentry/{binary}', function($id, $binary) {
-    $character = EM::getInstance()->getRepository('MHF:Character')->find($id);
+    $character = EM::getInstance()->getRepository('MHFSaveManager\Model\Character')->find($id);
     if (!$character) {
         ResponseService::SendNotFound();
     }
@@ -320,7 +330,7 @@ SimpleRouter::post('/character/{id}/deleteentry/{binary}', function($id, $binary
 });
 
 SimpleRouter::post('/character/{id}/upload', function($id) {
-    $character = EM::getInstance()->getRepository('MHF:Character')->find($id);
+    $character = EM::getInstance()->getRepository('MHFSaveManager\Model\Character')->find($id);
 
     if (!$character) {
         ResponseService::SendNotFound();

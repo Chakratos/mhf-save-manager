@@ -13,28 +13,28 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="itemboxSlotEditTitle">Editing Itemslot: <b></b></h5>
+                <h5 class="modal-title" id="itemboxSlotEditTitle"><?php echo $UILocale['Editing Itemslot']?>: <b></b></h5>
             </div>
             <div class="modal-body">
-                <h6>Item:</h6>
+                <h6><?php echo $UILocale['Item']?>:</h6>
                 <div class="input-group mb-2">
                     <select class="form-control" id="itemboxSlotItem">
                         <?php
-                        foreach (\MHFSaveManager\Service\ItemsService::$items as $id => $item) {
+                        foreach (\MHFSaveManager\Service\ItemsService::getForLocale() as $id => $item) {
                             printf('<option data-icon="%s" data-color="%s" value="%s">%s</option>', $item['icon'], $item['color'], $id, $item['name']);
                         }
                         ?>
                     </select>
                 </div>
                 
-                <h6>Quantity:</h6>
+                <h6><?php echo $UILocale['Quantity']?>:</h6>
                 <div class="input-group mb-2">
                     <input type="number" class="form-control" id="itemboxSlotQuantity" placeholder="999" min="1" max="999">
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" id="itemboxSlotSave">Save</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal"><?php echo $UILocale['Close']?></button>
+                <button type="button" class="btn btn-primary" id="itemboxSlotSave"><?php echo $UILocale['Save']?></button>
             </div>
         </div>
     </div>
@@ -59,7 +59,7 @@
                 if ($itemCount == 0) {
                     echo '<div class="row item-row">';
                 }
-                $tmpItem = \MHFSaveManager\Service\ItemsService::$items[$item->getId()];
+                $tmpItem = \MHFSaveManager\Service\ItemsService::getForLocale()[$item->getId()];
                 printf('
                             <div class="col item-col" data-id="%s" data-quantity="%s" data-slot="%s">
                                 <img class="item-icon" src="/img/item/%s%s.png">
@@ -71,7 +71,7 @@
                     $tmpItem['icon'],
                     $tmpItem['color'],
                     $item->getQuantity(),
-                    ucwords(implode(' ',preg_split('/(?=[A-Z][^A-Z][^A-Z])/', $item->getName())))
+                    implode(' ',preg_split('/(?=[A-Z][^A-Z][^A-Z])/', $item->getName()))
                 );
                 if (++$itemCount >= 10) {
                     echo '</div>';

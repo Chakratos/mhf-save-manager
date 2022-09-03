@@ -13,8 +13,8 @@ class DistributionsController extends AbstractController
 {
     public static function Index()
     {
-        $distributions = EM::getInstance()->getRepository('MHF:Distribution')->findAll();
-        $characters = \MHFSaveManager\Database\EM::getInstance()->getRepository('MHF:Character')->findAll();
+        $distributions = EM::getInstance()->getRepository('MHFSaveManager\Model\Distribution')->findAll();
+        $characters = \MHFSaveManager\Database\EM::getInstance()->getRepository('MHFSaveManager\Model\Character')->findAll();
         
         
         include_once ROOT_DIR . '/app/Views/distributions.php';
@@ -22,7 +22,7 @@ class DistributionsController extends AbstractController
     
     public static function IndexTest()
     {
-        $distributions = EM::getInstance()->getRepository('MHF:Distribution')->findAll();
+        $distributions = EM::getInstance()->getRepository('MHFSaveManager\Model\Distribution')->findAll();
     
         /** @var Distribution $distribution */
         foreach ($distributions as $distribution) {
@@ -37,7 +37,7 @@ class DistributionsController extends AbstractController
             for ($i = 0; $i < $numberOfItems; $i++) {
                 $item = new DistributionItem(bin2hex(fread($data, 13)));
                 printf("Reencoded hex value: %s<br>", $item);
-                printf("ItemNr: %s <br>Type: %s <br>Item: %s <br>Amount: %s<br><br>", $i+1, DistributionItem::$types[$item->getType()], ItemsService::$items[$item->getItemId()]['name'], $item->getAmount());
+                printf("ItemNr: %s <br>Type: %s <br>Item: %s <br>Amount: %s<br><br>", $i+1, DistributionItem::$types[$item->getType()], ItemsService::getForLocale()[$item->getItemId()]['name'], $item->getAmount());
                 
             }
             
@@ -50,7 +50,7 @@ class DistributionsController extends AbstractController
         $distribution = new Distribution();
     
         if (isset($_POST['id']) && $_POST['id'] > 0) {
-            $distribution = EM::getInstance()->getRepository('MHF:Distribution')->find($_POST['id']);
+            $distribution = EM::getInstance()->getRepository('MHFSaveManager\Model\Distribution')->find($_POST['id']);
         } else {
             EM::getInstance()->persist($distribution);
         }
@@ -86,7 +86,7 @@ class DistributionsController extends AbstractController
     
     public static function ExportDistributions()
     {
-        $records = EM::getInstance()->getRepository('MHF:Distribution')->findAll();
+        $records = EM::getInstance()->getRepository('MHFSaveManager\Model\Distribution')->findAll();
         self::arrayOfModelsToCSVDownload($records, 'Distributions');
     }
     

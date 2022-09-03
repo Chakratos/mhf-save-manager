@@ -1,10 +1,5 @@
 $(document).ready(function () {
-    const table = $('#roadshoptable').DataTable({
-        "columnDefs": [
-            { "width": "20%", "targets": 2 },
-            { "width": "15%", "targets": 1 },
-        ]
-    });
+    const table = $('#roadshoptable').DataTable();
 
     $('#roadshopItemSelect').select2({
         theme: 'bootstrap4',

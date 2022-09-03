@@ -21,12 +21,12 @@
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="distributionTitle">Editing Distribution: <b></b></h5>
+                <h5 class="modal-title" id="distributionTitle"><?php echo $UILocale['Editing Distribution']?>: <b></b></h5>
             </div>
             <div class="modal-body">
                 <div class="row">
                     <div class="col-6">
-                        <span class="pr-4">Color:</span><span>Name:</span>
+                        <span class="pr-4"><?php echo $UILocale['Color']?>:</span><span><?php echo $UILocale['Name']?>:</span>
                         <div class="input-group mb-2">
                             <select id="distributionNameColor">
                                 <?php
@@ -41,7 +41,7 @@
                             <input type="text" class="form-control" id="distributionName">
                         </div>
 
-                        <span class="pr-4">Color:</span><span>Description:</span>
+                        <span class="pr-4"><?php echo $UILocale['Color']?>:</span><span><?php echo $UILocale['Description']?>:</span>
                         <div class="input-group mb-2">
                             <select id="distributionDescColor">
                                 <?php
@@ -56,7 +56,7 @@
                             <textarea type="text" class="form-control" id="distributionDesc" rows="1"></textarea>
                         </div>
                         
-                        <h6>Deadline: (Optional)</h6>
+                        <h6><?php echo $UILocale['Deadline']?>: (<?php echo $UILocale['Optional']?>)</h6>
                         <div class="input-group mb-2">
                             <input style="cursor: text !important;" type="text" class="form-control datetimepicker-input" id="distributionDeadline" data-toggle="datetimepicker" data-target="#distributionDeadline"/>
                             <div class="input-group-append" data-target="#distributionDeadline" data-toggle="datetimepicker">
@@ -64,12 +64,12 @@
                             </div>
                         </div>
                         
-                        <h6>Times Acceptable:</h6>
+                        <h6><?php echo $UILocale['Times Acceptable']?>:</h6>
                         <div class="input-group mb-2">
                             <input type="number" class="form-control" id="distributionTimesAcceptable" min="0">
                         </div>
                         
-                        <h6>Type:</h6>
+                        <h6><?php echo $UILocale['Type']?>:</h6>
                         <div class="input-group mb-2">
                             <select class="form-control" id="distributionTypeSelect">
                                 <?php
@@ -79,7 +79,7 @@
                                 ?>
                             </select>
                         </div>
-                        <h6>Items:</h6>
+                        <h6><?php echo $UILocale['Items']?>:</h6>
                         <div class="input-group mb-2">
                             <select class="form-control" id="distributionItemsSelect" size="7">
                             </select>
@@ -88,10 +88,10 @@
                         <button class="btn btn-sm btn-danger w-25" id="delDistributionItem">-</button>
                     </div>
                     <div class="col-6">
-                        <h6>Valid for:</h6>
+                        <h6><?php echo $UILocale['Valid for']?>:</h6>
                         <div class="input-group mb-2">
                             <select class="form-control" id="distributionCharacterSelect">
-                                <option value="-1">Everyone</option>
+                                <option value="-1"><?php echo $UILocale['Everyone']?></option>
                                 <?php
                                 /** @var \MHFSaveManager\Model\Character $character */
                                 foreach ($characters as $character) {
@@ -100,33 +100,33 @@
                                 ?>
                             </select>
                         </div>
-                        <h6>Rank Limitations, 65535 = No Limit:</h6>
-                        <h6>Min HR:</h6>
+                        <h6><?php echo $UILocale['Rank Limitations']?>, 65535 = <?php echo $UILocale['No Limit']?>:</h6>
+                        <h6><?php echo $UILocale['Min HR']?>:</h6>
                         <div class="input-group mb-2">
                             <input type="number" class="form-control" id="distributionMinHR" min="0" max="65535" placeholder="65535">
                         </div>
         
-                        <h6>Max HR:</h6>
+                        <h6><?php echo $UILocale['Max HR']?>:</h6>
                         <div class="input-group mb-2">
                             <input type="number" class="form-control" id="distributionMaxHR" min="0" max="65535" placeholder="65535">
                         </div>
         
-                        <h6>Min SR:</h6>
+                        <h6><?php echo $UILocale['Min SR']?>:</h6>
                         <div class="input-group mb-2">
                             <input type="number" class="form-control" id="distributionMinSR" min="0" max="65535" placeholder="65535">
                         </div>
         
-                        <h6>Max SR:</h6>
+                        <h6><?php echo $UILocale['Max SR']?>:</h6>
                         <div class="input-group mb-2">
                             <input type="number" class="form-control" id="distributionMaxSR" min="0" max="65535" placeholder="65535">
                         </div>
         
-                        <h6>Min GR:</h6>
+                        <h6><?php echo $UILocale['Min GR']?>:</h6>
                         <div class="input-group mb-2">
                             <input type="number" class="form-control" id="distributionMinGR" min="0" max="65535" placeholder="65535">
                         </div>
         
-                        <h6>Max GR:</h6>
+                        <h6><?php echo $UILocale['Max GR']?>:</h6>
                         <div class="input-group mb-2">
                             <input type="number" class="form-control" id="distributionMaxGR" min="0" max="65535" placeholder="65535">
                         </div>
@@ -135,10 +135,10 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary mr-auto" id="colorsButton" style="background-color: lightseagreen"
-                        data-placement="top" data-html="true" data-original-title="<img src='/img/colors.png'>">Colors Table
+                        data-placement="top" data-html="true" data-original-title="<img src='/img/colors.png'>"><?php echo $UILocale['Colors Table']?>
                 </button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" id="distributionSave">Save</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal"><?php echo $UILocale['Close']?></button>
+                <button type="button" class="btn btn-primary" id="distributionSave"><?php echo $UILocale['Save']?></button>
             </div>
         </div>
     </div>
@@ -147,10 +147,10 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="distributionItemTitle">Editing Item: <b></b></h5>
+                <h5 class="modal-title" id="distributionItemTitle"><?php echo $UILocale['Editing Item']?>: <b></b></h5>
             </div>
             <div class="modal-body">
-                <h6>Type:</h6>
+                <h6><?php echo $UILocale['Type']?>:</h6>
                 <div class="input-group mb-2">
                     <select class="form-control" id="distributionItemTypeSelect">
                         <?php
@@ -161,24 +161,24 @@
                     </select>
                 </div>
 
-                <h6>Amount:</h6>
+                <h6><?php echo $UILocale['Amount']?>:</h6>
                 <div class="input-group mb-2">
                     <input type="number" class="form-control" id="distributionAmount" min="0" max="65535" placeholder="1">
                 </div>
 
                 <div id="selectgroup" class="d-none">
-                    <h6>Item:</h6>
+                    <h6><?php echo $UILocale['Item']?>:</h6>
                     <div class="input-group mb-2">
                         <select class="form-control distributionSelect d-none" id="distributionItemSelect">
                             <?php
-                            foreach (\MHFSaveManager\Service\ItemsService::$items as $id => $item) {
+                            foreach (\MHFSaveManager\Service\ItemsService::getForLocale() as $id => $item) {
                                 printf('<option value="%s">[%1$s] %s</option>', $id, $item['name']);
                             }
                             ?>
                         </select>
                         <select class="form-control distributionSelect d-none" id="distributionPoogieOutfitsSelect">
                             <?php
-                            foreach (\MHFSaveManager\Service\PoogieOutfitService::$outfits as $id => $item) {
+                            foreach (\MHFSaveManager\Service\PoogieOutfitService::getForLocale() as $id => $item) {
                                 printf('<option value="%s">[%1$s] %s</option>', $id, $item['name']);
                             }
                             ?>
@@ -186,8 +186,7 @@
                         <?php
                         foreach (EquipService::$types as $type) {
                             printf('<select class="form-control distributionSelect d-none" id="distribution%sSelect">', $type);
-                            $tmp = lcfirst($type).'Name';
-                            foreach (EquipService::$$tmp as $id => $item) {
+                            foreach (EquipService::getForLocale(lcfirst($type).'Name') as $id => $item) {
                                 printf('<option value="%s">[%1$s] %s</option>', $id, $item);
                             }
                             printf('</select>
@@ -200,8 +199,8 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" id="distributionSaveItem">Save</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal"><?php echo $UILocale['Close']?></button>
+                <button type="button" class="btn btn-primary" id="distributionSaveItem"><?php echo $UILocale['Save']?></button>
             </div>
         </div>
     </div>
@@ -210,18 +209,18 @@
     <table id="distributiontable" class="table table-striped table-bordered" style="width:100%">
         <thead>
         <tr>
-            <th>Id</th>
-            <th>Char ID</th>
-            <th>Type</th>
-            <th>Deadline</th>
-            <th>Name</th>
-            <th>Desc</th>
-            <th>Times Acceptable</th>
-            <th>Min HR</th>
-            <th>Max HR</th>
-            <th>Min GR</th>
-            <th>Max GR</th>
-            <th>Actions</th>
+            <th><?php echo $UILocale['ID']?></th>
+            <th><?php echo $UILocale['Char ID']?></th>
+            <th><?php echo $UILocale['Type']?></th>
+            <th><?php echo $UILocale['Deadline']?></th>
+            <th><?php echo $UILocale['Name']?></th>
+            <th><?php echo $UILocale['Desc']?></th>
+            <th><?php echo $UILocale['Times Acceptable']?></th>
+            <th><?php echo $UILocale['Min HR']?></th>
+            <th><?php echo $UILocale['Max HR']?></th>
+            <th><?php echo $UILocale['Min GR']?></th>
+            <th><?php echo $UILocale['Max GR']?></th>
+            <th><?php echo $UILocale['Actions']?></th>
         </tr>
         </thead>
         <tbody>
@@ -276,9 +275,9 @@
         ?>
         </tbody>
     </table>
-    <button id="createDistribution" class="btn btn-success">Create Distribution</button>
-    <a class="btn btn-primary" href="/servertools/distributions/export">Export</a>
-    <button id="importDistribution" class="btn btn-warning">Import</button>
+    <button id="createDistribution" class="btn btn-success"><?php echo $UILocale['Create Distribution']?></button>
+    <a class="btn btn-primary" href="/servertools/distributions/export"><?php echo $UILocale['Export']?></a>
+    <button id="importDistribution" class="btn btn-warning"><?php echo $UILocale['Import']?></button>
     <input type="file" id="importDistributionInput" style="display: none" accept=".csv">
 </div>
 
@@ -307,5 +306,21 @@
         ?>
     };
 </script>
-
+<script>
+    $(document).ready(function () {
+        $('#distributiontable').DataTable({
+            "columnDefs": [
+                {"width": "20%", "targets": 5},
+                {"width": "15%", "targets": 4},
+            ],
+            language: {
+                <?php
+                if ($_SESSION['locale'] == 'ja_JP') {
+                    echo "url: '//cdn.datatables.net/plug-ins/1.12.1/i18n/ja.json'";
+                }
+                ?>
+            }
+        });
+    });
+</script>
 <script src="/js/distribution.js"></script>

@@ -9,10 +9,10 @@
 <div class="container">
     <nav>
         <div class="nav nav-tabs" id="nav-tab" role="tablist">
-            <a class="nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-info" role="tab" aria-controls="nav-home" aria-selected="true">Info</a>
-            <a class="nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-points" role="tab" aria-controls="nav-profile" aria-selected="false">Currency / Points</a>
-            <a class="nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-items" role="tab" aria-controls="nav-contact" aria-selected="false">Items</a>
-            <a class="nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-equipment" role="tab" aria-controls="nav-contact" aria-selected="false">Equipment</a>
+            <a class="nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-info" role="tab" aria-controls="nav-home" aria-selected="true"><?php echo $UILocale['Info']?></a>
+            <a class="nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-points" role="tab" aria-controls="nav-profile" aria-selected="false"><?php echo $UILocale['Currency / Points']?></a>
+            <a class="nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-items" role="tab" aria-controls="nav-contact" aria-selected="false"><?php echo $UILocale['Items']?></a>
+            <a class="nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-equipment" role="tab" aria-controls="nav-contact" aria-selected="false"><?php echo $UILocale['Equipment']?></a>
         </div>
     </nav>
     <div class="tab-content" id="nav-tabContent">

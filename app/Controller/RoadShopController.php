@@ -11,7 +11,7 @@ class RoadShopController extends AbstractController
 {
     public static function Index()
     {
-        $roadItems = EM::getInstance()->getRepository('MHF:NormalShopItem')->matching(
+        $roadItems = EM::getInstance()->getRepository('MHFSaveManager\Model\NormalShopItem')->matching(
             Criteria::create()->where(Criteria::expr()->eq('shoptype', '10'))
         )->toArray();
 
@@ -23,9 +23,9 @@ class RoadShopController extends AbstractController
         $item = new NormalShopItem();
     
         if (isset($_POST['id']) && $_POST['id'] > 0) {
-            $item = EM::getInstance()->getRepository('MHF:NormalShopItem')->find($_POST['id']);
+            $item = EM::getInstance()->getRepository('MHFSaveManager\Model\NormalShopItem')->find($_POST['id']);
         } else {
-            $item->setItemhash(EM::getInstance()->getRepository('MHF:NormalShopItem')->matching(
+            $item->setItemhash(EM::getInstance()->getRepository('MHFSaveManager\Model\NormalShopItem')->matching(
                     Criteria::create()->orderBy(['itemhash' => 'desc']))->first()->getItemhash()+1);
             EM::getInstance()->persist($item);
         }
@@ -52,7 +52,7 @@ class RoadShopController extends AbstractController
     
     public static function ExportRoadShopItems()
     {
-        $records = EM::getInstance()->getRepository('MHF:NormalShopItem')->matching(
+        $records = EM::getInstance()->getRepository('MHFSaveManager\Model\NormalShopItem')->matching(
         Criteria::create()->where(Criteria::expr()->eq('shoptype', '10')));
         self::arrayOfModelsToCSVDownload($records, "RoadShopItems");
     }
