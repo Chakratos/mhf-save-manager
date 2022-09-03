@@ -2,7 +2,7 @@ A simple Webapplication created to manage Character savedata user by the MHF Ser
 
 ### Note: This tool is only meant for Server admins. This cannot be used if you play on a server thats hosted by someone else!
 
-## To fix the Urgent quest bug you need to set your Keyquestflag to 0000000000000000 (16 0s)
+---
 
 NOOB SETUP METHOD!
 1. Download "MHFSaveManager.7z" from releases
@@ -17,7 +17,21 @@ Advanced Setup method:
 2. Fill out config.php with your Postgresql credentials
 3. run "composer update"
 4. Create a VHost which document_root is the public folder. (Add Allow Override for .htaccess to work)
+---
 
+##New Feature: Languages!
+Currently supported are English and Japanese!
+
+To add a new language
+1. go to: app/I18N
+2. Copy en_GB
+3. Name the copy to the locale you are going to add
+4. Edit the .php files inside
+5. Schema is either 'ID' => 'Translation', or 'English Translation' => 'New Translation' e.g. 'Language' => 'Sprache', for german.
+6. To add you Language to the Dropdown:
+7. Edit app/Views/topnav.php and add a line there like <a class="dropdown-item" href="/language/YOUR_LOCALE">Language</a>
+8. Or create a pull request / send me the files and i will add them
+---
 ![Sample Image from GUI](https://i.imgur.com/z3F8q6B.png)
 ![Sample Image from Backup-GUI](https://i.imgur.com/SfAQC2f.png)
 ![Sample Image from Edit-GUI](https://i.imgur.com/Nn1ZJCV.png)
