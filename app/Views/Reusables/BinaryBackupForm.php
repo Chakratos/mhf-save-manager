@@ -1,7 +1,17 @@
 <div class="col-md-4">
     <div class="form-group">
         <div class="mb-1">
-            <label for="selectDatabaseBackup"><?php echo $binaryName . '-' . $UILocale['Backups'] ?></label>
+            <div class="row">
+                <div class="col-6">
+                    <label for="selectDatabaseBackup"><?php echo $binaryName . '-' . $UILocale['Backups'] ?></label>
+                </div>
+                <div class="col-6">
+                    <button data-binary="<?php echo $binaryName ?>" data-charid="<?php echo $character->getId() ?>"
+                        class="renameEntry btn btn-sm btn-outline-secondary" style="margin-left: 20%;">
+                            <i class="fas fa-pen"></i> <?php echo $UILocale['Rename entry']?>
+                    </button>
+                </div>
+            </div>
             <select class="form-control form-control-sm backup-list"
                     id="select<?php echo $binaryName ?>Backup" size="5">
                 <?php

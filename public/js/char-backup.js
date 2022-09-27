@@ -89,6 +89,34 @@ $(document).ready(function () {
         });
     });
 
+    $('.renameEntry').click(function() {
+        let formdata = new FormData();
+        let selected = $('#select' + $(this).attr('data-binary') + 'Backup').val();
+        if (selected == null) {
+            alert('Please select a backup first!');
+            return;
+        }
+        let newName = prompt("Please enter the new name", "New name.bin");
+
+        if (newName == null || newName == "") {
+            return;
+        }
+
+        formdata.append("entry", selected);
+        formdata.append("newName", newName);
+
+        $.ajax({
+            url: "/character/"+ $(this).attr('data-charid') +"/renameentry/" + $(this).attr('data-binary'),
+            type: "POST",
+            data: formdata,
+            processData: false,
+            contentType: false,
+            success: function (result) {
+                location.reload();
+            }
+        });
+    });
+
     $('.decompEntry').click(function() {
         let formdata = new FormData();
         let selected = $('#select' + $(this).attr('data-binary') + 'Backup').val();
