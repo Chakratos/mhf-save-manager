@@ -107,6 +107,26 @@ class CharacterController
         return true;
     }
     
+    public static function EntryRename(Character $character, $binary)
+    {
+        $entryPath = sprintf('%s/storage/%s/%s/',ROOT_DIR, $binary, $character->getId());
+        if (!file_exists($entryPath . $_POST['entry'])) {
+            ResponseService::SendNotFound();
+        }
+        
+        $newName = $_POST['newName'];
+        
+        if (!substr($newName, -strlen('.bin')) === '.bin') {
+            ResponseService::SendUnprocessableEntity('Safety feature! Please end your Backup name with an ".bin"');
+        }
+        
+        if (rename($entryPath . $_POST['entry'], $entryPath . $newName)) {
+            ResponseService::SendOk();
+        }
+        
+        ResponseService::SendServerError();
+    }
+    
     public static function EntryCompression(Character $character, string $binary, $decomp)
     {
         $savePath = sprintf('%s/storage/%s',ROOT_DIR, $binary);
@@ -126,7 +146,7 @@ class CharacterController
         } else {
             $data = CompressionService::Compress(file_get_contents($entryPath));
         }
-        $success = file_put_contents(sprintf('%s/%scompressed_%s.bin', $savePath, $decomp ? "de" : "", $_POST['entry']), $data);
+        $success = file_put_contents(sprintf('%s/%scompressed_%s', $savePath, $decomp ? "de" : "", $_POST['entry']), $data);
         
         if (!$success) {
             ResponseService::SendServerError('Missing write permissions on file system!');

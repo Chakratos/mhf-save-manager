@@ -309,6 +309,16 @@ SimpleRouter::post('/character/{id}/replace/{binary}', function($id, $binary) {
     CharacterController::ReplaceSavedata($character, $binary);
 });
 
+SimpleRouter::post('/character/{id}/renameentry/{binary}', function($id, $binary) {
+    $character = EM::getInstance()->getRepository('MHFSaveManager\Model\Character')->find($id);
+    if (!$character) {
+        ResponseService::SendNotFound();
+    }
+    
+    /** @var Character $character */
+    CharacterController::EntryRename($character, $binary);
+});
+
 SimpleRouter::post('/character/{id}/compressentry/{binary}', function($id, $binary) {
     $character = EM::getInstance()->getRepository('MHFSaveManager\Model\Character')->find($id);
     if (!$character) {

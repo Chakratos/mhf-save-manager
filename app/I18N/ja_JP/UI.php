@@ -20,6 +20,7 @@ return [
     'Create decomp' => 'Create decomp',
     'Compress entry' => 'Compress entry',
     'Decomp entry' => 'Decomp entry',
+    'Rename entry' => 'Rename entry',
     'Apply' => 'Apply',
     'Upload' => 'Upload',
     'Download' => 'Download',
