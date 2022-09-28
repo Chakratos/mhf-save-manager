@@ -12,7 +12,8 @@ services:
     depends_on:
       - php
   php:
-    image: php:fpm-alpine
+    build: 
+      context: ./docker/dev/php
     networks:
       - internal
     volumes:
