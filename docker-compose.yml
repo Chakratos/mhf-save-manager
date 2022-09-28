@@ -1,0 +1,24 @@
+version: "3.9"
+services:
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "8080:80"
+    networks:
+      - internal
+    volumes:
+      - ./docker/dev/nginx/default.conf:/etc/nginx/conf.d/default.conf
+      - .:/var/www/html
+    depends_on:
+      - php
+  php:
+    build: 
+      context: ./docker/dev/php
+    networks:
+      - internal
+    volumes:
+      - .:/var/www/html/
+
+networks:
+  internal:
+    driver: bridge
