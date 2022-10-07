@@ -353,3 +353,20 @@ SimpleRouter::post('/character/{id}/upload', function($id) {
     /** @var Character $character */
     CharacterController::UploadSavedata($character);
 });
+
+SimpleRouter::post('/character/{id}/charupload', function($id) {
+    $character = EM::getInstance()->getRepository('MHFSaveManager\Model\Character')->find($id);
+    
+    if (!$character) {
+        ResponseService::SendNotFound();
+    }
+    
+    foreach ($_FILES['files']['error'] as $error) {
+        if ($error != UPLOAD_ERR_OK) {
+            ResponseService::SendServerError();
+        }
+    }
+    
+    /** @var Character $character */
+    CharacterController::UploadChar($character);
+});

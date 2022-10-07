@@ -11,6 +11,39 @@ $(document).ready(function () {
         });
     });
 
+    $('.uploadChar').click(function() {
+        if (confirm('You are going to overwrite multiple Savedata fields for this character!\n\nThis only works Backups named according to the field it replaces, for example "savedata.bin" will replace savedata etc.')) {
+            $('.uploadCharInput').trigger('click');
+        }
+    });
+
+    $('.uploadCharInput').change(function() {
+        if($(this).prop('files').length <= 0) {
+            return;
+        }
+
+        let formdata = new FormData();
+        let files = $(this).prop('files');
+
+        for (let i = 0; i < files.length; i++) {
+            formdata.append("files[]", files[i]);
+        }
+
+        $.ajax({
+            url: "/character/" + $(this).attr('data-charid') + "/charupload",
+            type: "POST",
+            data: formdata,
+            processData: false,
+            contentType: false,
+            error: function (result) {
+                alert(result.message)
+            },
+            success: function (result) {
+                alert('The following saves where applied:' + '\n' + result.message.found.join('\n'));
+            }
+        });
+    });
+
     $('.uploadBinaryButton').click(function() {
         let binary = $(this).attr('data-binary');
         $('.uploadBinaryInput[data-binary="'+ binary +'"').trigger('click');
