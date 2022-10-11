@@ -78,6 +78,20 @@ SimpleRouter::post('/servertools/distributions/delete/{id}', function($id) {
     ResponseService::SendOk();
 });
 
+SimpleRouter::post('/servertools/distributions/duplicate/{id}', function($id) {
+    /** @var Distribution $dist */
+    $dist = EM::getInstance()->getRepository('MHFSaveManager\Model\Distribution')->find($id);
+    if (!$dist) {
+        ResponseService::SendNotFound();
+    }
+    $em = EM::getInstance();
+    $new = clone $dist;
+    $em->persist($new);
+    $em->flush();
+    
+    ResponseService::SendOk();
+});
+
 SimpleRouter::get('/servertools/roadshop', function() {
     RoadShopController::Index();
 });

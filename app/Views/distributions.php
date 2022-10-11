@@ -244,6 +244,9 @@
                 <button data-id="%1$s" data-characterid="%2$s" data-type="%3$s" data-deadline="%4$s" data-name="%5$s" data-desc="%6$s" data-timesacceptable="%7$s" data-minhr="%8$s" data-maxhr="%9$s" data-minsr="%10$s" data-maxsr="%11$s" data-mingr="%12$s" data-maxgr="%13$s" data-namecolor="%19$s" data-desccolor="%20$s" class="editDistribution btn btn-sm btn-outline-success">
                     <i class="fas fa-pencil"></i>
                 </button>
+                <button data-id="%1$s" class="duplicateDistribution btn btn-sm btn-outline-success">
+                    <i class="fas fa-copy"></i>
+                </button>
                 <button data-id="%1$s" class="deleteDistribution btn btn-sm btn-outline-danger">
                     <i class="fas fa-trash-can"></i>
                 </button>

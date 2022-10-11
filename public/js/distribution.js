@@ -135,6 +135,30 @@ $(document).ready(function () {
         });
     });
 
+    $('#distributiontable').on('click', '.duplicateDistribution', function () {
+        let formdata = new FormData();
+        let distId = $(this).attr('data-id');
+        formdata.append("distribution", distId);
+
+        if (!window.confirm("Are you sure you want to duplicate the entry with the ID : " + distId)) {
+            return;
+        }
+
+        $.ajax({
+            url: "/servertools/distributions/duplicate/" + distId,
+            type: "POST",
+            data: formdata,
+            processData: false,
+            contentType: false,
+            success: function (result) {
+                location.reload();
+            },
+            error: function (result) {
+                alert(result.responseJSON.message);
+            }
+        });
+    });
+
     $('#distributiontable').on('click', '.editDistribution', function () {
         $('#distributionTitle > b')[0].innerHTML = $(this).data('id');
         $('#distributionTypeSelect').val($(this).data('type'));
