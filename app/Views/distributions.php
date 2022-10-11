@@ -264,10 +264,10 @@
             $distribution->getMinGr(),
             $distribution->getMaxGr(),
             Distribution::$types[$distribution->getType()],
-            $distribution->getMinHr() != 65535 ? : '-',
-            $distribution->getMaxHr() != 65535 ? : '-',
-            $distribution->getMinGr() != 65535 ? : '-',
-            $distribution->getMaxGr() != 65535 ? : '-',
+            $distribution->getMinHr() != 65535 ? $distribution->getMinHr() : '-',
+            $distribution->getMaxHr() != 65535 ? $distribution->getMaxHr() : '-',
+            $distribution->getMinGr() != 65535 ? $distribution->getMinGr() : '-',
+            $distribution->getMaxGr() != 65535 ? $distribution->getMaxGr() : '-',
             $distribution->getEventNameColor(),
             $distribution->getDescriptionColor()
             );
