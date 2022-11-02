@@ -44,7 +44,9 @@ docker-compose exec php bash
 composer install
 ```
 
-5. Open <http://localhost:8080> with your browser to see the app.
+6. Open <http://localhost:8080> with your browser to see the app.
+
+> Warning: if the backup functions don't work, it could be a permissions error. In Linux, use `sudo chmod 777 -R storage`
 
 ---
 
