@@ -20,11 +20,11 @@ A simple Webapplication created to manage Character savedata user by the MHF Ser
 1. Rename config.sample.php -> config.php
 2. Fill out config.php with your Postgresql credentials
 3. run "composer update"
-4. Create a VHost which document_root is the public folder. (Add Allow Override for .htaccess to work)
+4. Create a VHost in which document_root is the public folder. (Add Allow Override for .htaccess to work)
 
 ### Development with Docker
 
-1. Rename [config.sample.php](/config.sample.php) -> config.php and fill with your PostgreSQL credentials.
+1. Rename [config.sample.php](/config.sample.php) -> config.php and fill in your PostgreSQL credentials.
 
 2. Run the development server
 
@@ -32,7 +32,21 @@ A simple Webapplication created to manage Character savedata user by the MHF Ser
 docker-compose up -d
 ```
 
-Open <http://localhost:8080> with your browser to see the app.
+3. To install the dependencies just access the PHP container
+
+```sh
+docker-compose exec php bash
+```
+
+4. Run `composer install` inside the container
+
+```sh
+composer install
+```
+
+5. Open <http://localhost:8080> with your browser to see the app.
+
+> Warning: if the backup functions don't work, it could be a permissions error. In Linux, use `sudo chmod 777 -R storage`
 
 ---
 
