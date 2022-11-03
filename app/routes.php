@@ -1,7 +1,5 @@
 <?php
 
-use Doctrine\Common\Collections\Criteria;
-use MHFSaveManager\Controller\BinaryController;
 use MHFSaveManager\Controller\CharacterController;
 use MHFSaveManager\Controller\DistributionsController;
 use MHFSaveManager\Controller\SaveDataController;

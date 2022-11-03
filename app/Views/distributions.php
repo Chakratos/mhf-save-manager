@@ -194,9 +194,10 @@
                 
                         }
                         ?>
-                        <input type="text" class="form-control d-none" id="distributionFurnitureInput">
                     </div>
                 </div>
+                <h6>Item ID: <span style="color: red">Expert only!</span><br>(This will overwrite selected items from the dropdown!)</h6>
+                <input type="text" placeholder="Item ID" class="form-control" id="distributionItemIDInput">
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal"><?php echo $UILocale['Close']?></button>

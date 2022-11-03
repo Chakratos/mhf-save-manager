@@ -16,13 +16,12 @@
 
     "require": {
         "php": "^8.1",
-        "pecee/simple-router": "^4.2.0.6",
         "doctrine/orm": "*",
       "ext-json": "*",
         "mdurrant/php-binary-reader": "^1.0",
         "doctrine/cache": "^1.11.3",
         "doctrine/annotations": "^1.13",
         "symfony/cache": "^5.4",
-        "omines/datatables-bundle": "^0.5.5"
+        "pecee/simple-router": "4.3.7.2"
     }
 }
