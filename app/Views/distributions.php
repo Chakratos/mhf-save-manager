@@ -194,9 +194,10 @@
                 
                         }
                         ?>
-                        <input type="text" class="form-control d-none" id="distributionFurnitureInput">
                     </div>
                 </div>
+                <h6>Item ID: <span style="color: red">Expert only!</span><br>(This will overwrite selected items from the dropdown!)</h6>
+                <input type="text" placeholder="Item ID" class="form-control" id="distributionItemIDInput">
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal"><?php echo $UILocale['Close']?></button>
@@ -244,6 +245,9 @@
                 <button data-id="%1$s" data-characterid="%2$s" data-type="%3$s" data-deadline="%4$s" data-name="%5$s" data-desc="%6$s" data-timesacceptable="%7$s" data-minhr="%8$s" data-maxhr="%9$s" data-minsr="%10$s" data-maxsr="%11$s" data-mingr="%12$s" data-maxgr="%13$s" data-namecolor="%19$s" data-desccolor="%20$s" class="editDistribution btn btn-sm btn-outline-success">
                     <i class="fas fa-pencil"></i>
                 </button>
+                <button data-id="%1$s" class="duplicateDistribution btn btn-sm btn-outline-success">
+                    <i class="fas fa-copy"></i>
+                </button>
                 <button data-id="%1$s" class="deleteDistribution btn btn-sm btn-outline-danger">
                     <i class="fas fa-trash-can"></i>
                 </button>
@@ -254,8 +258,8 @@
             $distribution->getCharacterId(),
             $distribution->getType(),
             $distribution->getDeadline() ? $distribution->getDeadline()->format('Y-m-d H:i') : "",
-            $distribution->getEventName(),
-            $distribution->getDescription(),
+            htmlspecialchars($distribution->getEventName()),
+            htmlspecialchars($distribution->getDescription()),
             $distribution->getTimesAcceptable(),
             $distribution->getMinHr(),
             $distribution->getMaxHr(),
@@ -264,10 +268,10 @@
             $distribution->getMinGr(),
             $distribution->getMaxGr(),
             Distribution::$types[$distribution->getType()],
-            $distribution->getMinHr() != 65535 ? : '-',
-            $distribution->getMaxHr() != 65535 ? : '-',
-            $distribution->getMinGr() != 65535 ? : '-',
-            $distribution->getMaxGr() != 65535 ? : '-',
+            $distribution->getMinHr() != 65535 ? $distribution->getMinHr() : '-',
+            $distribution->getMaxHr() != 65535 ? $distribution->getMaxHr() : '-',
+            $distribution->getMinGr() != 65535 ? $distribution->getMinGr() : '-',
+            $distribution->getMaxGr() != 65535 ? $distribution->getMaxGr() : '-',
             $distribution->getEventNameColor(),
             $distribution->getDescriptionColor()
             );

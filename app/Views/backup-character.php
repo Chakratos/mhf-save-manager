@@ -11,6 +11,8 @@
     }
 </style>
 <div class="container">
+    <input type="file" class="uploadCharInput" data-charid="<?php echo $character->getId() ?>"
+           style="display: none" multiple accept="bin/*">
     <table class="table" id="CharactersTable">
         <thead>
         <tr>
@@ -21,6 +23,7 @@
             <th>is_new_character</th>
             <th>last_login</th>
             <th><?php echo $UILocale['Backup-All']?></th>
+            <th><?php echo $UILocale['Apply all from directory']?></th>
             <th><?php echo $UILocale['Reset']?></th>
         </tr>
         </thead>
@@ -34,17 +37,16 @@
                 <td>%s</td>
                 <td>%s</td>
                 <td>%s</td>
-                <td><button class="backupChar btn" data-binary="all" data-charid="%s"><i class="fa fa-save"></i></button></td>
-                <td><button class="resetChar btn" data-charid="%s"><i class="fa fa-undo"></i></button></td>
+                <td><button class="backupChar btn" data-binary="all" data-charid="%1$s"><i class="fa fa-save"></i></button></td>
+                <td><button class="uploadChar btn" data-charid="%1$s"><i class="fa fa-upload"></i></button></td>
+                <td><button class="resetChar btn" data-charid="%1$s"><i class="fa fa-undo"></i></button></td>
             </tr>',
             $character->getId(),
             $character->getUserId(),
             $character->getName(),
             $character->isFemale() ? '<i class="fa fa-venus"></i>' : '<i class="fa fa-mars"></i>',
             $character->isNewCharacter() ? $UILocale['True'] : $UILocale['False'],
-            $character->getLastLogin(),
-            $character->getId(),
-            $character->getId()
+            $character->getLastLogin()
         );
         ?>
         </tbody>

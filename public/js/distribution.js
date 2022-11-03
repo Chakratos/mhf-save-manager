@@ -17,9 +17,9 @@ $(document).ready(function () {
             let typefancy = $('#distributionItemTypeSelect :selected').text().replace(/\s/g,'');
             $('#distribution' + typefancy + 'Select').val($(this).data('itemid'));
             $('#distribution' + typefancy + 'Select').trigger('change');
-        } else if ($(this).data('type') == 8) {
-            $('#distributionFurnitureInput').val($(this).data('itemid'));
         }
+
+        $('#distributionItemIDInput').val($(this).data('itemid'));
         $('#distributionAmount').val($(this).data('amount'));
         $('#distributionItemModal').modal('show');
     });
@@ -33,7 +33,23 @@ $(document).ready(function () {
             $('#distribution' + $('#distributionItemTypeSelect :selected').text().replace(/\s/g,'') + 'Select').next().removeClass('d-none');
         } else if ($(this).val() == 8) {
             $('#selectgroup').removeClass('d-none');
-            $('#distributionFurnitureInput').removeClass('d-none');
+        }
+    });
+
+    $('#distributionItemIDInput').change(function() {
+        let typefancy = $('#distributionItemTypeSelect :selected').text().replace(/\s/g,'');
+        let select = $('#distribution' + typefancy + 'Select');
+        if (select.val() == "0000") {
+            return;
+        }
+
+        select.val("0000");
+        select.trigger('change');
+    });
+
+    $('.distributionSelect').change(function() {
+        if ($(this).val() != "0000" && $(this).val() != null) {
+            $('#distributionItemIDInput').val("");
         }
     });
 
@@ -47,7 +63,7 @@ $(document).ready(function () {
         $('#distributionItemTypeSelect').trigger('change');
         $('#distributionLegsSelect').val("0000");
         $('#distributionLegsSelect').trigger('change');
-        $('#distributionFurnitureInput').val("");
+        $('#distributionItemIDInput').val("");
         $('#distributionAmount').val("");
         $('#distributionItemModal').modal('show');
     });
@@ -66,8 +82,10 @@ $(document).ready(function () {
 
         if ($('#distributionItemTypeSelect').val() <= 7 || $('#distributionItemTypeSelect').val() == 15) {
             value = $('#distribution' + $('#distributionItemTypeSelect :selected').text().replace(/\s/g,'') + 'Select').val();
-        } else if ($('#distributionItemTypeSelect').val() == 8) {
-            value = $('#distributionFurnitureInput').val();
+        }
+
+        if ($('#distributionItemIDInput').val() != "") {
+            value = $('#distributionItemIDInput').val();
         }
 
         let option = $(generateOption(
@@ -135,6 +153,30 @@ $(document).ready(function () {
         });
     });
 
+    $('#distributiontable').on('click', '.duplicateDistribution', function () {
+        let formdata = new FormData();
+        let distId = $(this).attr('data-id');
+        formdata.append("distribution", distId);
+
+        if (!window.confirm("Are you sure you want to duplicate the entry with the ID : " + distId)) {
+            return;
+        }
+
+        $.ajax({
+            url: "/servertools/distributions/duplicate/" + distId,
+            type: "POST",
+            data: formdata,
+            processData: false,
+            contentType: false,
+            success: function (result) {
+                location.reload();
+            },
+            error: function (result) {
+                alert(result.responseJSON.message);
+            }
+        });
+    });
+
     $('#distributiontable').on('click', '.editDistribution', function () {
         $('#distributionTitle > b')[0].innerHTML = $(this).data('id');
         $('#distributionTypeSelect').val($(this).data('type'));
@@ -163,14 +205,14 @@ $(document).ready(function () {
 
     function generateOption(type, id, amount, i)
     {
-        typeFancy = $("#distributionItemTypeSelect option[value='" + type + "']").text().replace(/\s/g,'');
+        typeFancy = $("#distributionItemTypeSelect option[value='" + type + "']").text();
         let name = "";
 
         if (type <= 7 || type == 15) {
 
-            name = " | " + $("#distribution" + typeFancy + "Select option[value='" + id + "']").text().replace(/\s/g,'');
-        } else if (type == 8) {
-            name = " | " + id;
+            name = " | " + $("#distribution" + typeFancy + "Select option[value='" + id + "']").text();
+        } else {
+            name = " | [" + id + "]";
         }
 
         return '<option data-type="' + type + '" data-itemid="' + id + '" data-amount="' + amount + '">' + i + ". " + amount + "x " + typeFancy + name + '</option>';
@@ -258,7 +300,7 @@ $(document).ready(function () {
 
             $('#distributionModal').modal('hide');
         }).catch(function(response) {
-            alert(response.message);
+            alert(response.responseText);
             saveButton.prop('disabled', false);
         });
     });

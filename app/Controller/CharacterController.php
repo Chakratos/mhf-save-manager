@@ -196,6 +196,34 @@ class CharacterController
         
     }
     
+    public static function UploadChar(Character $character)
+    {
+        foreach ($_FILES['files']['name'] as &$name) {
+            $tmp = explode('.', $name);
+            if (strtolower(end($tmp)) !== 'bin') {
+                ResponseService::SendServerError('Only .bin files are allowed!');
+            }
+            $name = $tmp[0];
+        }
+        $return['found'] = [];
+        $binaries = BinaryController::getBinaryTypes();
+        for ($i = 0; $i < count($_FILES['files']['name']); $i++) {
+            if (in_array($_FILES['files']['name'][$i], $binaries)) {
+                $return['found'][] = $_FILES['files']['name'][$i];
+                
+                $resource = fopen($_FILES['files']['tmp_name'][$i], "r");
+                $action = sprintf('set%s', ucfirst($_FILES['files']['name'][$i]));
+                $character->$action($resource);
+                EM::getInstance()->flush();
+            }
+        }
+        if (empty($return['found'])) {
+            $return['found'][] = 'Nothing! Make sure your naming is correct!';
+        }
+        
+        ResponseService::SendOk($return);
+    }
+    
     public static function GetBackups(Character $character): array
     {
         $binaries = BinaryController::getBinaryTypes();

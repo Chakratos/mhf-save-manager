@@ -21,6 +21,7 @@ return [
     'Compress entry' => 'Compress entry',
     'Decomp entry' => 'Decomp entry',
     'Rename entry' => 'Rename entry',
+    'Apply all from directory' => 'Apply all from directory',
     'Apply' => 'Apply',
     'Upload' => 'Upload',
     'Download' => 'Download',

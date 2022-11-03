@@ -1,7 +1,5 @@
 <?php
 
-use Doctrine\Common\Collections\Criteria;
-use MHFSaveManager\Controller\BinaryController;
 use MHFSaveManager\Controller\CharacterController;
 use MHFSaveManager\Controller\DistributionsController;
 use MHFSaveManager\Controller\SaveDataController;
@@ -73,6 +71,20 @@ SimpleRouter::post('/servertools/distributions/delete/{id}', function($id) {
     }
     $em = EM::getInstance();
     $em->remove($dist);
+    $em->flush();
+    
+    ResponseService::SendOk();
+});
+
+SimpleRouter::post('/servertools/distributions/duplicate/{id}', function($id) {
+    /** @var Distribution $dist */
+    $dist = EM::getInstance()->getRepository('MHFSaveManager\Model\Distribution')->find($id);
+    if (!$dist) {
+        ResponseService::SendNotFound();
+    }
+    $em = EM::getInstance();
+    $new = clone $dist;
+    $em->persist($new);
     $em->flush();
     
     ResponseService::SendOk();
@@ -352,4 +364,21 @@ SimpleRouter::post('/character/{id}/upload', function($id) {
     
     /** @var Character $character */
     CharacterController::UploadSavedata($character);
+});
+
+SimpleRouter::post('/character/{id}/charupload', function($id) {
+    $character = EM::getInstance()->getRepository('MHFSaveManager\Model\Character')->find($id);
+    
+    if (!$character) {
+        ResponseService::SendNotFound();
+    }
+    
+    foreach ($_FILES['files']['error'] as $error) {
+        if ($error != UPLOAD_ERR_OK) {
+            ResponseService::SendServerError();
+        }
+    }
+    
+    /** @var Character $character */
+    CharacterController::UploadChar($character);
 });
