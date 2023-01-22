@@ -88,7 +88,7 @@ class SaveDataController extends AbstractController
         $br->setPosition(0x11a60);
     
         $items = [];
-        $itemsToRead = defined(ITEMBOX_ITEMS_READ) ? ITEMBOX_ITEMS_READ : 4000;
+        $itemsToRead = defined('ITEMBOX_ITEMS_READ') ? ITEMBOX_ITEMS_READ : 4000;
         for($i = 0; $i < $itemsToRead; $i++) {
             $item = new Item($br->readBytes(8));
             if ($item->getId() === "0000") {
