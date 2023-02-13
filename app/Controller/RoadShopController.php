@@ -25,29 +25,34 @@ class RoadShopController extends AbstractController
         if (isset($_POST['id']) && $_POST['id'] > 0) {
             $item = EM::getInstance()->getRepository('MHFSaveManager\Model\NormalShopItem')->find($_POST['id']);
         } else {
-            $item->setItemhash(EM::getInstance()->getRepository('MHFSaveManager\Model\NormalShopItem')->matching(
-                    Criteria::create()->orderBy(['itemhash' => 'desc']))->first()->getItemhash()+1);
+            $highestId = EM::getInstance()->getRepository('MHFSaveManager\Model\NormalShopItem')->matching(
+                Criteria::create()->orderBy(['id' => 'desc']))->first();
+            if (!empty($highestId)) {
+                $item->setId($highestId->getId()+1);
+            } else {
+                $item->setId(1);
+            }
+            
             EM::getInstance()->persist($item);
         }
     
         $item->setItemid(hexdec(self::numberConvertEndian(hexdec($_POST['item']), 2)));
-        $item->setBoughtquantity($_POST['boughtQuantity']);
-        $item->setMaximumquantity($_POST['maximumQuantity']);
-        $item->setTradequantity($_POST['tradeQuantity']);
-        $item->setRankreqg($_POST['grank']);
-        $item->setPoints($_POST['cost']);
+        $item->setMax_quantity($_POST['maximumQuantity']);
+        $item->setQuantity($_POST['tradeQuantity']);
+        $item->setMin_gr($_POST['grank']);
+        $item->setCost($_POST['cost']);
         $item->setShopid($_POST['category']);
-        $item->setRoadfloorsrequired($_POST['roadFloors']);
-        $item->setWeeklyfataliskills($_POST['fatalis']);
+        $item->setRoad_floors($_POST['roadFloors']);
+        $item->setRoad_fatalis($_POST['fatalis']);
         
         $item->setShoptype(10);
-        $item->setRankreqlow(0);
-        $item->setRankreqhigh(0);
-        $item->setStorelevelreq(1);
+        $item->setMin_hr(0);
+        $item->setMin_sr(0);
+        $item->setReq_store_level(1);
         
         EM::getInstance()->flush();
         
-        ResponseService::SendOk($item->getItemhash());
+        ResponseService::SendOk($item->getId());
     }
     
     public static function ExportRoadShopItems()

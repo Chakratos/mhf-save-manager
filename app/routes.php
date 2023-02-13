@@ -101,7 +101,6 @@ SimpleRouter::post('/servertools/roadshop/save', function() {
         !isset($_POST['grank']) ||
         !isset($_POST['tradeQuantity']) ||
         !isset($_POST['maximumQuantity']) ||
-        !isset($_POST['boughtQuantity']) ||
         !isset($_POST['roadFloors']) ||
         !isset($_POST['fatalis'])) {
         ResponseService::SendUnprocessableEntity();

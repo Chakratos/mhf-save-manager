@@ -57,11 +57,6 @@
                     <input type="number" class="form-control" id="roadshopMaximumQuantity" placeholder="0-999" min="1" max="999">
                 </div>
 
-                <h6><?php echo $UILocale['Bought Quantity']?>:</h6>
-                <div class="input-group mb-2">
-                    <input type="number" class="form-control" id="roadshopBoughtQuantity" placeholder="0-999" min="1" max="999">
-                </div>
-
                 <h6><?php echo $UILocale['Road Floors Req']?>:</h6>
                 <div class="input-group mb-2">
                     <input type="number" class="form-control" id="roadshopRoadFloors" placeholder="0-999" min="1" max="999">
@@ -97,7 +92,6 @@
             <th><?php echo $UILocale['GRank Req']?></th>
             <th><?php echo $UILocale['Trade Quantity']?></th>
             <th><?php echo $UILocale['Maximum Quantity']?></th>
-            <th><?php echo $UILocale['Bought Quantity']?></th>
             <th><?php echo $UILocale['Road Floors Req']?></th>
             <th><?php echo $UILocale['Weekly Fatalis Kills']?></th>
             <th><?php echo $UILocale['Actions']?></th>
@@ -118,11 +112,10 @@
                 <td>%4$s</td>
                 <td>%5$s</td>
                 <td>%6$s</td>
-                <td>%7$s</td>
                 <td>%8$s</td>
                 <td>%9$s</td>
                 <td>
-                <button data-id="%1$s" data-itemid="%10$s" data-categoryid="%12$s" data-cost="%3$s" data-grank="%4$s" data-tradequantity="%5$s" data-maximumquantity="%6$s" data-boughtquantity="%7$s" data-roadfloors="%8$s" data-fatalis="%9$s" class="editRoadItem btn btn-sm btn-outline-success">
+                <button data-id="%1$s" data-itemid="%10$s" data-categoryid="%12$s" data-cost="%3$s" data-grank="%4$s" data-quantity="%5$s" data-max_quantity="%6$s" data-roadfloors="%8$s" data-fatalis="%9$s" class="editRoadItem btn btn-sm btn-outline-success">
                     <i class="fas fa-pencil"></i>
                 </button>
                 <button data-id="%1$s" class="deleteRoadItem btn btn-sm btn-outline-danger">
@@ -131,15 +124,15 @@
                 </td>
             </tr>
             ',
-            $item->getItemhash(),
+            $item->getId(),
             $itemData['name'] ? : $UILocale['No Translation!'],
-            $item->getPoints(),
-            $item->getRankreqg(),
-            $item->getTradequantity(),
-            $item->getMaximumquantity(),
-            $item->getBoughtquantity(),
-            $item->getRoadfloorsrequired(),
-            $item->getWeeklyfataliskills(),
+            $item->getCost(),
+            $item->getMin_gr(),
+            $item->getQuantity(),
+            $item->getMax_quantity(),
+            '',
+            $item->getRoad_floors(),
+            $item->getRoad_fatalis(),
             $itemId,
             $item->getShopidFancy(),
             $item->getShopid()
