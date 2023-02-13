@@ -127,6 +127,21 @@ class Character
      * @ORM\Column(type="blob")
      * @var resource
      */
+    protected $minidata;
+    /**
+     * @ORM\Column(type="blob")
+     * @var resource
+     */
+    protected $scenariodata;
+    /**
+     * @ORM\Column(type="blob")
+     * @var resource
+     */
+    protected $savefavoritequest;
+    /**
+     * @ORM\Column(type="blob")
+     * @var resource
+     */
     protected $skin_hist;
     /**
      * @ORM\Column(type="boolean")
@@ -721,5 +736,53 @@ class Character
         $this->gacha_prem = $gacha_prem;
         
         return $this;
+    }
+    
+    /**
+     * @return resource
+     */
+    public function getMinidata()
+    {
+        return $this->minidata;
+    }
+    
+    /**
+     * @param resource $minidata
+     */
+    public function setMinidata($minidata): void
+    {
+        $this->minidata = $minidata;
+    }
+    
+    /**
+     * @return resource
+     */
+    public function getScenariodata()
+    {
+        return $this->scenariodata;
+    }
+    
+    /**
+     * @param resource $scenariodata
+     */
+    public function setScenariodata($scenariodata): void
+    {
+        $this->scenariodata = $scenariodata;
+    }
+    
+    /**
+     * @return resource
+     */
+    public function getSavefavoritequest()
+    {
+        return $this->savefavoritequest;
+    }
+    
+    /**
+     * @param resource $savefavouritequest
+     */
+    public function setSavefavoritequest($savefavoritequest): void
+    {
+        $this->savefavoritequest = $savefavoritequest;
     }
 }

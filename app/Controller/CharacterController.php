@@ -88,12 +88,14 @@ class CharacterController
     {
         $savePath = sprintf('%s/storage/%s',ROOT_DIR, $binary);
         if (!is_dir($savePath)) {
-            ResponseService::SendNotFound();
+            ResponseService::SendNotFound('Path does not exist!');
         }
         
         $savePath .= '/' . $character->getId();
         if (!is_dir($savePath)) {
-            mkdir($savePath);
+            if (!mkdir($savePath) && !is_dir($savePath)) {
+                throw new \RuntimeException(sprintf('Directory "%s" was not created', $savePath));
+            }
         }
         
         $binaryMethod = "get" . ucfirst($binary);
