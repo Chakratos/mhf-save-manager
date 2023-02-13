@@ -13,4 +13,7 @@ storage/rengokudata/*
 storage/savedata/*
 storage/savemercenary/*
 storage/skinhist/*
+/storage/minidata/*
+/storage/savefavoritequest/*
+/storage/scenariodata/*
 tmp
