@@ -56,7 +56,9 @@ class Item extends AbstractBinaryModel
         
         $this->read(4); //Padding?
         $this->id = strtoupper($this->read(2, false));
-        $this->name = ItemsService::getForLocale()[strtoupper($this->id)]['name'];
+        if (isset(ItemsService::getForLocale()[strtoupper($this->id)])) {
+            $this->name = ItemsService::getForLocale()[strtoupper($this->id)]['name'];
+        }
         $this->quantity = unpack('v', $this->read(2, true))[1];
     }
     
@@ -96,7 +98,12 @@ class Item extends AbstractBinaryModel
     public function getName(): string
     {
         if ($this->name == null && $this->id > 0) {
-            $this->name = ItemsService::getForLocale()[strtoupper($this->id)]['name'];
+            if (isset(ItemsService::getForLocale()[strtoupper($this->id)])) {
+                $this->name = ItemsService::getForLocale()[strtoupper($this->id)]['name'];
+            } else {
+                $this->name = 'UNKOWN ITEM PLEASE REPORT!: ' . $this->getId();
+            }
+            
         }
         
         return $this->name ? $this->name : 'No Translation!';

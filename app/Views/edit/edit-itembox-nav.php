@@ -59,7 +59,15 @@
                 if ($itemCount == 0) {
                     echo '<div class="row item-row">';
                 }
-                $tmpItem = \MHFSaveManager\Service\ItemsService::getForLocale()[$item->getId()];
+                if (isset(\MHFSaveManager\Service\ItemsService::getForLocale()[$item->getId()])) {
+                    $tmpItem = \MHFSaveManager\Service\ItemsService::getForLocale()[$item->getId()];
+                } else {
+                    $tmpItem = [
+                            'icon' => 'Dummy',
+                            'color' => '',
+                            ];
+                }
+                
                 printf('
                             <div class="col item-col" data-id="%s" data-quantity="%s" data-slot="%s">
                                 <img class="item-icon" src="/img/item/%s%s.png">

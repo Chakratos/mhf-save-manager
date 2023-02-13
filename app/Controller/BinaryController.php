@@ -23,7 +23,10 @@ class BinaryController
             'platemyset',
             'rengokudata',
             'savemercenary',
-            'skinhist'
+            'skinhist',
+            'minidata',
+            'scenariodata',
+            'savefavoritequest',
         ];
     }
     

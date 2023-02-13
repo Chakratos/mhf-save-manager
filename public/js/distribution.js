@@ -288,9 +288,8 @@ $(document).ready(function () {
                 cells[4].innerHTML = grank;
                 cells[5].innerHTML = tradeQuantity;
                 cells[6].innerHTML = maximumQuantity;
-                cells[7].innerHTML = boughtQuantity;
-                cells[8].innerHTML = roadFloors;
-                cells[9].innerHTML = fatalis;
+                cells[7].innerHTML = roadFloors;
+                cells[8].innerHTML = fatalis;
                 saveButton.prop('disabled', false);
                 table.row(button.parents('tr')).invalidate().draw();
             } else {

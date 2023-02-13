@@ -18,7 +18,6 @@ $(document).ready(function () {
         $('#roadshopGRank').val('');
         $('#roadshopTradeQuantity').val('');
         $('#roadshopMaximumQuantity').val('');
-        $('#roadshopBoughtQuantity').val('');
         $('#roadshopRoadFloors').val('');
         $('#roadshopFatalis').val('');
         $('#roadShopItemModal').modal('show');
@@ -32,9 +31,8 @@ $(document).ready(function () {
         $('#roadshopCategorySelect').trigger('change');
         $('#roadshopCost').val($(this).data('cost'));
         $('#roadshopGRank').val($(this).data('grank'));
-        $('#roadshopTradeQuantity').val($(this).data('tradequantity'));
-        $('#roadshopMaximumQuantity').val($(this).data('maximumquantity'));
-        $('#roadshopBoughtQuantity').val($(this).data('boughtquantity'));
+        $('#roadshopTradeQuantity').val($(this).data('quantity'));
+        $('#roadshopMaximumQuantity').val($(this).data('max_quantity'));
         $('#roadshopRoadFloors').val($(this).data('roadfloors'));
         $('#roadshopFatalis').val($(this).data('fatalis'));
         $('#roadShopItemModal').modal('show');
@@ -48,13 +46,12 @@ $(document).ready(function () {
         let grank = $('#roadshopGRank').val();
         let tradeQuantity = $('#roadshopTradeQuantity').val();
         let maximumQuantity = $('#roadshopMaximumQuantity').val();
-        let boughtQuantity = $('#roadshopBoughtQuantity').val();
         let roadFloors = $('#roadshopRoadFloors').val();
         let fatalis = $('#roadshopFatalis').val();
 
         let saveButton = $(this);
         saveButton.prop('disabled', true);
-        if (item.length === 0 || category.length === 0 || cost === "" || grank === "" || tradeQuantity === "" || maximumQuantity === "" || boughtQuantity === "" || roadFloors === "" || fatalis === "") {
+        if (item.length === 0 || category.length === 0 || cost === "" || grank === "" || tradeQuantity === "" || maximumQuantity === "" || roadFloors === "" || fatalis === "") {
             alert("Please fill all fields with valid data!");
             saveButton.prop('disabled', false);
             return;
@@ -72,7 +69,6 @@ $(document).ready(function () {
             grank: grank,
             tradeQuantity: tradeQuantity,
             maximumQuantity: maximumQuantity,
-            boughtQuantity: boughtQuantity,
             roadFloors: roadFloors,
             fatalis: fatalis,
         };
@@ -91,9 +87,8 @@ $(document).ready(function () {
                 cells[4].innerHTML = grank;
                 cells[5].innerHTML = tradeQuantity;
                 cells[6].innerHTML = maximumQuantity;
-                cells[7].innerHTML = boughtQuantity;
-                cells[8].innerHTML = roadFloors;
-                cells[9].innerHTML = fatalis;
+                cells[7].innerHTML = roadFloors;
+                cells[8].innerHTML = fatalis;
                 saveButton.prop('disabled', false);
                 table.row(button.parents('tr')).invalidate().draw(false);
             } else {

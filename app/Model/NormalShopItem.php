@@ -12,11 +12,11 @@ use Doctrine\ORM\Mapping as ORM;
 class NormalShopItem
 {
     /**
-     * @ORM\Column(name="itemhash", type="integer")
+     * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @var int
      */
-    protected $itemhash;
+    protected $id;
     
     // SHOP TYPES:
     // 01 = Running Gachas, 02 = actual gacha, 04 = N Points, 05 = GCP, 07 = Item to GCP, 08 = Diva Defense, 10 = Hunter's Road
@@ -42,61 +42,55 @@ class NormalShopItem
      * @ORM\Column(type="integer")
      * @var int
      */
-    protected $points;
+    protected $cost;
     
     /**
      * @ORM\Column(type="integer")
      * @var int
      */
-    protected $tradequantity;
+    protected $quantity;
     
     /**
      * @ORM\Column(type="integer")
      * @var int
      */
-    protected $rankreqlow;
+    protected $min_hr;
     
     /**
      * @ORM\Column(type="integer")
      * @var int
      */
-    protected $rankreqhigh;
+    protected $min_sr;
     
     /**
      * @ORM\Column(type="integer")
      * @var int
      */
-    protected $rankreqg;
+    protected $min_gr;
     
     /**
      * @ORM\Column(type="integer")
      * @var int
      */
-    protected $storelevelreq;
+    protected $req_store_level;
     
     /**
      * @ORM\Column(type="integer")
      * @var int
      */
-    protected $maximumquantity;
+    protected $max_quantity;
     
     /**
      * @ORM\Column(type="integer")
      * @var int
      */
-    protected $boughtquantity;
+    protected $road_floors;
     
     /**
      * @ORM\Column(type="integer")
      * @var int
      */
-    protected $roadfloorsrequired;
-    
-    /**
-     * @ORM\Column(type="integer")
-     * @var int
-     */
-    protected $weeklyfataliskills;
+    protected $road_fatalis;
     
     public static array $categories = [
         'Basic Items',
@@ -113,18 +107,18 @@ class NormalShopItem
     /**
      * @return int
      */
-    public function getItemhash(): int
+    public function getId(): int
     {
-        return $this->itemhash;
+        return $this->id;
     }
     
     /**
-     * @param int $itemhash
+     * @param int $id
      * @return NormalShopItem
      */
-    public function setItemhash(int $itemhash): NormalShopItem
+    public function setId(int $id): NormalShopItem
     {
-        $this->itemhash = $itemhash;
+        $this->id = $id;
         
         return $this;
     }
@@ -197,18 +191,18 @@ class NormalShopItem
     /**
      * @return int
      */
-    public function getPoints(): int
+    public function getCost(): int
     {
-        return $this->points;
+        return $this->cost;
     }
     
     /**
-     * @param int $points
+     * @param int $cost
      * @return NormalShopItem
      */
-    public function setPoints(int $points): NormalShopItem
+    public function setCost(int $cost): NormalShopItem
     {
-        $this->points = $points;
+        $this->cost = $cost;
         
         return $this;
     }
@@ -216,18 +210,18 @@ class NormalShopItem
     /**
      * @return int
      */
-    public function getTradequantity(): int
+    public function getQuantity(): int
     {
-        return $this->tradequantity;
+        return $this->quantity;
     }
     
     /**
-     * @param int $tradequantity
+     * @param int $quantity
      * @return NormalShopItem
      */
-    public function setTradequantity(int $tradequantity): NormalShopItem
+    public function setQuantity(int $quantity): NormalShopItem
     {
-        $this->tradequantity = $tradequantity;
+        $this->quantity = $quantity;
         
         return $this;
     }
@@ -235,18 +229,18 @@ class NormalShopItem
     /**
      * @return int
      */
-    public function getRankreqlow(): int
+    public function getMin_hr(): int
     {
-        return $this->rankreqlow;
+        return $this->min_hr;
     }
     
     /**
-     * @param int $rankreqlow
+     * @param int $min_hr
      * @return NormalShopItem
      */
-    public function setRankreqlow(int $rankreqlow): NormalShopItem
+    public function setMin_hr(int $min_hr): NormalShopItem
     {
-        $this->rankreqlow = $rankreqlow;
+        $this->min_hr = $min_hr;
         
         return $this;
     }
@@ -254,18 +248,18 @@ class NormalShopItem
     /**
      * @return int
      */
-    public function getRankreqhigh(): int
+    public function getMin_sr(): int
     {
-        return $this->rankreqhigh;
+        return $this->min_sr;
     }
     
     /**
-     * @param int $rankreqhigh
+     * @param int $min_sr
      * @return NormalShopItem
      */
-    public function setRankreqhigh(int $rankreqhigh): NormalShopItem
+    public function setMin_sr(int $min_sr): NormalShopItem
     {
-        $this->rankreqhigh = $rankreqhigh;
+        $this->min_sr = $min_sr;
         
         return $this;
     }
@@ -273,18 +267,18 @@ class NormalShopItem
     /**
      * @return int
      */
-    public function getRankreqg(): int
+    public function getMin_gr(): int
     {
-        return $this->rankreqg;
+        return $this->min_gr;
     }
     
     /**
-     * @param int $rankreqg
+     * @param int $min_gr
      * @return NormalShopItem
      */
-    public function setRankreqg(int $rankreqg): NormalShopItem
+    public function setMin_gr(int $min_gr): NormalShopItem
     {
-        $this->rankreqg = $rankreqg;
+        $this->min_gr = $min_gr;
         
         return $this;
     }
@@ -292,18 +286,18 @@ class NormalShopItem
     /**
      * @return int
      */
-    public function getStorelevelreq(): int
+    public function getReq_store_level(): int
     {
-        return $this->storelevelreq;
+        return $this->req_store_level;
     }
     
     /**
-     * @param int $storelevelreq
+     * @param int $req_store_level
      * @return NormalShopItem
      */
-    public function setStorelevelreq(int $storelevelreq): NormalShopItem
+    public function setReq_store_level(int $req_store_level): NormalShopItem
     {
-        $this->storelevelreq = $storelevelreq;
+        $this->req_store_level = $req_store_level;
         
         return $this;
     }
@@ -311,18 +305,18 @@ class NormalShopItem
     /**
      * @return int
      */
-    public function getMaximumquantity(): int
+    public function getMax_quantity(): int
     {
-        return $this->maximumquantity;
+        return $this->max_quantity;
     }
     
     /**
-     * @param int $maximumquantity
+     * @param int $max_quantity
      * @return NormalShopItem
      */
-    public function setMaximumquantity(int $maximumquantity): NormalShopItem
+    public function setMax_quantity(int $max_quantity): NormalShopItem
     {
-        $this->maximumquantity = $maximumquantity;
+        $this->max_quantity = $max_quantity;
         
         return $this;
     }
@@ -330,18 +324,18 @@ class NormalShopItem
     /**
      * @return int
      */
-    public function getBoughtquantity(): int
+    public function getRoad_floors(): int
     {
-        return $this->boughtquantity;
+        return $this->road_floors;
     }
     
     /**
-     * @param int $boughtquantity
+     * @param int $road_floors
      * @return NormalShopItem
      */
-    public function setBoughtquantity(int $boughtquantity): NormalShopItem
+    public function setRoad_floors(int $road_floors): NormalShopItem
     {
-        $this->boughtquantity = $boughtquantity;
+        $this->road_floors = $road_floors;
         
         return $this;
     }
@@ -349,37 +343,18 @@ class NormalShopItem
     /**
      * @return int
      */
-    public function getRoadfloorsrequired(): int
+    public function getRoad_fatalis(): int
     {
-        return $this->roadfloorsrequired;
+        return $this->road_fatalis;
     }
     
     /**
-     * @param int $roadfloorsrequired
+     * @param int $road_fatalis
      * @return NormalShopItem
      */
-    public function setRoadfloorsrequired(int $roadfloorsrequired): NormalShopItem
+    public function setRoad_fatalis(int $road_fatalis): NormalShopItem
     {
-        $this->roadfloorsrequired = $roadfloorsrequired;
-        
-        return $this;
-    }
-    
-    /**
-     * @return int
-     */
-    public function getWeeklyfataliskills(): int
-    {
-        return $this->weeklyfataliskills;
-    }
-    
-    /**
-     * @param int $weeklyfataliskills
-     * @return NormalShopItem
-     */
-    public function setWeeklyfataliskills(int $weeklyfataliskills): NormalShopItem
-    {
-        $this->weeklyfataliskills = $weeklyfataliskills;
+        $this->road_fatalis = $road_fatalis;
         
         return $this;
     }
