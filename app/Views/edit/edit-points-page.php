@@ -32,35 +32,11 @@
             </div>
         </div>
 
-        <h6><?php echo $UILocale['Frontier Points']?>:</h6>
-        <div class="input-group mb-2">
-            <input id="frontierpoints" type="text" class="form-control" placeholder="0" value="<?php echo $frontierPoints ?>">
-            <div class="input-group-append">
-                <div id="setfrontierpoints" class="input-group-text btn btn-success text-white bg-success"><i class="fa fa-save"></i></div>
-            </div>
-        </div>
-
         <h6><?php echo $UILocale['Kouryou Points']?>:</h6>
         <div class="input-group mb-2">
             <input id="kouryou" type="text" class="form-control" placeholder="0" value="<?php echo $kouryou ?>">
             <div class="input-group-append">
                 <div id="setkouryou" class="input-group-text btn btn-success text-white bg-success"><i class="fa fa-save"></i></div>
-            </div>
-        </div>
-
-        <h6><?php echo $UILocale['Gacha Trial']?>:</h6>
-        <div class="input-group mb-2">
-            <input id="gachatrial" type="text" class="form-control" placeholder="0" value="<?php echo $gachaTrial ?>">
-            <div class="input-group-append">
-                <div id="setgachatrial" class="input-group-text btn btn-success text-white bg-success"><i class="fa fa-save"></i></div>
-            </div>
-        </div>
-
-        <h6><?php echo $UILocale['Gacha Prem']?>:</h6>
-        <div class="input-group mb-2">
-            <input id="gachaprem" type="text" class="form-control" placeholder="0" value="<?php echo $gachaPrem ?>">
-            <div class="input-group-append">
-                <div id="setgachaprem" class="input-group-text btn btn-success text-white bg-success"><i class="fa fa-save"></i></div>
             </div>
         </div>
     </div>

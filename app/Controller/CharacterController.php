@@ -27,10 +27,7 @@ class CharacterController
         $itembox = SaveDataController::GetItembox($decompressed);
         $gcp = $character->getGcp();
         $npoints = $character->getNetcafePoints();
-        $frontierPoints = $character->getFrontierPoints();
         $kouryou = $character->getKouryouPoint();
-        $gachaTrial = $character->getGachaTrial();
-        $gachaPrem = $character->getGachaPrem();
         
         include_once ROOT_DIR . '/app/Views/edit-character.php';
     }

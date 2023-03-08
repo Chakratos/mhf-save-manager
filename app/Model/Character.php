@@ -57,22 +57,7 @@ class Character
      * @ORM\Column(type="integer")
      * @var int
      */
-    protected $frontier_points;
-    /**
-     * @ORM\Column(type="integer")
-     * @var int
-     */
     protected $kouryou_point;
-    /**
-     * @ORM\Column(type="integer")
-     * @var int
-     */
-    protected $gacha_trial;
-    /**
-     * @ORM\Column(type="integer")
-     * @var int
-     */
-    protected $gacha_prem;
     /**
      * @ORM\Column(type="blob")
      * @var resource
@@ -665,25 +650,6 @@ class Character
     /**
      * @return int
      */
-    public function getFrontierpoints()
-    {
-        return $this->frontier_points;
-    }
-    
-    /**
-     * @param int $frontier_points
-     * @return Character
-     */
-    public function setFrontierpoints(int $frontier_points): Character
-    {
-        $this->frontier_points = $frontier_points;
-        
-        return $this;
-    }
-    
-    /**
-     * @return int
-     */
     public function getKouryoupoint()
     {
         return $this->kouryou_point;
@@ -696,44 +662,6 @@ class Character
     public function setKouryoupoint(int $kouryou_point): Character
     {
         $this->kouryou_point = $kouryou_point;
-        
-        return $this;
-    }
-    
-    /**
-     * @return int
-     */
-    public function getGachatrial()
-    {
-        return $this->gacha_trial;
-    }
-    
-    /**
-     * @param int $gacha_trial
-     * @return Character
-     */
-    public function setGachatrial(int $gacha_trial): Character
-    {
-        $this->gacha_trial = $gacha_trial;
-        
-        return $this;
-    }
-    
-    /**
-     * @return int
-     */
-    public function getGachaprem()
-    {
-        return $this->gacha_prem;
-    }
-    
-    /**
-     * @param int $gacha_prem
-     * @return Character
-     */
-    public function setGachaprem(int $gacha_prem): Character
-    {
-        $this->gacha_prem = $gacha_prem;
         
         return $this;
     }
