@@ -7,7 +7,7 @@ use MHFSaveManager\Controller\RoadShopController;
 use MHFSaveManager\Database\EM;
 use MHFSaveManager\Model\Character;
 use MHFSaveManager\Model\Distribution;
-use MHFSaveManager\Model\NormalShopItem;
+use MHFSaveManager\Model\ShopItem;
 use MHFSaveManager\Service\CompressionService;
 use MHFSaveManager\Service\ResponseService;
 use Pecee\SimpleRouter\SimpleRouter;
@@ -122,8 +122,8 @@ SimpleRouter::post('/servertools/roadshop/import', function() {
 });
 
 SimpleRouter::post('/servertools/roadshop/delete/{id}', function($id) {
-    /** @var NormalShopItem $item */
-    $item = EM::getInstance()->getRepository('MHFSaveManager\Model\NormalShopItem')->find($id);
+    /** @var ShopItem $item */
+    $item = EM::getInstance()->getRepository('MHFSaveManager\Model\ShopItem')->find($id);
     if (!$item) {
         ResponseService::SendNotFound();
     }
