@@ -19,7 +19,7 @@
                 <div class="input-group mb-2">
                     <select class="form-control" id="roadshopCategorySelect">
                         <?php
-                        foreach (\MHFSaveManager\Model\NormalShopItem::$categories as $id => $category) {
+                        foreach (\MHFSaveManager\Model\ShopItem::$categories as $id => $category) {
                             printf('<option value="%s">%s</option>', $id, $category);
                         }
                         ?>
@@ -99,7 +99,7 @@
         </thead>
         <tbody>
         <?php
-        /** @var \MHFSaveManager\Model\NormalShopItem $item */
+        /** @var \MHFSaveManager\Model\ShopItem $item */
         foreach ($roadItems as $item) {
             $itemId = self::numberConvertEndian($item->getItemid(), 2);
             $itemData = ItemsService::getForLocale()[$itemId];

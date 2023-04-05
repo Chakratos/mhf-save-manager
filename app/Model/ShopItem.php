@@ -7,9 +7,9 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="normal_shop_items")
+ * @ORM\Table(name="shop_items")
  */
-class NormalShopItem
+class ShopItem
 {
     /**
      * @ORM\Column(name="id", type="integer")
@@ -24,19 +24,19 @@ class NormalShopItem
      * @ORM\Column(type="integer")
      * @var int
      */
-    protected $shoptype;
+    protected $shop_type;
     
     /**
      * @ORM\Column(type="integer")
      * @var int
      */
-    protected $shopid;
+    protected $shop_id;
     
     /**
      * @ORM\Column(type="integer")
      * @var int
      */
-    protected $itemid;
+    protected $item_id;
     
     /**
      * @ORM\Column(type="integer")
@@ -114,9 +114,9 @@ class NormalShopItem
     
     /**
      * @param int $id
-     * @return NormalShopItem
+     * @return ShopItem
      */
-    public function setId(int $id): NormalShopItem
+    public function setId(int $id): ShopItem
     {
         $this->id = $id;
         
@@ -128,16 +128,16 @@ class NormalShopItem
      */
     public function getShoptype(): int
     {
-        return $this->shoptype;
+        return $this->shop_type;
     }
     
     /**
      * @param int $shoptype
-     * @return NormalShopItem
+     * @return ShopItem
      */
-    public function setShoptype(int $shoptype): NormalShopItem
+    public function setShoptype(int $shoptype): ShopItem
     {
-        $this->shoptype = $shoptype;
+        $this->shop_type = $shoptype;
         
         return $this;
     }
@@ -147,7 +147,7 @@ class NormalShopItem
      */
     public function getShopid(): int
     {
-        return $this->shopid;
+        return $this->shop_id;
     }
     
     /**
@@ -155,16 +155,16 @@ class NormalShopItem
      */
     public function getShopidFancy(): string
     {
-        return self::$categories[$this->shopid];
+        return self::$categories[$this->shop_id];
     }
     
     /**
      * @param int $shopid
-     * @return NormalShopItem
+     * @return ShopItem
      */
-    public function setShopid(int $shopid): NormalShopItem
+    public function setShopid(int $shopid): ShopItem
     {
-        $this->shopid = $shopid;
+        $this->shop_id = $shopid;
         
         return $this;
     }
@@ -174,16 +174,16 @@ class NormalShopItem
      */
     public function getItemid(): int
     {
-        return $this->itemid;
+        return $this->item_id;
     }
     
     /**
      * @param int $itemid
-     * @return NormalShopItem
+     * @return ShopItem
      */
-    public function setItemid(int $itemid): NormalShopItem
+    public function setItemid(int $itemid): ShopItem
     {
-        $this->itemid = $itemid;
+        $this->item_id = $itemid;
         
         return $this;
     }
@@ -198,9 +198,9 @@ class NormalShopItem
     
     /**
      * @param int $cost
-     * @return NormalShopItem
+     * @return ShopItem
      */
-    public function setCost(int $cost): NormalShopItem
+    public function setCost(int $cost): ShopItem
     {
         $this->cost = $cost;
         
@@ -217,9 +217,9 @@ class NormalShopItem
     
     /**
      * @param int $quantity
-     * @return NormalShopItem
+     * @return ShopItem
      */
-    public function setQuantity(int $quantity): NormalShopItem
+    public function setQuantity(int $quantity): ShopItem
     {
         $this->quantity = $quantity;
         
@@ -236,9 +236,9 @@ class NormalShopItem
     
     /**
      * @param int $min_hr
-     * @return NormalShopItem
+     * @return ShopItem
      */
-    public function setMin_hr(int $min_hr): NormalShopItem
+    public function setMin_hr(int $min_hr): ShopItem
     {
         $this->min_hr = $min_hr;
         
@@ -255,9 +255,9 @@ class NormalShopItem
     
     /**
      * @param int $min_sr
-     * @return NormalShopItem
+     * @return ShopItem
      */
-    public function setMin_sr(int $min_sr): NormalShopItem
+    public function setMin_sr(int $min_sr): ShopItem
     {
         $this->min_sr = $min_sr;
         
@@ -274,9 +274,9 @@ class NormalShopItem
     
     /**
      * @param int $min_gr
-     * @return NormalShopItem
+     * @return ShopItem
      */
-    public function setMin_gr(int $min_gr): NormalShopItem
+    public function setMin_gr(int $min_gr): ShopItem
     {
         $this->min_gr = $min_gr;
         
@@ -293,9 +293,9 @@ class NormalShopItem
     
     /**
      * @param int $req_store_level
-     * @return NormalShopItem
+     * @return ShopItem
      */
-    public function setReq_store_level(int $req_store_level): NormalShopItem
+    public function setReq_store_level(int $req_store_level): ShopItem
     {
         $this->req_store_level = $req_store_level;
         
@@ -312,9 +312,9 @@ class NormalShopItem
     
     /**
      * @param int $max_quantity
-     * @return NormalShopItem
+     * @return ShopItem
      */
-    public function setMax_quantity(int $max_quantity): NormalShopItem
+    public function setMax_quantity(int $max_quantity): ShopItem
     {
         $this->max_quantity = $max_quantity;
         
@@ -331,9 +331,9 @@ class NormalShopItem
     
     /**
      * @param int $road_floors
-     * @return NormalShopItem
+     * @return ShopItem
      */
-    public function setRoad_floors(int $road_floors): NormalShopItem
+    public function setRoad_floors(int $road_floors): ShopItem
     {
         $this->road_floors = $road_floors;
         
@@ -350,9 +350,9 @@ class NormalShopItem
     
     /**
      * @param int $road_fatalis
-     * @return NormalShopItem
+     * @return ShopItem
      */
-    public function setRoad_fatalis(int $road_fatalis): NormalShopItem
+    public function setRoad_fatalis(int $road_fatalis): ShopItem
     {
         $this->road_fatalis = $road_fatalis;
         

@@ -4,15 +4,15 @@ namespace MHFSaveManager\Controller;
 
 use Doctrine\Common\Collections\Criteria;
 use MHFSaveManager\Database\EM;
-use MHFSaveManager\Model\NormalShopItem;
+use MHFSaveManager\Model\ShopItem;
 use MHFSaveManager\Service\ResponseService;
 
 class RoadShopController extends AbstractController
 {
     public static function Index()
     {
-        $roadItems = EM::getInstance()->getRepository('MHFSaveManager\Model\NormalShopItem')->matching(
-            Criteria::create()->where(Criteria::expr()->eq('shoptype', '10'))
+        $roadItems = EM::getInstance()->getRepository('MHFSaveManager\Model\ShopItem')->matching(
+            Criteria::create()->where(Criteria::expr()->eq('shop_type', '10'))
         )->toArray();
 
         include_once ROOT_DIR . '/app/Views/roadshop.php';
@@ -20,12 +20,12 @@ class RoadShopController extends AbstractController
     
     public static function EditRoadShopItem()
     {
-        $item = new NormalShopItem();
+        $item = new ShopItem();
     
         if (isset($_POST['id']) && $_POST['id'] > 0) {
-            $item = EM::getInstance()->getRepository('MHFSaveManager\Model\NormalShopItem')->find($_POST['id']);
+            $item = EM::getInstance()->getRepository('MHFSaveManager\Model\ShopItem')->find($_POST['id']);
         } else {
-            $highestId = EM::getInstance()->getRepository('MHFSaveManager\Model\NormalShopItem')->matching(
+            $highestId = EM::getInstance()->getRepository('MHFSaveManager\Model\ShopItem')->matching(
                 Criteria::create()->orderBy(['id' => 'desc']))->first();
             if (!empty($highestId)) {
                 $item->setId($highestId->getId()+1);
@@ -57,14 +57,14 @@ class RoadShopController extends AbstractController
     
     public static function ExportRoadShopItems()
     {
-        $records = EM::getInstance()->getRepository('MHFSaveManager\Model\NormalShopItem')->matching(
-        Criteria::create()->where(Criteria::expr()->eq('shoptype', '10')));
+        $records = EM::getInstance()->getRepository('MHFSaveManager\Model\ShopItem')->matching(
+        Criteria::create()->where(Criteria::expr()->eq('shop_type', '10')));
         self::arrayOfModelsToCSVDownload($records, "RoadShopItems");
     }
     
     public static function ImportRoadShopItems()
     {
-        self::importFromCSV('roadShopCSV', NormalShopItem::class, 'delete from MHFSaveManager\Model\NormalShopItem n where n.shoptype = 10');
+        self::importFromCSV('roadShopCSV', ShopItem::class, 'delete from MHFSaveManager\Model\NormalShopItem n where n.shop_type = 10');
         
         exit();
         $lines = preg_split('/\r\n|\r|\n/',  file_get_contents($_FILES["roadShopCSV"]["tmp_name"]));
@@ -77,14 +77,14 @@ class RoadShopController extends AbstractController
             }
             
             $lineValues = str_getcsv($line);
-            $item = new NormalShopItem();
+            $item = new ShopItem();
             foreach ($attributes as $key => $attribute) {
                 $setter = "set".ucfirst($attribute);
                 $item->$setter($lineValues[$key]);
             }
             $em->persist($item);
         }
-        $em->createQuery('delete from MHFSaveManager\Model\NormalShopItem n where n.shoptype = 10')->execute();
+        $em->createQuery('delete from MHFSaveManager\Model\NormalShopItem n where n.shop_type = 10')->execute();
         $em->flush();
         
         ResponseService::SendOk();
