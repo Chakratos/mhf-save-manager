@@ -72,7 +72,7 @@ class ShopItem
      * @ORM\Column(type="integer")
      * @var int
      */
-    protected $req_store_level;
+    protected $store_level;
     
     /**
      * @ORM\Column(type="integer")
@@ -286,18 +286,18 @@ class ShopItem
     /**
      * @return int
      */
-    public function getReq_store_level(): int
+    public function get_store_level(): int
     {
-        return $this->req_store_level;
+        return $this->store_level;
     }
     
     /**
-     * @param int $req_store_level
+     * @param int $store_level
      * @return ShopItem
      */
-    public function setReq_store_level(int $req_store_level): ShopItem
+    public function set_store_level(int $store_level): ShopItem
     {
-        $this->req_store_level = $req_store_level;
+        $this->store_level = $store_level;
         
         return $this;
     }
