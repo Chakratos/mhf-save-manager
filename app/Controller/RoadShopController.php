@@ -48,7 +48,7 @@ class RoadShopController extends AbstractController
         $item->setShoptype(10);
         $item->setMin_hr(0);
         $item->setMin_sr(0);
-        $item->setReq_store_level(1);
+        $item->set_store_level(1);
         
         EM::getInstance()->flush();
         
