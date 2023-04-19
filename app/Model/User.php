@@ -49,19 +49,19 @@ class User
     protected $return_expires;
     /**
      * @ORM\Column(type="integer")
-     * @var int
+     * @var ?int
      */
-    protected $gacha_premium;
+    protected ?int $gacha_premium;
     /**
      * @ORM\Column(type="integer")
-     * @var int
+     * @var ?int
      */
-    protected $gacha_trial;
+    protected ?int $gacha_trial;
     /**
      * @ORM\Column(type="integer")
-     * @var int
+     * @var ?int
      */
-    protected $frontier_points;
+    protected ?int $frontier_points;
     
     /**
      * @return int
@@ -273,18 +273,18 @@ class User
     }
     
     /**
-     * @return int
+     * @return ?int
      */
-    public function getGachapremium(): int
+    public function getGachapremium(): ?int
     {
         return $this->gacha_premium;
     }
     
     /**
-     * @param int $gacha_premium
+     * @param ?int $gacha_premium
      * @return User
      */
-    public function setGachapremium(int $gacha_premium): User
+    public function setGachapremium(?int $gacha_premium): User
     {
         $this->gacha_premium = $gacha_premium;
         
@@ -292,18 +292,18 @@ class User
     }
     
     /**
-     * @return int
+     * @return ?int
      */
-    public function getGachatrial(): int
+    public function getGachatrial(): ?int
     {
         return $this->gacha_trial;
     }
     
     /**
-     * @param int $gacha_trial
+     * @param ?int $gacha_trial
      * @return User
      */
-    public function setGachatrial(int $gacha_trial): User
+    public function setGachatrial(?int $gacha_trial): User
     {
         $this->gacha_trial = $gacha_trial;
         
@@ -311,18 +311,18 @@ class User
     }
     
     /**
-     * @return int
+     * @return ?int
      */
-    public function getFrontierpoints(): int
+    public function getFrontierpoints(): ?int
     {
         return $this->frontier_points;
     }
     
     /**
-     * @param int $frontier_points
+     * @param ?int $frontier_points
      * @return User
      */
-    public function setFrontierpoints(int $frontier_points): User
+    public function setFrontierpoints(?int $frontier_points): User
     {
         $this->frontier_points = $frontier_points;
         
