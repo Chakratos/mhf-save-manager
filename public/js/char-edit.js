@@ -70,6 +70,12 @@ $(document).ready(function () {
         postData("setgzenny", gzenny);
     });
 
+    $('#setcp').click(function() {
+        let cp = $('#cp').val();
+
+        postData("setcp", cp);
+    });
+
     $('#setgcp').click(function() {
         let gcp = $('#gcp').val();
 
@@ -103,7 +109,7 @@ $(document).ready(function () {
     $('#setgachaprem').click(function() {
         let gachaprem = $('#gachaprem').val();
 
-        postData("setgachaprem", gachaprem);
+        postData("setgachapremium", gachaprem);
     });
 
     $('#resetloginboost').click(function() {

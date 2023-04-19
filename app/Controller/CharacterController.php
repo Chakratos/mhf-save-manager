@@ -4,6 +4,7 @@ namespace MHFSaveManager\Controller;
 
 use MHFSaveManager\Database\EM;
 use MHFSaveManager\Model\Character;
+use MHFSaveManager\Model\User;
 use MHFSaveManager\Service\CompressionService;
 use MHFSaveManager\Service\DirectoryService;
 use MHFSaveManager\Service\ItemsService;
@@ -23,11 +24,17 @@ class CharacterController
         $name = SaveDataController::GetName($decompressed);
         $zenny = SaveDataController::GetZenny($decompressed);
         $gZenny = SaveDataController::GetGZenny($decompressed);
+        $cp = SaveDataController::GetCP($decompressed);
         $keyquestFlag = SaveDataController::GetKeyQuestFlag($decompressed);
         $itembox = SaveDataController::GetItembox($decompressed);
         $gcp = $character->getGcp();
         $npoints = $character->getNetcafePoints();
         $kouryou = $character->getKouryouPoint();
+        
+        $user = EM::getInstance()->getRepository('MHFSaveManager\Model\User')->find($character->getUserId());
+        $gachaTrial = $user->getGachaTrial();
+        $gachaPrem = $user->getGachaPremium();
+        $frontierPoints = $user->getFrontierPoints();
         
         include_once ROOT_DIR . '/app/Views/edit-character.php';
     }

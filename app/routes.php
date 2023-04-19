@@ -8,6 +8,7 @@ use MHFSaveManager\Database\EM;
 use MHFSaveManager\Model\Character;
 use MHFSaveManager\Model\Distribution;
 use MHFSaveManager\Model\ShopItem;
+use MHFSaveManager\Model\User;
 use MHFSaveManager\Service\CompressionService;
 use MHFSaveManager\Service\ResponseService;
 use Pecee\SimpleRouter\SimpleRouter;
@@ -202,6 +203,10 @@ SimpleRouter::post('/character/{id}/edit/{property}/{value}', function($id, $pro
     if (!$character) {
         ResponseService::SendNotFound();
     }
+    $user = EM::getInstance()->getRepository('MHFSaveManager\Model\User')->find($character->getUserId());
+    if (!$user) {
+        ResponseService::SendNotFound();
+    }
     
     $method = "Set" . ucfirst(substr($property, 3));
     
@@ -211,6 +216,10 @@ SimpleRouter::post('/character/{id}/edit/{property}/{value}', function($id, $pro
         ResponseService::SendOk();
     } elseif (method_exists(SaveDataController::class, $method)) {
         CharacterController::WriteToSavedata($character, $method, $value);
+        ResponseService::SendOk();
+    } elseif (method_exists(User::class, $method)) {
+        $user->$method($value);
+        EM::getInstance()->flush();
         ResponseService::SendOk();
     } else {
         ResponseService::SendNotFound();

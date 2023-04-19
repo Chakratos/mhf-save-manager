@@ -37,6 +37,7 @@ return [
     'Keyquestflag' => 'Keyquestflag',
     'Zenny' => 'Zenny',
     'gZenny' => 'gZenny',
+    'CP' => 'Caravan Points',
     'GCP' => 'GCP',
     'NPoints' => 'NPoints',
     'Frontier Points' => 'Frontier Points',
