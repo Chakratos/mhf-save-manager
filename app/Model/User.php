@@ -277,7 +277,7 @@ class User
      */
     public function getGachapremium(): int
     {
-        return $this->gacha_premium;
+        return $this->gacha_premium ?? 0;
     }
     
     /**
@@ -296,7 +296,7 @@ class User
      */
     public function getGachatrial(): int
     {
-        return $this->gacha_trial;
+        return $this->gacha_trial ?? 0;
     }
     
     /**
@@ -315,7 +315,7 @@ class User
      */
     public function getFrontierpoints(): int
     {
-        return $this->frontier_points;
+        return $this->frontier_points ?? 0;
     }
     
     /**
