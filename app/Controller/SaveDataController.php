@@ -66,6 +66,20 @@ class SaveDataController extends AbstractController
         return self::writeToFile($saveData, "1FF64", self::numberConvertEndian($value, 4));
     }
     
+    public static function GetCP(string $saveData)
+    {
+        $br = new BinaryReader($saveData);
+        $br->setPosition(0x212E4);
+        
+        return $br->readUInt32();
+    }
+    
+    public static function SetCP(string $saveData, $value)
+    {
+        $value = min($value, 9999999);
+        return self::writeToFile($saveData, '212E4', self::numberConvertEndian($value, 4));
+    }
+    
     public static function GetEquipmentBox(string $saveData)
     {
         $br = new BinaryReader($saveData);

@@ -16,6 +16,14 @@
             </div>
         </div>
 
+        <h6><?php echo $UILocale['CP']?>:</h6>
+        <div class="input-group mb-2">
+            <input id="cp" type="text" class="form-control" placeholder="0" value="<?php echo $cp ?>">
+            <div class="input-group-append">
+                <div id="setcp" class="input-group-text btn btn-success text-white bg-success"><i class="fa fa-save"></i></div>
+            </div>
+        </div>
+
         <h6><?php echo $UILocale['GCP']?>:</h6>
         <div class="input-group mb-2">
             <input id="gcp" type="text" class="form-control" placeholder="0" value="<?php echo $gcp ?>">
@@ -62,6 +70,33 @@
                 <?php echo $UILocale['Login Boost']?>:
             </label>
             <button id="resetloginboost" class="btn btn-success w-100"><?php echo $UILocale['Reset']?></button>
+        </div>
+    </div>
+
+    <div class="border border-dark rounded col-3 py-2">
+        <h5>Account wide:</h5>
+        <h6><?php echo $UILocale['Gacha Trial']?>:</h6>
+        <div class="input-group mb-2">
+            <input id="gachatrial" type="text" class="form-control" placeholder="0" value="<?php echo $gachaTrial ?>">
+            <div class="input-group-append">
+                <div id="setgachatrial" class="input-group-text btn btn-success text-white bg-success"><i class="fa fa-save"></i></div>
+            </div>
+        </div>
+
+        <h6><?php echo $UILocale['Gacha Prem']?>:</h6>
+        <div class="input-group mb-2">
+            <input id="gachaprem" type="text" class="form-control" placeholder="0" value="<?php echo $gachaPrem ?>">
+            <div class="input-group-append">
+                <div id="setgachaprem" class="input-group-text btn btn-success text-white bg-success"><i class="fa fa-save"></i></div>
+            </div>
+        </div>
+
+        <h6><?php echo $UILocale['Frontier Points']?>:</h6>
+        <div class="input-group mb-2">
+            <input id="frontierpoints" type="text" class="form-control" placeholder="0" value="<?php echo $frontierPoints ?>">
+            <div class="input-group-append">
+                <div id="setfrontierpoints" class="input-group-text btn btn-success text-white bg-success"><i class="fa fa-save"></i></div>
+            </div>
         </div>
     </div>
 </div>

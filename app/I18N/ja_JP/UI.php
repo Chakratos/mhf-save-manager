@@ -37,6 +37,7 @@ return [
     'Keyquestflag' => 'キークエストフラグ',
     'Zenny' => 'ゼニー',
     'gZenny' => 'Gゼニー',
+    'CP' => 'キャラバンP',
     'GCP' => 'ギルド貢献P',
     'NPoints' => 'Nポイント',
     'Frontier Points' => 'フロンティアポイント',
