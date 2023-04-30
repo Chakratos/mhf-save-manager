@@ -3,10 +3,13 @@
 namespace MHFSaveManager\Controller;
 
 use Doctrine\Common\Collections\Criteria;
+use Doctrine\ORM\Exception\ORMException;
+use Doctrine\ORM\OptimisticLockException;
 use MHFSaveManager\Database\EM;
 use MHFSaveManager\Model\ShopItem;
 use MHFSaveManager\Service\ResponseService;
 use MHFSaveManager\Service\ItemsService;
+use MHFSaveManager\Service\UIService;
 
 /**
  *
@@ -14,15 +17,16 @@ use MHFSaveManager\Service\ItemsService;
 class RoadShopController extends AbstractController
 {
     
-    protected static $itemName = 'roadshop';
-    protected static $itemClass = ShopItem::class;
+    protected static string $itemName = 'roadshop';
+    protected static string $itemClass = ShopItem::class;
     /**
      * @return void
      */
     public static function Index(): void
     {
-        $UILocale = \MHFSaveManager\Service\UIService::getForLocale();
+        $UILocale = UIService::getForLocale();
         $itemName = self::$itemName;
+        $data = [];
         
         $roadItems = EM::getInstance()->getRepository(self::$itemClass)->matching(
             Criteria::create()->where(Criteria::expr()->eq('shop_type', '10'))
@@ -76,56 +80,52 @@ class RoadShopController extends AbstractController
         $actions = [
         ];
         
-        echo self::generateDynamicTable('MHF Character Manager', $itemName, $data, $actions, $modalFieldInfo);
+        echo self::generateDynamicTable('MHF Character Manager', $modalFieldInfo, $data, $actions);
     }
     
-    public static function EditRoadShopItem()
+    /**
+     * @return void
+     * @throws ORMException
+     * @throws OptimisticLockException
+     */
+    public static function EditRoadShopItem(): void
     {
-        $item = new ShopItem();
-        
-        if (isset($_POST['id']) && $_POST['id'] > 0) {
-            $item = EM::getInstance()->getRepository(self::$itemClass)->find($_POST['id']);
-        } else {
-            $highestId = EM::getInstance()->getRepository(self::$itemClass)->matching(
-                Criteria::create()->orderBy(['id' => 'desc']))->first();
-            if (!empty($highestId)) {
-                $item->setId($highestId->getId() + 1);
-            } else {
-                $item->setId(1);
-            }
-            
-            EM::getInstance()->persist($item);
-        }
-        
-        $item->setItemid(hexdec(self::numberConvertEndian(hexdec($_POST['item']), 2)));
-        $item->setMaxQuantity($_POST['maximumquantity']);
-        $item->setQuantity($_POST['tradequantity']);
-        $item->setMinGr($_POST['grankreq']);
-        $item->setCost($_POST['cost']);
-        $item->setShopid($_POST['category']);
-        $item->setRoadFloors($_POST['roadfloorsreq']);
-        $item->setRoadFatalis($_POST['weeklyfataliskills']);
-        
-        $item->setShoptype(10);
-        $item->setMinHr(0);
-        $item->setMinSr(0);
-        $item->setStoreLevel(1);
-        
-        EM::getInstance()->flush();
-        
-        ResponseService::SendOk($item->getId());
+        self::SaveItem(static function ($item) {
+            $item->setItemid(hexdec(self::numberConvertEndian(hexdec($_POST['item']), 2)));
+            $item->setMaxQuantity($_POST['maximumquantity']);
+            $item->setQuantity($_POST['tradequantity']);
+            $item->setMinGr($_POST['grankreq']);
+            $item->setCost($_POST['cost']);
+            $item->setShopid($_POST['category']);
+            $item->setRoadFloors($_POST['roadfloorsreq']);
+            $item->setRoadFatalis($_POST['weeklyfataliskills']);
+    
+            $item->setShoptype(10);
+            $item->setMinHr(0);
+            $item->setMinSr(0);
+            $item->setStoreLevel(1);
+        });
     }
     
-    public static function ExportRoadShopItems()
+    /**
+     * @return void
+     */
+    public static function ExportRoadShopItems(): void
     {
+        
         $records = EM::getInstance()->getRepository(self::$itemClass)->matching(
             Criteria::create()->where(Criteria::expr()->eq('shop_type', '10')));
-        self::arrayOfModelsToCSVDownload($records, self::$itemName . "Items");
+        
+        self::arrayOfModelsToCSVDownload($records);
     }
     
-    public static function ImportRoadShopItems()
+    /**
+     * @return void
+     * @throws ORMException
+     * @throws OptimisticLockException
+     */
+    public static function ImportRoadShopItems(): void
     {
-        self::importFromCSV(self::$itemName . 'CSV', self::$itemClass,
-            'delete from MHFSaveManager\Model\ShopItem n where n.shop_type = 10');
+        self::importFromCSV('n.shop_type = 10');
     }
 }
