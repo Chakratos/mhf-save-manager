@@ -229,7 +229,7 @@ class ShopItem
     /**
      * @return int
      */
-    public function getMin_hr(): int
+    public function getMinHr(): int
     {
         return $this->min_hr;
     }
@@ -238,7 +238,7 @@ class ShopItem
      * @param int $min_hr
      * @return ShopItem
      */
-    public function setMin_hr(int $min_hr): ShopItem
+    public function setMinHr(int $min_hr): ShopItem
     {
         $this->min_hr = $min_hr;
         
@@ -248,7 +248,7 @@ class ShopItem
     /**
      * @return int
      */
-    public function getMin_sr(): int
+    public function getMinSr(): int
     {
         return $this->min_sr;
     }
@@ -257,7 +257,7 @@ class ShopItem
      * @param int $min_sr
      * @return ShopItem
      */
-    public function setMin_sr(int $min_sr): ShopItem
+    public function setMinSr(int $min_sr): ShopItem
     {
         $this->min_sr = $min_sr;
         
@@ -267,7 +267,7 @@ class ShopItem
     /**
      * @return int
      */
-    public function getMin_gr(): int
+    public function getMinGr(): int
     {
         return $this->min_gr;
     }
@@ -276,7 +276,7 @@ class ShopItem
      * @param int $min_gr
      * @return ShopItem
      */
-    public function setMin_gr(int $min_gr): ShopItem
+    public function setMinGr(int $min_gr): ShopItem
     {
         $this->min_gr = $min_gr;
         
@@ -286,7 +286,7 @@ class ShopItem
     /**
      * @return int
      */
-    public function get_store_level(): int
+    public function getStoreLevel(): int
     {
         return $this->store_level;
     }
@@ -295,7 +295,7 @@ class ShopItem
      * @param int $store_level
      * @return ShopItem
      */
-    public function set_store_level(int $store_level): ShopItem
+    public function setStoreLevel(int $store_level): ShopItem
     {
         $this->store_level = $store_level;
         
@@ -305,7 +305,7 @@ class ShopItem
     /**
      * @return int
      */
-    public function getMax_quantity(): int
+    public function getMaxQuantity(): int
     {
         return $this->max_quantity;
     }
@@ -314,7 +314,7 @@ class ShopItem
      * @param int $max_quantity
      * @return ShopItem
      */
-    public function setMax_quantity(int $max_quantity): ShopItem
+    public function setMaxQuantity(int $max_quantity): ShopItem
     {
         $this->max_quantity = $max_quantity;
         
@@ -324,7 +324,7 @@ class ShopItem
     /**
      * @return int
      */
-    public function getRoad_floors(): int
+    public function getRoadFloors(): int
     {
         return $this->road_floors;
     }
@@ -333,7 +333,7 @@ class ShopItem
      * @param int $road_floors
      * @return ShopItem
      */
-    public function setRoad_floors(int $road_floors): ShopItem
+    public function setRoadFloors(int $road_floors): ShopItem
     {
         $this->road_floors = $road_floors;
         
@@ -343,7 +343,7 @@ class ShopItem
     /**
      * @return int
      */
-    public function getRoad_fatalis(): int
+    public function getRoadFatalis(): int
     {
         return $this->road_fatalis;
     }
@@ -352,7 +352,7 @@ class ShopItem
      * @param int $road_fatalis
      * @return ShopItem
      */
-    public function setRoad_fatalis(int $road_fatalis): ShopItem
+    public function setRoadFatalis(int $road_fatalis): ShopItem
     {
         $this->road_fatalis = $road_fatalis;
         

@@ -2,6 +2,7 @@
 
 use MHFSaveManager\Controller\CharacterController;
 use MHFSaveManager\Controller\DistributionsController;
+use MHFSaveManager\Controller\GachaController;
 use MHFSaveManager\Controller\SaveDataController;
 use MHFSaveManager\Controller\RoadShopController;
 use MHFSaveManager\Database\EM;
@@ -91,19 +92,19 @@ SimpleRouter::post('/servertools/distributions/duplicate/{id}', function($id) {
     ResponseService::SendOk();
 });
 
+SimpleRouter::get('/servertools/gacha', function() {
+    GachaController::Index();
+});
+
 SimpleRouter::get('/servertools/roadshop', function() {
     RoadShopController::Index();
 });
 
 SimpleRouter::post('/servertools/roadshop/save', function() {
-    if (!isset($_POST['item']) ||
-        !isset($_POST['category']) ||
-        !isset($_POST['cost']) ||
-        !isset($_POST['grank']) ||
-        !isset($_POST['tradeQuantity']) ||
-        !isset($_POST['maximumQuantity']) ||
-        !isset($_POST['roadFloors']) ||
-        !isset($_POST['fatalis'])) {
+    /*
+     *
+     */
+    if (!isset($_POST['item'], $_POST['category'], $_POST['cost'], $_POST['grankreq'], $_POST['tradequantity'], $_POST['maximumquantity'], $_POST['roadfloorsreq'], $_POST['weeklyfataliskills'])) {
         ResponseService::SendUnprocessableEntity();
     }
     
@@ -115,7 +116,7 @@ SimpleRouter::get('/servertools/roadshop/export', function() {
 });
 
 SimpleRouter::post('/servertools/roadshop/import', function() {
-    if ($_FILES["roadShopCSV"]["error"] != UPLOAD_ERR_OK) {
+    if ($_FILES["roadshopCSV"]["error"] != UPLOAD_ERR_OK) {
         ResponseService::SendServerError('Error while uploading, check storage permissions for the TMP folder!');
     }
     
@@ -172,7 +173,7 @@ SimpleRouter::post('/character/{id}/edit/setname/', function($id) {
     ResponseService::SendOk();
 });
 
-SimpleRouter::post('/character/{id}/edit/item/{box}/{slot}', function($id, $boxtype, $slot) {
+SimpleRouter::post('/character/{id}/edit/shop/{box}/{slot}', function($id, $boxtype, $slot) {
     /** @var Character $character */
     $character = EM::getInstance()->getRepository('MHFSaveManager\Model\Character')->find($id);
     if (!$character) {
