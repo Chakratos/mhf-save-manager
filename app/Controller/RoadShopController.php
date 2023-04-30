@@ -13,6 +13,7 @@ class RoadShopController extends AbstractController
     public static function Index()
     {
         $UILocale = \MHFSaveManager\Service\UIService::getForLocale();
+        $itemName = 'roadshop';
         
         $roadItems = EM::getInstance()->getRepository('MHFSaveManager\Model\ShopItem')->matching(
             Criteria::create()->where(Criteria::expr()->eq('shop_type', '10'))
@@ -38,16 +39,22 @@ class RoadShopController extends AbstractController
             $UILocale['Road Floors Req'] => ['type' => 'Int'],
             $UILocale['Weekly Fatalis Kills'] => ['type' => 'Int'],
         ];
-    
-        $itemName = 'roadshop';
         
         foreach ($roadItems as $roadItem) {
             $itemId = self::numberConvertEndian($roadItem->getItemid(), 2);
             $itemData = ItemsService::getForLocale()[$itemId];
             $data[] = [
                 $UILocale['ID'] => $roadItem->getId(),
-                $UILocale['Category'] => $roadItem->getShopidFancy(),
-                $UILocale['Item'] => $itemData['name'] ? : $UILocale['No Translation!'],
+                $UILocale['Category'] =>
+                    [
+                        'id' => $roadItem->getShopid(),
+                        'name' => $roadItem->getShopidFancy(),
+                    ],
+                $UILocale['Item'] =>
+                    [
+                        'id' => $itemId,
+                        'name' => $itemData['name'] ? : $UILocale['No Translation!']
+                    ],
                 $UILocale['Cost'] => $roadItem->getCost(),
                 $UILocale['GRank Req'] => $roadItem->getMin_gr(),
                 $UILocale['Trade Quantity'] => $roadItem->getQuantity(),

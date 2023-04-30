@@ -92,7 +92,10 @@ HTML;
         $varLoading = '';
         $varChecks = '1==2';
         $varData = '';
+        $varCellData = '';
     
+        $i = 1;
+        
         foreach ($modalFieldInfo as $key => $field) {
             $key = str_replace(' ', '', $key);
             $lcKey = strtolower($key);
@@ -108,16 +111,20 @@ HTML;
                 $varAssignments .= "let $key = $('#${itemName}$key').find(':selected');\n";
                 $varResets .= "$('#${itemName}$key').val($('#${itemName}$key option:first').val());\n";
                 $varResets .= "$('#${itemName}$key').trigger('change');\n";
-                $varLoading .= "$('#${itemName}$key').val($('#${itemName}$key option:contains(' + $(this).data('${lcKey}') + ')').val()).trigger('change');\n";
+                //$varLoading .= "$('#${itemName}$key').val($('#${itemName}$key option:contains(' + $(this).data('${lcKey}') + ')').val()).trigger('change');\n";
+                $varLoading .= "$('#${itemName}$key').val($(this).data('${lcKey}')).trigger('change');\n";
                 $varChecks .= "|| ${key}.length === 0";
                 $varData .= "$lcKey: $key.val(),\n";
+                $varCellData .= "cells[${i}].innerHTML = $key.text();\n";
             } else {
                 $varAssignments .= "let $key = $('#${itemName}$key').val();\n";
                 $varResets .= "$('#${itemName}$key').val('');\n";
                 $varLoading .= "$('#${itemName}$key').val($(this).data('${lcKey}'));\n";
                 $varChecks .= $key !== 'ID' ? " || ${key} === ''" : '';
                 $varData .= "$lcKey: $key,\n";
+                $varCellData .= "cells[${i}].innerHTML = $key;\n";
             }
+            $i++;
         }
 
         // Generate the table
@@ -139,14 +146,23 @@ HTML;
             $output .= '<tr>';
             
             foreach ($modalFieldInfo as $field => $type) {
-                $output .= "<td>{$row[$field]}</td>";
+                if ($type['type'] === 'Array') {
+                    $output .= "<td>{$row[$field]['name']}</td>";
+                } else {
+                    $output .= "<td>{$row[$field]}</td>";
+                }
             }
             
             $output .= '<td>';
             $varEditData = '';
             
             foreach ($row as $key => $value) {
-                $varEditData .= sprintf('data-%s = "%s"', str_replace(' ', '', $key), $value);
+                if (is_array($value)) {
+                    $varEditData .= sprintf('data-%s = "%s"', str_replace(' ', '', $key), $value['id']);
+                } else {
+                    $varEditData .= sprintf('data-%s = "%s"', str_replace(' ', '', $key), $value);
+                }
+                
             }
             
             $output .= "<button {$varEditData} class=\"edit{$itemName}Item btn btn-sm btn-outline-success\"><i class=\"fas fa-pencil\"></i></button>";
@@ -210,14 +226,7 @@ HTML;
                         let button = $('.edit${itemName}Item[data-id="' + id + '"]');
                         if (button.length > 0) {
                             let cells = button.parents('tr').children('td');
-                            cells[1].innerHTML = category.text();
-                            cells[2].innerHTML = item.text();
-                            cells[3].innerHTML = cost;
-                            cells[4].innerHTML = grank;
-                            cells[5].innerHTML = tradeQuantity;
-                            cells[6].innerHTML = maximumQuantity;
-                            cells[7].innerHTML = roadFloors;
-                            cells[8].innerHTML = fatalis;
+                            ${varCellData}
                             saveButton.prop('disabled', false);
                             table.row(button.parents('tr')).invalidate().draw(false);
                         } else {
