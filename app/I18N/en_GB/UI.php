@@ -5,6 +5,7 @@ return [
     'Language' => 'Language',
     'Roadshop Editor' => 'Roadshop Editor',
     'Distribution Editor' => 'Distribution Editor',
+    'Gacha Editor' => 'Gacha Editor',
     'User ID' => 'User ID',
     'Gender' => 'Gender',
     'New Character' => 'New Character',
@@ -98,4 +99,15 @@ return [
     'Max SR' => 'Max SR',
     'Amount' => 'Amount',
     'Colors Table' => 'Colors Table',
+    //Gacha Editor
+    'Gacha Type' => 'Gacha Type',
+    'Recommended' => 'Recommended',
+    'Url Banner' => 'Url Banner',
+    'Url Feature' => 'Url Feature',
+    'Url Thumbnail' => 'Url Thumbnail',
+    'Wide' => 'Wide',
+    'Hidden' => 'Hidden',
+    'Create Gacha Shop' => 'Create Gacha Shop',
+    'Editing Gacha Shop' => 'Editing Gacha Shop',
+    '' => '',
 ];

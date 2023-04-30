@@ -294,7 +294,7 @@ $(document).ready(function () {
                 table.row(button.parents('tr')).invalidate().draw();
             } else {
                 location.reload()
-                //table.row.add(['ID VOM RESPOONSE', category.text(), item.text(), cost, grank, tradeQuantity, maximumQuantity, boughtQuantity, roadFloors, fatalis]).draw();
+                //table.row.add(['ID VOM RESPOONSE', category.text(), shop.text(), cost, grank, tradeQuantity, maximumQuantity, boughtQuantity, roadFloors, fatalis]).draw();
             }
 
             $('#distributionModal').modal('hide');

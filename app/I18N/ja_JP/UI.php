@@ -5,6 +5,7 @@ return [
     'Language' => '言語',
     'Roadshop Editor' => 'Roadshop Editor',
     'Distribution Editor' => 'Distribution Editor',
+    'Gacha Editor' => 'Gacha Editor',
     'User ID' => 'ユｰザｰID',
     'Gender' => '性別',
     'New Character' => '新規キャラクター',
@@ -98,4 +99,15 @@ return [
     'Max SR' => '最大SR',
     'Amount' => '数量',
     'Colors Table' => 'カラーコード',
+    //Gacha Editor
+    'Gacha Type' => 'Gacha Type',
+    'Recommended' => 'Recommended',
+    'Url Banner' => 'Url Banner',
+    'Url Feature' => 'Url Feature',
+    'Url Thumbnail' => 'Url Thumbnail',
+    'Wide' => 'Wide',
+    'Hidden' => 'Hidden',
+    'Create Gacha Shop' => 'Create Gacha Shop',
+    'Editing Gacha Shop' => 'Editing Gacha Shop',
+    '' => '',
 ];

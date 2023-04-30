@@ -1,53 +1,46 @@
 $(document).ready(function () {
-    const table = $('#${itemName}table').DataTable();
+    const table = $('#gachaShopTable').DataTable();
 
-    $('#roadshopItemSelect').select2({
-        theme: 'bootstrap4',
+    $('#createShop').click(function() {
+        $('#gachaShopTitle > b')[0].innerHTML = '';
+        $('#gachaShopName').val('');
+        $('#gachaShopMinHR').val('');
+        $('#gachaShopMinGR').val('');
+        $('#gachaShopURLBanner').val('');
+        $('#gachaShopURLFeature').val('');
+        $('#gachaShopURLThumbnail').val('');
+        $('#gachaShopRecommended').prop('checked', false);
+        $('#gachaShopWide').prop('checked', false);
+        $('#gachaShopHidden').prop('checked', false);
+        $('#gachaShopModal').modal('show');
     });
 
-    $('#roadshopCategorySelect').select2({
-        theme: 'bootstrap4',
-    });
-    $('#createRoadshopItem').click(function() {
-        $('#roadshopItemTitle > b')[0].innerHTML = '';
-        $('#roadshopItemSelect').val('0000');
-        $('#roadshopItemSelect').trigger('change');
-        $('#roadshopCategorySelect').val('0');
-        $('#roadshopCategorySelect').trigger('change');
-        $('#roadshopCost').val('');
-        $('#roadshopGRank').val('');
-        $('#roadshopTradeQuantity').val('');
-        $('#roadshopMaximumQuantity').val('');
-        $('#roadshopRoadFloors').val('');
-        $('#roadshopFatalis').val('');
-        $('#roadshopItemModal').modal('show');
+    $('#gachaShopTable').on('click', '.editShop', function () {
+        $('#gachaShopTitle > b')[0].innerHTML = $(this).data('id');
+
+        $('#gachaShopTypeSelect').val($(this).data('gachatype'));
+        $('#gachaShopName').val($(this).data('name'));
+        $('#gachaShopMinHR').val($(this).data('minhr'));
+        $('#gachaShopMinGR').val($(this).data('mingr'));
+        $('#gachaShopRecommended').prop('checked', $(this).data('recommended') == '1');
+        $('#gachaShopWide').prop('checked', $(this).data('wide') == '1');
+        $('#gachaShopHidden').prop('checked', $(this).data('hidden') == '1');
+        $('#gachaShopURLBanner').val($(this).data('url_banner'));
+        $('#gachaShopURLFeature').val($(this).data('url_feature'));
+        $('#gachaShopURLThumbnail').val($(this).data('url_thumbnail'));
+        $('#gachaShopModal').modal('show');
     });
 
-    $('#roadshoptable').on('click', '.editRoadItem', function () {
-        $('#roadshopItemTitle > b')[0].innerHTML = $(this).data('id');
-        $('#roadshopItemSelect').val($(this).data('itemid'));
-        $('#roadshopItemSelect').trigger('change');
-        $('#roadshopCategorySelect').val($(this).data('categoryid'));
-        $('#roadshopCategorySelect').trigger('change');
-        $('#roadshopCost').val($(this).data('cost'));
-        $('#roadshopGRank').val($(this).data('grank'));
-        $('#roadshopTradeQuantity').val($(this).data('quantity'));
-        $('#roadshopMaximumQuantity').val($(this).data('max_quantity'));
-        $('#roadshopRoadFloors').val($(this).data('roadfloors'));
-        $('#roadshopFatalis').val($(this).data('fatalis'));
-        $('#roadshopItemModal').modal('show');
-    });
-
-    $('#roadshopSave').click(function() {
-        let id = $('#roadshopItemTitle > b')[0].innerHTML;
+    $('#gachaShopSave').click(function() {
+        let id = $('#gachaShopTitle > b')[0].innerHTML;
         let item = $('#roadshopItemSelect').find(':selected');
         let category = $('#roadshopCategorySelect').find(':selected');
-        let cost = $('#roadshopCost').val();
-        let grank = $('#roadshopGRank').val();
-        let tradeQuantity = $('#roadshopTradeQuantity').val();
-        let maximumQuantity = $('#roadshopMaximumQuantity').val();
-        let roadFloors = $('#roadshopRoadFloors').val();
-        let fatalis = $('#roadshopFatalis').val();
+        let cost = $('#gachaShopName').val();
+        let grank = $('#gachaShopMinHR').val();
+        let tradeQuantity = $('#gachaShopMinGR').val();
+        let maximumQuantity = $('#gachaShopURLBanner').val();
+        let roadFloors = $('#gachaShopURLFeature').val();
+        let fatalis = $('#gachaShopURLThumbnail').val();
 
         let saveButton = $(this);
         saveButton.prop('disabled', true);
@@ -78,7 +71,7 @@ $(document).ready(function () {
             type: "POST",
             data: data,
         }).then(function(response) {
-            let button = $('.editRoadItem[data-id="' + id + '"]');
+            let button = $('.editShop[data-id="' + id + '"]');
             if (button.length > 0) {
                 let cells = button.parents('tr').children('td');
                 cells[1].innerHTML = category.text();
@@ -96,14 +89,14 @@ $(document).ready(function () {
                 //table.row.add(['ID VOM RESPOONSE', category.text(), shop.text(), cost, grank, tradeQuantity, maximumQuantity, boughtQuantity, roadFloors, fatalis]).draw();
             }
 
-            $('#roadshopItemModal').modal('hide');
+            $('#gachaShopModal').modal('hide');
         }).catch(function(response) {
             alert(response.message);
             saveButton.prop('disabled', false);
         });
     });
 
-    $('#roadshoptable').on('click', '.deleteRoadItem', function () {
+    $('#gachaShopTable').on('click', '.deleteShop', function () {
         let formdata = new FormData();
         let itemId = $(this).attr('data-id');
         formdata.append("item", itemId);
@@ -144,7 +137,7 @@ $(document).ready(function () {
         }
 
         let file =$(this).prop('files')[0];
-        formdata.append("roadshopCSV", file);
+        formdata.append("roadShopCSV", file);
 
         $.ajax({
             url: "/servertools/roadshop/import",
