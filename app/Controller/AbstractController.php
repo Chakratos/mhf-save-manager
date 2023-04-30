@@ -63,13 +63,16 @@ HTML;
             if ($field['type'] === 'Array') {
                 $output .= "<select class=\"form-control\" id=\"{$itemName}{$idKey}\">";
                 foreach ($field['options'] as $id => $option) {
-                    $output .= sprintf('<option value="%s">%s</option>', $id, is_array($option) ? $option['name'] : $option);
+                    $output .= sprintf('<option value="%s">%s</option>', $id, is_array($option) ? sprintf('[%s] %s', $id, $option['name']) : $option);
                 }
                 $output .= '</select>';
             } else {
                 $inputType = $field['type'] === 'Int' ? 'number' : 'text';
                 $disabled = !empty($field['disabled']) ? 'disabled="disabled"' : '';
-                $output .= "<input {$disabled} type=\"{$inputType}\" class=\"form-control\" id=\"{$itemName}{$idKey}\">";
+                $placeholder = !empty($field['placeholder']) ? 'placeholder="' . $field['placeholder'] . '"' : '';
+                $min = !empty($field['min']) ? 'min="' . $field['min'] . '"' : '';
+                $max = !empty($field['max']) ? 'max="' . $field['max'] . '"' : '';
+                $output .= "<input {$min} {$max} {$disabled} {$placeholder} type=\"{$inputType}\" class=\"form-control\" id=\"{$itemName}{$idKey}\">";
             }
             
             $output .= '</div>';
@@ -94,7 +97,7 @@ HTML;
         $varData = '';
         $varCellData = '';
     
-        $i = 1;
+        $i = 0;
         
         foreach ($modalFieldInfo as $key => $field) {
             $key = str_replace(' ', '', $key);
@@ -223,7 +226,7 @@ HTML;
                         type: 'POST',
                         data: data,
                     }).then(function(response) {
-                        let button = $('.edit${itemName}Item[data-id="' + id + '"]');
+                        let button = $('.edit${itemName}Item[data-id="' + ID + '"]');
                         if (button.length > 0) {
                             let cells = button.parents('tr').children('td');
                             ${varCellData}
@@ -267,15 +270,15 @@ HTML;
                     });
                 });
             
-                $('#import${itemName}').click(function() {
+                $('#import${ucItemName}').click(function() {
                     if (!window.confirm('This will overwrite every Roadshop Item. Beware!')) {
                         return;
                     }
             
-                    $('#import${itemName}Input').trigger('click');
+                    $('#import${ucItemName}Input').trigger('click');
                 });
             
-                $('#import${itemName}Input').change(function() {
+                $('#import${ucItemName}Input').change(function() {
                     let formdata = new FormData();
                     if($(this).prop('files').length <= 0) {
                         return;

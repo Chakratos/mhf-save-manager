@@ -104,14 +104,7 @@ SimpleRouter::post('/servertools/roadshop/save', function() {
     /*
      *
      */
-    if (!isset($_POST['shop']) ||
-        !isset($_POST['category']) ||
-        !isset($_POST['cost']) ||
-        !isset($_POST['grank']) ||
-        !isset($_POST['tradeQuantity']) ||
-        !isset($_POST['maximumQuantity']) ||
-        !isset($_POST['roadFloors']) ||
-        !isset($_POST['fatalis'])) {
+    if (!isset($_POST['item'], $_POST['category'], $_POST['cost'], $_POST['grankreq'], $_POST['tradequantity'], $_POST['maximumquantity'], $_POST['roadfloorsreq'], $_POST['weeklyfataliskills'])) {
         ResponseService::SendUnprocessableEntity();
     }
     
@@ -123,7 +116,7 @@ SimpleRouter::get('/servertools/roadshop/export', function() {
 });
 
 SimpleRouter::post('/servertools/roadshop/import', function() {
-    if ($_FILES["roadShopCSV"]["error"] != UPLOAD_ERR_OK) {
+    if ($_FILES["roadshopCSV"]["error"] != UPLOAD_ERR_OK) {
         ResponseService::SendServerError('Error while uploading, check storage permissions for the TMP folder!');
     }
     
