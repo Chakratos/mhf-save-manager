@@ -7,7 +7,7 @@ use Doctrine\ORM\Exception\ORMException;
 use Doctrine\ORM\OptimisticLockException;
 use MHFSaveManager\Database\EM;
 use MHFSaveManager\Model\ShopItem;
-use MHFSaveManager\Service\ResponseService;
+use MHFSaveManager\Service\EditorGeneratorService;
 use MHFSaveManager\Service\ItemsService;
 use MHFSaveManager\Service\UIService;
 
@@ -16,7 +16,6 @@ use MHFSaveManager\Service\UIService;
  */
 class RoadShopController extends AbstractController
 {
-    
     protected static string $itemName = 'roadshop';
     protected static string $itemClass = ShopItem::class;
     /**
@@ -25,7 +24,7 @@ class RoadShopController extends AbstractController
     public static function Index(): void
     {
         $UILocale = UIService::getForLocale();
-        $itemName = self::$itemName;
+        
         $data = [];
         
         $roadItems = EM::getInstance()->getRepository(self::$itemClass)->matching(
@@ -51,6 +50,23 @@ class RoadShopController extends AbstractController
             $UILocale['Maximum Quantity']     => ['type' => 'Int', 'min' => 1, 'max' => 999, 'placeholder' => '1-999'],
             $UILocale['Road Floors Req']      => ['type' => 'Int', 'min' => 1, 'max' => 999, 'placeholder' => '1-999'],
             $UILocale['Weekly Fatalis Kills'] => ['type' => 'Int', 'min' => 1, 'max' => 999, 'placeholder' => '1-999'],
+        ];
+    
+        $fieldPositions = [
+            'headline' => $UILocale['ID'],
+            [
+                
+                $UILocale['Category'],
+                $UILocale['Item'],
+            ],
+            [
+                $UILocale['Cost'],
+                $UILocale['GRank Req'],
+                $UILocale['Trade Quantity'],
+                $UILocale['Maximum Quantity'],
+                $UILocale['Road Floors Req'],
+                $UILocale['Weekly Fatalis Kills'],
+            ],
         ];
         
         foreach ($roadItems as $roadItem) {
@@ -80,7 +96,8 @@ class RoadShopController extends AbstractController
         $actions = [
         ];
         
-        echo self::generateDynamicTable('MHF Character Manager', $modalFieldInfo, $data, $actions);
+        echo EditorGeneratorService::generateDynamicTable('MHF Road Shop', static::$itemName, $modalFieldInfo, $fieldPositions, $data, $actions);
+        //echo self::generateDynamicTable('MHF Character Manager', $modalFieldInfo, $data, $actions);
     }
     
     /**
