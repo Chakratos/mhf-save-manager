@@ -115,7 +115,7 @@ class EditorGeneratorService
         $output .= <<<HTML
         </div>
         <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-secondary" onclick="closeNestedModal('{$itemName}ItemModal')">Close</button>
             <button type="button" class="btn btn-primary" id="{$itemName}Save">Save</button>
         </div>
     </div>
@@ -136,12 +136,23 @@ HTML;
     {
         $idKey = str_replace(' ', '', $key);
         $output = '';
+        $inputType = '';
+        
         switch ($field['type']) {
             case 'Int':
                 $inputType = 'number';
                 break;
             case 'Hidden':
                 $inputType = 'hidden';
+                break;
+            case 'Modal':
+                $nestedModalFieldInfo = $field['modalFieldInfo'];
+                $nestedFieldPositions = $field['fieldPositions'];
+                $nestedModalName = "{$itemName}{$idKey}Modal";
+                $output .= "<select size=\"7\" class=\"form-control\" id=\"{$itemName}{$idKey}\"></select>";
+                $output .= "<div><button type=\"button\" class=\"btn btn-sm btn-primary\" onclick=\"addItemToNestedModal('{$nestedModalName}ItemModal')\">+</button>";
+                $output .= "<button type=\"button\" class=\"btn btn-sm btn-danger\" onclick=\"removeItemFromNestedModal('{$nestedModalName}ItemModal')\">-</button></div>";
+                $output .= self::generateModalBack($nestedModalFieldInfo, $nestedFieldPositions, $nestedModalName);
                 break;
             default:
                 $inputType = 'text';
@@ -160,7 +171,7 @@ HTML;
                 $output .= sprintf('<option value="%s">%s</option>', $id, is_array($option) ? sprintf('[%s] %s', $id, $option['name']) : $option);
             }
             $output .= '</select>';
-        } else {
+        } elseif ($field['type'] !== 'Modal') {
             $disabled = !empty($field['disabled']) ? 'disabled="disabled"' : '';
             $placeholder = !empty($field['placeholder']) ? 'placeholder="' . $field['placeholder'] . '"' : '';
             $min = !empty($field['min']) ? 'min="' . $field['min'] . '"' : '';
@@ -190,7 +201,9 @@ HTML;
         <tr>";
     
         foreach ($modalFieldInfo as $field => $type) {
-            $output .= "<th>{$field}</th>";
+            if ($type['type'] !== 'Modal') {
+                $output .= "<th>{$field}</th>";
+            }
         }
     
         $output .= '<th>Actions</th>
@@ -204,7 +217,7 @@ HTML;
             foreach ($modalFieldInfo as $field => $type) {
                 if ($type['type'] === 'Array') {
                     $output .= "<td>{$row[$field]['name']}</td>";
-                } else {
+                } elseif ($type['type'] !== 'Modal') {
                     $output .= "<td>{$row[$field]}</td>";
                 }
             }
@@ -294,121 +307,199 @@ HTML;
             $i++;
         }
     
-        $javascript = <<<JS
-            $(document).ready(function () {
-                const table = $('#${itemName}table').DataTable();
-                
-                ${select2Init}
-                
-                $('#create${ucItemName}Item').click(function() {
-                    $('#${itemName}ItemTitle > b')[0].innerHTML = '';
-                    ${varResets}
-                    $('#${itemName}ItemModal').modal('show');
-                });
-            
-                $('#${itemName}table').on('click', '.edit{$itemName}Item', function () {
-                    $('#${itemName}ItemTitle > b')[0].innerHTML = $(this).data('id');
-                    ${varLoading}
-                    $('#${itemName}ItemModal').modal('show');
-                });
-            
-                $('#${itemName}Save').click(function() {
-                    ${varAssignments}
-            
-                    let saveButton = $(this);
-                    saveButton.prop('disabled', true);
-                    if (${varChecks}) {
-                        alert('Please fill all fields with valid data!');
-                        saveButton.prop('disabled', false);
-                        return;
-                    }
-            
-                    let data = {
-                        ${varData}
-                    }
-            
-                    $.ajax({
-                        url: '/servertools/${itemName}/save',
-                        type: 'POST',
-                        data: data,
-                    }).then(function(response) {
-                        let button = $('.edit${itemName}Item[data-id="' + ID + '"]');
-                        if (button.length > 0) {
-                            let cells = button.parents('tr').children('td');
-                            ${varCellData}
-                            saveButton.prop('disabled', false);
-                            table.row(button.parents('tr')).invalidate().draw(false);
-                        } else {
-                            location.reload()
-                            //table.row.add(['ID VOM RESPOONSE', category.text(), shop.text(), cost, grank, tradeQuantity, maximumQuantity, boughtQuantity, roadFloors, fatalis]).draw();
-                        }
-            
-                        $('#${itemName}ItemModal').modal('hide');
-                    }).catch(function(response) {
-                        alert(response.message);
-                        saveButton.prop('disabled', false);
-                    });
-                });
-            
-                $('#${itemName}table').on('click', '.delete{$itemName}Item', function () {
-                    let formdata = new FormData();
-                    let itemId = $(this).attr('data-id');
-                    formdata.append('item', itemId);
-            
-                    if (!window.confirm('Are you sure you want to delete the entry with the ID : ' + itemId)) {
-                        return;
-                    }
-            
-                    let rowToRemove = $(this).parents('tr');
-            
-                    $.ajax({
-                        url: '/servertools/${itemName}/delete/' + itemId,
-                        type: 'POST',
-                        data: formdata,
-                        processData: false,
-                        contentType: false,
-                        success: function (result) {
-                            table.row(rowToRemove).remove().draw();
-                        },
-                        error: function (result) {
-                            alert(result.responseJSON.message);
-                        }
-                    });
-                });
-            
-                $('#import${ucItemName}').click(function() {
-                    if (!window.confirm('This will overwrite every Roadshop Item. Beware!')) {
-                        return;
-                    }
-            
-                    $('#import${ucItemName}Input').trigger('click');
-                });
-            
-                $('#import${ucItemName}Input').change(function() {
-                    let formdata = new FormData();
-                    if($(this).prop('files').length <= 0) {
-                        return;
-                    }
-            
-                    let file =$(this).prop('files')[0];
-                    formdata.append('${itemName}CSV', file);
-            
-                    $.ajax({
-                        url: '/servertools/${itemName}/import',
-                        type: 'POST',
-                        data: formdata,
-                        processData: false,
-                        contentType: false,
-                        error: function (result) {
-                            alert(result.responseJSON.message)
-                        },
-                        success: function () {
-                            location.reload();
-                        }
-                    });
-                });
+$javascript = <<<JS
+    var nestedModalObjects = {};
+
+    function closeNestedModal(modalId) {
+        $('#' + modalId).modal('hide');
+    }
+    
+    function addItemToNestedModal(modalId) {
+        // Open the nested modal for adding a new item
+        console.log(modalId);
+        console.log($('#' + modalId));
+        $('#' + modalId).modal('show');
+        // Set a flag to indicate adding a new item
+        $('#' + modalId).data('editing', false);
+    }
+    function editItemInNestedModal(modalId) {
+        // Get the selected option in the main modal
+        let selectedOption = $('#' + modalId.replace('Modal', '')).find(':selected');
+        if (!selectedOption.length) {
+            alert('Please select an item to edit.');
+            return;
+        }
+        // Load the selected item's data into the nested modal
+        let itemId = selectedOption.val();
+        let itemData = nestedModalObjects[modalId][itemId];
+        for (let key in itemData) {
+            $('#' + modalId + key.replace(' ', '')).val(itemData[key]);
+        }
+        // Open the nested modal for editing an existing item
+        $('#' + modalId).modal('show');
+        // Set a flag to indicate editing an existing item
+        $('#' + modalId).data('editing', true);
+    }
+    function removeItemFromNestedModal(modalId) {
+        // Remove the selected item from the nested modal
+        let selectElement = $('#' + modalId.replace('Modal', ''));
+        let selectedOption = selectElement.find(':selected');
+        if (!selectedOption.length) {
+            alert('Please select an item to delete.');
+            return;
+        }
+        let itemId = selectedOption.val();
+        delete nestedModalObjects[modalId][itemId];
+        selectedOption.remove();
+    }
+    function saveNestedModal(modalId) {
+        // Save the changes made in the nested modal and update the main modal
+        let isEditing = $('#' + modalId).data('editing');
+        let itemData = {};
+    
+        // Get the field data from the nested modal
+        $('#' + modalId).find('input, select').each(function () {
+            let fieldId = $(this).attr('id').replace(modalId, '');
+            itemData[fieldId] = $(this).val();
+        });
+    
+        if (!nestedModalObjects[modalId]) {
+            nestedModalObjects[modalId] = {};
+        }
+    
+        let itemId;
+        if (isEditing) {
+            // Editing an existing item
+            itemId = $('#' + modalId.replace('Modal', '')).find(':selected').val();
+            nestedModalObjects[modalId][itemId] = itemData;
+        } else {
+            // Adding a new item
+            itemId = Object.keys(nestedModalObjects[modalId]).length + 1;
+            nestedModalObjects[modalId][itemId] = itemData;
+            // Add the new item to the main modal's select element
+            let option = $('<option>').val(itemId).text(itemData['ID'] + ' - ' + itemData['Name']);
+            $('#' + modalId.replace('Modal', '')).append(option);
+        }
+    
+        // Close the nested modal
+        $('#' + modalId).modal('hide');
+    }
+    
+    $(document).ready(function () {
+        const table = $('#${itemName}table').DataTable();
+        
+        ${select2Init}
+        
+        $('#create${ucItemName}Item').click(function() {
+            $('#${itemName}ItemTitle > b')[0].innerHTML = '';
+            ${varResets}
+            $('#${itemName}ItemModal').modal('show');
+        });
+    
+        $('#${itemName}table').on('click', '.edit{$itemName}Item', function () {
+            $('#${itemName}ItemTitle > b')[0].innerHTML = $(this).data('id');
+            ${varLoading}
+            $('#${itemName}ItemModal').modal('show');
+        });
+    
+        $('#${itemName}Save').click(function() {
+            ${varAssignments}
+    
+            let saveButton = $(this);
+            saveButton.prop('disabled', true);
+            if (${varChecks}) {
+                alert('Please fill all fields with valid data!');
+                saveButton.prop('disabled', false);
+                return;
+            }
+    
+            let data = {
+                ${varData}
+                nestedObjects: nestedModalObjects
+            }
+    
+            $.ajax({
+                url: '/servertools/${itemName}/save',
+                type: 'POST',
+                data: data
+            }).then(function(response) {
+                let button = $('.edit${itemName}Item[data-id="' + ID + '"]');
+                if (button.length > 0) {
+                    let cells = button.parents('tr').children('td');
+                    ${varCellData}
+                    saveButton.prop('disabled', false);
+                    table.row(button.parents('tr')).invalidate().draw(false);
+                } else {
+                    location.reload()
+                    //table.row.add(['ID VOM RESPOONSE', category.text(), shop.text(), cost, grank, tradeQuantity, maximumQuantity, boughtQuantity, roadFloors, fatalis]).draw();
+                }
+    
+                $('#${itemName}ItemModal').modal('hide');
+            }).catch(function(response) {
+                alert(response.message);
+                saveButton.prop('disabled', false);
             });
-            JS;
+        });
+    
+        $('#${itemName}table').on('click', '.delete{$itemName}Item', function () {
+            let formdata = new FormData();
+            let itemId = $(this).attr('data-id');
+            formdata.append('item', itemId);
+    
+            if (!window.confirm('Are you sure you want to delete the entry with the ID : ' + itemId)) {
+                return;
+            }
+    
+            let rowToRemove = $(this).parents('tr');
+    
+            $.ajax({
+                url: '/servertools/${itemName}/delete/' + itemId,
+                type: 'POST',
+                data: formdata,
+                processData: false,
+                contentType: false,
+                success: function (result) {
+                    table.row(rowToRemove).remove().draw();
+                },
+                error: function (result) {
+                    alert(result.responseJSON.message);
+                }
+            });
+        });
+    
+        $('#import${ucItemName}').click(function() {
+            if (!window.confirm('This will overwrite every Roadshop Item. Beware!')) {
+                return;
+            }
+    
+            $('#import${ucItemName}Input').trigger('click');
+        });
+    
+        $('#import${ucItemName}Input').change(function() {
+            let formdata = new FormData();
+            if($(this).prop('files').length <= 0) {
+                return;
+            }
+    
+            let file =$(this).prop('files')[0];
+            formdata.append('${itemName}CSV', file);
+    
+            $.ajax({
+                url: '/servertools/${itemName}/import',
+                type: 'POST',
+                data: formdata,
+                processData: false,
+                contentType: false,
+                error: function (result) {
+                    alert(result.responseJSON.message)
+                },
+                success: function () {
+                    location.reload();
+                }
+            });
+        });
+    });
+    JS;
     
         $output .= sprintf('
     <script>
