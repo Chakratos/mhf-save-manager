@@ -55,73 +55,6 @@ class EditorGeneratorService
             <body>%s', $pageTitle, $head, $topnav);
     }
     
-    public static function generateModal(array $modalFieldInfo, array $fieldPositions, string $itemName): string
-    {
-        $output = '';
-        // Generate the modal
-        $output .= <<<HTML
-<div id="{$itemName}ItemModal" class="modal fade" data-backdrop="static">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="{$itemName}ItemTitle">Editing {$itemName} Item: <b></b></h5>
-            </div>
-            <div class="modal-body">
-HTML;
-        
-        $output .= '<div class="row">';
-        
-        foreach ($fieldPositions as $column) {
-            $columnSize = count($column);
-            foreach ($column as $key => $colspan) {
-                if (is_numeric($key)) {
-                    $key = $colspan;
-                    $colspan = 1;
-                }
-                $colWidth = 12 * $colspan / $columnSize;
-                $field = $modalFieldInfo[$key];
-                $idKey = str_replace(' ', '', $key);
-                
-                $output .= "<div class=\"col-md-{$colWidth}\">";
-                $output .= "<h6>{$key}:</h6>
-            <div class=\"input-group mb-2\">";
-                
-                if ($field['type'] === 'Array') {
-                    $output .= "<select class=\"form-control\" id=\"{$itemName}{$idKey}\">";
-                    foreach ($field['options'] as $id => $option) {
-                        $output .= sprintf('<option value="%s">%s</option>', $id, is_array($option) ? sprintf('[%s] %s', $id, $option['name']) : $option);
-                    }
-                    $output .= '</select>';
-                } else {
-                    $inputType = $field['type'] === 'Int' ? 'number' : 'text';
-                    $disabled = !empty($field['disabled']) ? 'disabled="disabled"' : '';
-                    $placeholder = !empty($field['placeholder']) ? 'placeholder="' . $field['placeholder'] . '"' : '';
-                    $min = !empty($field['min']) ? 'min="' . $field['min'] . '"' : '';
-                    $max = !empty($field['max']) ? 'max="' . $field['max'] . '"' : '';
-                    $output .= "<input {$min} {$max} {$disabled} {$placeholder} type=\"{$inputType}\" class=\"form-control\" id=\"{$itemName}{$idKey}\">";
-                }
-                
-                $output .= '</div>';
-                $output .= '</div>'; // Close the column
-            }
-        }
-        
-        $output .= '</div>'; // Close the row
-        
-        $output .= <<<HTML
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" id="{$itemName}Save">Save</button>
-            </div>
-        </div>
-    </div>
-</div>
-HTML;
-        
-        return $output;
-    }
-    
     /**
      * @param array $modalFieldInfo
      * @param array $fieldPositions
@@ -202,8 +135,24 @@ HTML;
     public static function generateFieldHTML(string $key, array $field, string $itemName): string
     {
         $idKey = str_replace(' ', '', $key);
-        $output = "<h6>{$key}:</h6>
-    <div class=\"input-group mb-2\">";
+        $output = '';
+        switch ($field['type']) {
+            case 'Int':
+                $inputType = 'number';
+                break;
+            case 'Hidden':
+                $inputType = 'hidden';
+                break;
+            default:
+                $inputType = 'text';
+                break;
+        }
+        
+        if ($inputType !== 'hidden') {
+            $output .= "<h6>{$key}:</h6>";
+        }
+        
+        $output .= "<div class=\"input-group mb-2\">";
         
         if ($field['type'] === 'Array') {
             $output .= "<select class=\"form-control\" id=\"{$itemName}{$idKey}\">";
@@ -212,7 +161,6 @@ HTML;
             }
             $output .= '</select>';
         } else {
-            $inputType = $field['type'] === 'Int' ? 'number' : 'text';
             $disabled = !empty($field['disabled']) ? 'disabled="disabled"' : '';
             $placeholder = !empty($field['placeholder']) ? 'placeholder="' . $field['placeholder'] . '"' : '';
             $min = !empty($field['min']) ? 'min="' . $field['min'] . '"' : '';

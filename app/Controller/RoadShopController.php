@@ -33,7 +33,7 @@ class RoadShopController extends AbstractController
         
         $modalFieldInfo = [
             $UILocale['ID']                   => [
-                'type'     => 'Int',
+                'type'     => 'Hidden',
                 'disabled' => true,
             ],
             $UILocale['Category']             => [
