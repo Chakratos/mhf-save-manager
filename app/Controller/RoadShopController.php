@@ -36,6 +36,19 @@ class RoadShopController extends AbstractController
                 'type'     => 'Hidden',
                 'disabled' => true,
             ],
+            $UILocale['Items'] => [
+                'type' => 'Modal',
+                'modalFieldInfo' => [
+                    $UILocale['Cost']                 => ['type' => 'Int', 'min' => 1, 'max' => 999, 'placeholder' => '111-111'],
+                    $UILocale['GRank Req']            => ['type' => 'Int', 'min' => 1, 'max' => 999, 'placeholder' => '222-222'],
+                ],
+                'fieldPositions' => [
+                    [
+                        $UILocale['Cost'],
+                        $UILocale['GRank Req']
+                    ]
+                ],
+            ],
             $UILocale['Category']             => [
                 'type'    => 'Array',
                 'options' => ShopItem::$categories,
@@ -58,6 +71,7 @@ class RoadShopController extends AbstractController
                 
                 $UILocale['Category'],
                 $UILocale['Item'],
+                $UILocale['Items'],
             ],
             [
                 $UILocale['Cost'],
@@ -97,7 +111,6 @@ class RoadShopController extends AbstractController
         ];
         
         echo EditorGeneratorService::generateDynamicTable('MHF Road Shop', static::$itemName, $modalFieldInfo, $fieldPositions, $data, $actions);
-        //echo self::generateDynamicTable('MHF Character Manager', $modalFieldInfo, $data, $actions);
     }
     
     /**
