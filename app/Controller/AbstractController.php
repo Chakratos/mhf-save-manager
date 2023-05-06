@@ -10,6 +10,7 @@ use Doctrine\ORM\OptimisticLockException;
 use MHFSaveManager\Database\EM;
 use MHFSaveManager\Model\Distribution;
 use MHFSaveManager\Service\ResponseService;
+use MHFSaveManager\Service\UIService;
 
 /**
  *
@@ -20,40 +21,21 @@ abstract class AbstractController
     protected static string $itemClass;
     
     /**
-     * @param string $pageTitle
-     * @param array $modalFieldInfo
-     * @param array $data
-     * @param array $actions
+     * @param string $string
      * @return string
      */
-    public static function generateDynamicTable(
-        string $pageTitle,
-        array $modalFieldInfo,
-        array $data,
-        array $actions = []
-    ): string {
-        ob_start();
-        include __DIR__ . '/../views/head.php';
-        $head = ob_get_clean();
-        include __DIR__ . '/../views/topnav.php';
-        $topnav = ob_get_clean();
-    
-        $itemName = static::$itemName;
-        $ucItemName = ucfirst($itemName);
-        
-        $output = "<html lang=\"en\">
-<head>
-    <title>{$pageTitle}</title>
-    <link rel=\"stylesheet\" href=\"/css/char-edit.css\">
-    " . $head . '
-</head>
-<body>' . $topnav;
-        
-        
-    
-    
+    public static function localeWS(string $string): string
+    {
+        $UILocale = UIService::getForLocale();
+        return str_replace(' ', '', $UILocale[$string]);
     }
     
+    /**
+     * @param $saveData
+     * @param string $hexOffset
+     * @param string $hexValue
+     * @return false|mixed|resource
+     */
     protected static function writeToFile($saveData, string $hexOffset, string $hexValue)
     {
         $handle = $saveData;
@@ -70,7 +52,12 @@ abstract class AbstractController
         return $handle;
     }
     
-    protected static function numberConvertEndian($number, $byteSize)
+    /**
+     * @param $number
+     * @param $byteSize
+     * @return string
+     */
+    protected static function numberConvertEndian($number, $byteSize): string
     {
         $hexChars = $byteSize * 2;
         $data = dechex((float)$number);
@@ -82,7 +69,11 @@ abstract class AbstractController
         return strtoupper($unpack[1]);
     }
     
-    protected static function stringToHex($string)
+    /**
+     * @param $string
+     * @return string
+     */
+    protected static function stringToHex($string): string
     {
         $output = "";
         foreach (mb_str_split($string) as $char) {
@@ -98,7 +89,11 @@ abstract class AbstractController
         return $output;
     }
     
-    protected static function uniord($u)
+    /**
+     * @param $u
+     * @return float|int
+     */
+    protected static function uniord($u): float|int
     {
         $k = mb_convert_encoding($u, 'SJIS', 'UTF-8');
         $k1 = ord(substr($k, 0, 1));
@@ -107,7 +102,11 @@ abstract class AbstractController
         return $k2 * 256 + $k1;
     }
     
-    protected static function arrayOfModelsToCSVDownload($records)
+    /**
+     * @param $records
+     * @return void
+     */
+    protected static function arrayOfModelsToCSVDownload($records): void
     {
         if (count($records)) {
             $handle = fopen('php://memory', 'w');
@@ -173,8 +172,8 @@ abstract class AbstractController
     {
         $item = new static::$itemClass();
     
-        if (isset($_POST['id']) && $_POST['id'] > 0) {
-            $item = EM::getInstance()->getRepository(static::$itemClass)->find($_POST['id']);
+        if (isset($_POST[self::localeWS('ID')]) && $_POST[self::localeWS('ID')] > 0) {
+            $item = EM::getInstance()->getRepository(static::$itemClass)->find($_POST[self::localeWS('ID')]);
         } else {
             $highestId = EM::getInstance()->getRepository(static::$itemClass)->matching(
                 Criteria::create()->orderBy(['id' => 'desc']))->first();

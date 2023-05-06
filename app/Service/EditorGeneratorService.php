@@ -64,7 +64,7 @@ class EditorGeneratorService
     public static function generateModalBack(array $modalFieldInfo, array $fieldPositions, string $itemName, bool $isNested = false): string
     {
         $output = '';
-    
+        $addition = $isNested ? '' : 'ItemModal';
         $modalSizeClass = '';
         if (count($fieldPositions) > 4) {
             $modalSizeClass = 'modal-xl';
@@ -74,7 +74,7 @@ class EditorGeneratorService
     
         // Generate the modal
         $output .= <<<HTML
-            <div id="{$itemName}ItemModal" class="modal fade" data-backdrop="static">
+            <div id="{$itemName}{$addition}" class="modal fade" data-backdrop="static">
                 <div class="modal-dialog modal-dialog-centered {$modalSizeClass}">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -118,14 +118,14 @@ class EditorGeneratorService
     
         if ($isNested) {
             $saveButton = <<<HTML
-            <button type="button" class="btn btn-primary" onclick="saveNestedModal('{$itemName}ItemModal')">Save</button>
+            <button type="button" class="btn btn-primary" onclick="saveNestedModal('{$itemName}{$addition}')">Save</button>
             HTML;
         }
         
         $output .= <<<HTML
         </div>
         <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" onclick="closeNestedModal('{$itemName}ItemModal')">Close</button>
+            <button type="button" class="btn btn-secondary" onclick="closeNestedModal('{$itemName}{$addition}')">Close</button>
             {$saveButton}
         </div>
     </div>
@@ -159,9 +159,9 @@ HTML;
                 $nestedModalFieldInfo = $field['modalFieldInfo'];
                 $nestedFieldPositions = $field['fieldPositions'];
                 $nestedModalName = "{$itemName}{$idKey}Modal";
-                $output .= "<select size=\"7\" class=\"form-control\" id=\"{$itemName}{$idKey}\" ondblclick=\"openNestedModalWithData('{$nestedModalName}ItemModal', this)\"></select>";
-                $output .= "<div><button type=\"button\" class=\"btn btn-sm btn-primary\" onclick=\"addItemToNestedModal('{$nestedModalName}ItemModal')\">+</button>";
-                $output .= "<button type=\"button\" class=\"btn btn-sm btn-danger\" onclick=\"removeItemFromNestedModal('{$nestedModalName}ItemModal')\">-</button></div>";
+                $output .= "<select size=\"7\" class=\"form-control\" id=\"{$itemName}{$idKey}\" ondblclick=\"openNestedModalWithData('{$nestedModalName}', this)\"></select>";
+                $output .= "<div><button type=\"button\" class=\"btn btn-sm btn-primary\" onclick=\"addItemToNestedModal('{$nestedModalName}')\">+</button>";
+                $output .= "<button type=\"button\" class=\"btn btn-sm btn-danger\" onclick=\"removeItemFromNestedModal('{$nestedModalName}')\">-</button></div>";
                 $output .= self::generateModalBack($nestedModalFieldInfo, $nestedFieldPositions, $nestedModalName, true);
                 break;
             default:
@@ -186,8 +186,7 @@ HTML;
             $placeholder = !empty($field['placeholder']) ? 'placeholder="' . $field['placeholder'] . '"' : '';
             $min = !empty($field['min']) ? 'min="' . $field['min'] . '"' : '';
             $max = !empty($field['max']) ? 'max="' . $field['max'] . '"' : '';
-            $nestedPrefix = $isNested ? "{$itemName}ItemModal" : "";
-            $output .= "<input {$min} {$max} {$disabled} {$placeholder} type=\"{$inputType}\" class=\"form-control\" id=\"{$nestedPrefix}{$itemName}{$idKey}\">";
+            $output .= "<input {$min} {$max} {$disabled} {$placeholder} type=\"{$inputType}\" class=\"form-control\" id=\"{$itemName}{$idKey}\">";
         }
         
         $output .= '</div>';
@@ -235,14 +234,18 @@ HTML;
         
             $output .= '<td>';
             $varEditData = '';
-        
+    
             foreach ($row as $key => $value) {
-                if (is_array($value)) {
-                    $varEditData .= sprintf(' data-%s="%s"', str_replace(' ', '', $key), $value['id']);
+                $keyWithoutWhitespace = str_replace(' ', '', $key);
+                if ($key === 'NestedModalData') {
+                    $sanitizedNestedModalData = self::sanitizeNestedKeys($value);
+                    $nestedModalDataString = json_encode($sanitizedNestedModalData, JSON_UNESCAPED_UNICODE);
+                    $varEditData .= sprintf(' data-%s="%s"', 'nested-modal-data', htmlspecialchars($nestedModalDataString, ENT_QUOTES, 'UTF-8'));
+                } elseif (is_array($value)) {
+                    $varEditData .= sprintf(' data-%s="%s"', $keyWithoutWhitespace, $value['id']);
                 } else {
-                    $varEditData .= sprintf(' data-%s="%s"', str_replace(' ', '', $key), $value);
+                    $varEditData .= sprintf(' data-%s="%s"', $keyWithoutWhitespace, $value);
                 }
-            
             }
         
             $output .= "<button{$varEditData} class=\"edit{$itemName}Item btn btn-sm btn-outline-success\"><i class=\"fas fa-pencil\"></i></button>";
@@ -305,15 +308,17 @@ HTML;
                 //$varLoading .= "$('#${itemName}$key').val($('#${itemName}$key option:contains(' + $(this).data('${lcKey}') + ')').val()).trigger('change');\n";
                 $varLoading .= "$('#${itemName}$key').val($(this).data('${lcKey}')).trigger('change');\n";
                 $varChecks .= "|| ${key}.length === 0";
-                $varData .= "$lcKey: $key.val(),\n";
+                $varData .= "$key: $key.val(),\n";
                 $varCellData .= "cells[${i}].innerHTML = $key.text();\n";
-            } else {
+            } elseif ($field['type'] !== 'Modal') {
                 $varAssignments .= "let $key = $('#${itemName}$key').val();\n";
                 $varResets .= "$('#${itemName}$key').val('');\n";
                 $varLoading .= "$('#${itemName}$key').val($(this).data('${lcKey}'));\n";
                 $varChecks .= $key !== 'ID' ? " || ${key} === ''" : '';
-                $varData .= "$lcKey: $key,\n";
+                $varData .= "$key: $key,\n";
                 $varCellData .= "cells[${i}].innerHTML = $key;\n";
+            } else {
+                $i--;
             }
             $i++;
         }
@@ -322,7 +327,7 @@ $javascript = <<<JS
     var nestedModalObjects = {};
 
     function openNestedModalWithData(nestedModalId, selectElement) {
-        let mainModalSelectId = nestedModalId.replace('ModalItemModal', '');
+        let mainModalSelectId = nestedModalId.replace('Modal', '');
         let selectedOption = $(selectElement).find(':selected');
         let itemId = selectedOption.val();
     
@@ -330,11 +335,9 @@ $javascript = <<<JS
         $('#' + nestedModalId).data('editing', true);
     
         // Fill the nested modal with the data of the selected option
-        let itemData = nestedModalObjects[nestedModalId][itemId];
+        let itemData = nestedModalObjects[mainModalSelectId][itemId];
         for (let fieldId in itemData) {
-            console.log('#' + nestedModalId + fieldId);
-
-            let inputField = $('#' + nestedModalId).find('#' + nestedModalId + fieldId);
+            let inputField = $('#' + nestedModalId).find('#' + nestedModalId + fieldId.replace(' ', ''));
             inputField.val(itemData[fieldId]);
         }
     
@@ -415,7 +418,7 @@ $javascript = <<<JS
         }
     
         let itemId;
-        let mainModalSelectId = modalId.replace('ModalItemModal', '');
+        let mainModalSelectId = modalId.replace('Modal', '');
 
         if (isEditing) {
             // Editing an existing item
@@ -444,6 +447,21 @@ $javascript = <<<JS
         
         ${select2Init}
         
+        function deepRemoveWhitespaceFromKeys(obj) {
+            if (typeof obj !== 'object' || obj === null) {
+                return obj;
+            }
+        
+            if (Array.isArray(obj)) {
+                return obj.map(deepRemoveWhitespaceFromKeys);
+            }
+        
+            return Object.keys(obj).reduce((acc, key) => {
+                acc[key.replace(/\s+/g, '')] = deepRemoveWhitespaceFromKeys(obj[key]);
+                return acc;
+            }, {});
+        }
+        
         $('#create${ucItemName}Item').click(function() {
             $('#${itemName}ItemTitle > b')[0].innerHTML = '';
             ${varResets}
@@ -453,6 +471,38 @@ $javascript = <<<JS
         $('#${itemName}table').on('click', '.edit{$itemName}Item', function () {
             $('#${itemName}ItemTitle > b')[0].innerHTML = $(this).data('id');
             ${varLoading}
+        
+            // Load nested modal data from the data attribute
+            let allNestedModalData = $(this).data('nested-modal-data');
+        
+            if (allNestedModalData) {
+                for (let fieldName in allNestedModalData) {
+                    let nestedModalData = allNestedModalData[fieldName];
+        
+                    let mainModalSelectId = '${itemName}' + fieldName;
+                    let selectElement = $('#' + mainModalSelectId);
+                    
+                    // Clear existing options
+                    selectElement.find('option').not(':first').remove();
+        
+                    // Add options from the nested modal data
+                    for (let itemId in nestedModalData) {
+                        let itemData = nestedModalData[itemId];
+                        let optionText = getOptionText(itemData);
+                        let option = $('<option>').val(itemId).text(optionText);
+                        selectElement.append(option);
+                    }
+                    
+                    mainModalSelectId = mainModalSelectId.replace('Modal', '');
+                    
+                    // Store the nested modal data in the nestedModalObjects object
+                    if (!nestedModalObjects[mainModalSelectId]) {
+                        nestedModalObjects[mainModalSelectId] = {};
+                    }
+                    nestedModalObjects[mainModalSelectId] = nestedModalData;
+                }
+            }
+        
             $('#${itemName}ItemModal').modal('show');
         });
     
@@ -469,19 +519,18 @@ $javascript = <<<JS
         
             let data = {
                 ${varData}
-                nestedObjects: nestedModalObjects
             }
+            
+            nestedModalObjects = deepRemoveWhitespaceFromKeys(nestedModalObjects);
         
             // Iterate through nestedModalObjects and store the data in the corresponding modalFieldInfo entry
             for (let nestedModalId in nestedModalObjects) {
-                let mainModalSelectId = nestedModalId.replace('ModalItemModal', '');
+                let mainModalSelectId = nestedModalId.replace('Modal', '');
                 let mainModalFieldName = mainModalSelectId.replace('{$itemName}', '');
                 
                 data[mainModalFieldName] = {...nestedModalObjects[nestedModalId]};
             }
-        
-            // Remove the nestedObjects property from the data object
-            delete data.nestedObjects;
+            
         
             $.ajax({
                 url: '/servertools/${itemName}/save',
@@ -586,5 +635,18 @@ $javascript = <<<JS
 ', $itemName, $_SESSION['locale'] === 'ja_JP' ? '"url": "//cdn.datatables.net/plug-ins/1.12.1/i18n/ja.json"' : '', $javascript);
     
         return $output;
+    }
+    
+    public static function sanitizeNestedKeys($array) {
+        $sanitizedArray = [];
+        foreach ($array as $key => $value) {
+            $sanitizedKey = preg_replace('/\s+/', '', $key);
+            if (is_array($value)) {
+                $sanitizedArray[$sanitizedKey] = self::sanitizeNestedKeys($value);
+            } else {
+                $sanitizedArray[$sanitizedKey] = $value;
+            }
+        }
+        return $sanitizedArray;
     }
 }

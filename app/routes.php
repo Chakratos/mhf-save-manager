@@ -104,8 +104,21 @@ SimpleRouter::post('/servertools/roadshop/save', function() {
     /*
      *
      */
-    if (!isset($_POST['item'], $_POST['category'], $_POST['cost'], $_POST['grankreq'], $_POST['tradequantity'], $_POST['maximumquantity'], $_POST['roadfloorsreq'], $_POST['weeklyfataliskills'])) {
-        ResponseService::SendUnprocessableEntity();
+    $needed = [
+        'Item',
+        'Category',
+        'Cost',
+        'GRank Req',
+        'Trade Quantity',
+        'Maximum Quantity',
+        'Road Floors Req',
+        'Weekly Fatalis Kills'
+    ];
+    
+    foreach ($needed as $need) {
+        if (!isset($_POST[RoadShopController::localeWS($need)])) {
+            ResponseService::SendUnprocessableEntity();
+        }
     }
     
     RoadShopController::EditRoadShopItem();

@@ -36,19 +36,6 @@ class RoadShopController extends AbstractController
                 'type'     => 'Hidden',
                 'disabled' => true,
             ],
-            $UILocale['Items'] => [
-                'type' => 'Modal',
-                'modalFieldInfo' => [
-                    $UILocale['Cost']                 => ['type' => 'Int', 'min' => 1, 'max' => 999, 'placeholder' => '111-111'],
-                    $UILocale['GRank Req']            => ['type' => 'Int', 'min' => 1, 'max' => 999, 'placeholder' => '222-222'],
-                ],
-                'fieldPositions' => [
-                    [
-                        $UILocale['Cost'],
-                        $UILocale['GRank Req']
-                    ]
-                ],
-            ],
             $UILocale['Category']             => [
                 'type'    => 'Array',
                 'options' => ShopItem::$categories,
@@ -68,10 +55,8 @@ class RoadShopController extends AbstractController
         $fieldPositions = [
             'headline' => $UILocale['ID'],
             [
-                
                 $UILocale['Category'],
                 $UILocale['Item'],
-                $UILocale['Items'],
             ],
             [
                 $UILocale['Cost'],
@@ -104,6 +89,12 @@ class RoadShopController extends AbstractController
                 $UILocale['Maximum Quantity']     => $roadItem->getMaxQuantity(),
                 $UILocale['Road Floors Req']      => $roadItem->getRoadFloors(),
                 $UILocale['Weekly Fatalis Kills'] => $roadItem->getRoadFatalis(),
+/*                'NestedModalData' => [
+                    $UILocale['Items'] => [
+                        1 => [$UILocale['Cost'] => 12, $UILocale['GRank Req'] => 34],
+                        2 => [$UILocale['Cost'] => 34, $UILocale['GRank Req'] => 56],
+                    ],
+                ]*/
             ];
         }
         
@@ -113,6 +104,8 @@ class RoadShopController extends AbstractController
         echo EditorGeneratorService::generateDynamicTable('MHF Road Shop', static::$itemName, $modalFieldInfo, $fieldPositions, $data, $actions);
     }
     
+    
+    
     /**
      * @return void
      * @throws ORMException
@@ -121,14 +114,14 @@ class RoadShopController extends AbstractController
     public static function EditRoadShopItem(): void
     {
         self::SaveItem(static function ($item) {
-            $item->setItemid(hexdec(self::numberConvertEndian(hexdec($_POST['item']), 2)));
-            $item->setMaxQuantity($_POST['maximumquantity']);
-            $item->setQuantity($_POST['tradequantity']);
-            $item->setMinGr($_POST['grankreq']);
-            $item->setCost($_POST['cost']);
-            $item->setShopid($_POST['category']);
-            $item->setRoadFloors($_POST['roadfloorsreq']);
-            $item->setRoadFatalis($_POST['weeklyfataliskills']);
+            $item->setItemid(hexdec(self::numberConvertEndian(hexdec($_POST[self::localeWS('Item')]), 2)));
+            $item->setMaxQuantity($_POST[self::localeWS('Maximum Quantity')]);
+            $item->setQuantity($_POST[self::localeWS('Trade Quantity')]);
+            $item->setMinGr($_POST[self::localeWS('GRank Req')]);
+            $item->setCost($_POST[self::localeWS('Cost')]);
+            $item->setShopid($_POST[self::localeWS('Category')]);
+            $item->setRoadFloors($_POST[self::localeWS('Road Floors Req')]);
+            $item->setRoadFatalis($_POST[self::localeWS('Weekly Fatalis Kills')]);
     
             $item->setShoptype(10);
             $item->setMinHr(0);
