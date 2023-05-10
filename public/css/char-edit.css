@@ -13,3 +13,7 @@
 .modal-xl {
     max-width: 90%;
 }
+
+.form-check-input-reverse {
+    margin-left: 10px;
+}

@@ -55,6 +55,7 @@ class RoadShopController extends AbstractController
         $fieldPositions = [
             'headline' => $UILocale['ID'],
             [
+                
                 $UILocale['Category'],
                 $UILocale['Item'],
             ],
@@ -89,12 +90,6 @@ class RoadShopController extends AbstractController
                 $UILocale['Maximum Quantity']     => $roadItem->getMaxQuantity(),
                 $UILocale['Road Floors Req']      => $roadItem->getRoadFloors(),
                 $UILocale['Weekly Fatalis Kills'] => $roadItem->getRoadFatalis(),
-/*                'NestedModalData' => [
-                    $UILocale['Items'] => [
-                        1 => [$UILocale['Cost'] => 12, $UILocale['GRank Req'] => 34],
-                        2 => [$UILocale['Cost'] => 34, $UILocale['GRank Req'] => 56],
-                    ],
-                ]*/
             ];
         }
         

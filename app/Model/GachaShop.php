@@ -4,6 +4,7 @@
 namespace MHFSaveManager\Model;
 
 use Doctrine\ORM\Mapping as ORM;
+use MHFSaveManager\Database\EM;
 
 /**
  * @ORM\Entity
@@ -14,9 +15,11 @@ class GachaShop
     /**
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
      * @var int
      */
     protected $id;
+
     /**
      * @ORM\Column(type="text")
      * @var string
@@ -71,10 +74,25 @@ class GachaShop
     public static array $types = [
         'Normal',
         'Step-Up',
-        '2',
-        '3',
+        'Event Step-Up',
+        'Event Normal',
         'Box',
+        'Event Box',
     ];
+    
+    /**
+     * @return array
+     */
+    public function getGachaEntries(): array
+    {
+        $queryBuilder = EM::getInstance()->createQueryBuilder();
+        $queryBuilder->select('ge')
+            ->from(GachaEntry::class, 'ge')
+            ->where('ge.gacha_id = :gachaShopId')
+            ->setParameter('gachaShopId', $this->getId());
+        
+        return $queryBuilder->getQuery()->getResult();
+    }
     
     /**
      * @return int
@@ -88,7 +106,7 @@ class GachaShop
      * @param int $id
      * @return GachaShop
      */
-    public function setId(int $id): GachaShop
+    public function setId($id): GachaShop
     {
         $this->id = $id;
         
@@ -107,7 +125,7 @@ class GachaShop
      * @param string $url_feature
      * @return GachaShop
      */
-    public function setUrlFeature(string $url_feature): GachaShop
+    public function setUrlFeature($url_feature): GachaShop
     {
         $this->url_feature = $url_feature;
         
@@ -126,7 +144,7 @@ class GachaShop
      * @param bool $hidden
      * @return GachaShop
      */
-    public function setHidden(bool $hidden): GachaShop
+    public function setHidden($hidden): GachaShop
     {
         $this->hidden = $hidden;
         
@@ -145,7 +163,7 @@ class GachaShop
      * @param string $url_banner
      * @return GachaShop
      */
-    public function setUrlBanner(string $url_banner): GachaShop
+    public function setUrlBanner($url_banner): GachaShop
     {
         $this->url_banner = $url_banner;
         
@@ -164,7 +182,7 @@ class GachaShop
      * @param string $url_thumbnail
      * @return GachaShop
      */
-    public function setUrlThumbnail(string $url_thumbnail): GachaShop
+    public function setUrlThumbnail($url_thumbnail): GachaShop
     {
         $this->url_thumbnail = $url_thumbnail;
         
@@ -183,7 +201,7 @@ class GachaShop
      * @param bool $recommended
      * @return GachaShop
      */
-    public function setRecommended(bool $recommended): GachaShop
+    public function setRecommended($recommended): GachaShop
     {
         $this->recommended = $recommended;
         
@@ -202,7 +220,7 @@ class GachaShop
      * @param bool $wide
      * @return GachaShop
      */
-    public function setWide(bool $wide): GachaShop
+    public function setWide($wide): GachaShop
     {
         $this->wide = $wide;
         
@@ -221,7 +239,7 @@ class GachaShop
      * @param int $min_gr
      * @return GachaShop
      */
-    public function setMinGr(int $min_gr): GachaShop
+    public function setMinGr($min_gr): GachaShop
     {
         $this->min_gr = $min_gr;
         
@@ -240,7 +258,7 @@ class GachaShop
      * @param int $min_hr
      * @return GachaShop
      */
-    public function setMinHr(int $min_hr): GachaShop
+    public function setMinHr($min_hr): GachaShop
     {
         $this->min_hr = $min_hr;
         
@@ -259,7 +277,7 @@ class GachaShop
      * @param string $name
      * @return GachaShop
      */
-    public function setName(string $name): GachaShop
+    public function setName($name): GachaShop
     {
         $this->name = $name;
         
@@ -278,7 +296,7 @@ class GachaShop
      * @param int $gacha_type
      * @return GachaShop
      */
-    public function setGachaType(int $gacha_type): GachaShop
+    public function setGachaType($gacha_type): GachaShop
     {
         $this->gacha_type = $gacha_type;
         

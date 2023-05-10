@@ -2,7 +2,7 @@
 
 use MHFSaveManager\Controller\CharacterController;
 use MHFSaveManager\Controller\DistributionsController;
-use MHFSaveManager\Controller\GachaController;
+use MHFSaveManager\Controller\GachaStoreController;
 use MHFSaveManager\Controller\SaveDataController;
 use MHFSaveManager\Controller\RoadShopController;
 use MHFSaveManager\Database\EM;
@@ -93,7 +93,11 @@ SimpleRouter::post('/servertools/distributions/duplicate/{id}', function($id) {
 });
 
 SimpleRouter::get('/servertools/gacha', function() {
-    GachaController::Index();
+    GachaStoreController::Index();
+});
+
+SimpleRouter::post('/servertools/GachaShop/save', function() {
+    GachaStoreController::SaveGachaShopData();
 });
 
 SimpleRouter::get('/servertools/roadshop', function() {
