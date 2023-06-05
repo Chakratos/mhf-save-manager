@@ -64,14 +64,14 @@ class EditorGeneratorService
     public static function generateModalBack(array $modalFieldInfo, array $fieldPositions, string $itemName, bool $isNested = false): string
     {
         $modalSizeClass = count($fieldPositions) > 4 ? 'modal-xl' : (count($fieldPositions) > 2 ? 'modal-lg' : '');
-        
+        $itemNameWithoutModal = str_replace('Modal', '', $itemName);
         // Generate the modal
         $output = <<<HTML
 <div id="{$itemName}" class="modal fade" data-backdrop="static">
     <div class="modal-dialog modal-dialog-centered {$modalSizeClass}">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="{$itemName}ItemTitle">Editing {$itemName} Item: <b></b></h5>
+                <h5 class="modal-title" id="{$itemName}ItemTitle">Editing {$itemNameWithoutModal}: <b></b></h5>
             </div>
             <div class="modal-body">
 HTML;
@@ -273,21 +273,21 @@ HTML;
                 $varResets .= "$('#${itemName}$key').val($('#${itemName}$key option:first').val());\n";
                 $varResets .= "$('#${itemName}$key').trigger('change');\n";
                 $varLoading .= "$('#${itemName}$key').val($(this).data('${lcKey}')).trigger('change');\n";
-                $varChecks .= "|| ${key}.length === 0";
+                $varChecks .= ($field['nullable'] ?? true) === false ? "|| ${key}.length === 0" : '';
                 $varData .= "$key: $key.val(),\n";
                 $varCellData .= "cells[${i}].innerHTML = $key.text();\n";
             } elseif ($field['type'] === 'Bool') {
                 $varAssignments .= "let $key = $('#${itemName}$key').prop('checked');\n";
                 $varResets .= "$('#${itemName}$key').prop('checked', false);\n";
                 $varLoading .= "$('#${itemName}$key').prop('checked', $(this).data('${lcKey}') == '1' ? true : false);\n";
-                $varChecks .= $key !== 'ID' ? " || ${key} === ''" : '';
+                $varChecks .= (($field['nullable'] ?? true) === false && $key !== 'ID') ? " || ${key}.length === 0" : '';
                 $varData .= "$key: $key ? '1' : '0',\n";
                 $varCellData .= "cells[${i}].innerHTML = $key ? '1' : '0';\n";
             } elseif ($field['type'] !== 'Modal') {
                 $varAssignments .= "let $key = $('#${itemName}$key').val();\n";
                 $varResets .= "$('#${itemName}$key').val('');\n";
                 $varLoading .= "$('#${itemName}$key').val($(this).data('${lcKey}'));\n";
-                $varChecks .= $key !== 'ID' ? " || ${key} === ''" : '';
+                $varChecks .= (($field['nullable'] ?? true) === false && $key !== 'ID') ? " || ${key}.length === 0" : '';
                 $varData .= "$key: $key,\n";
                 $varCellData .= "cells[${i}].innerHTML = $key;\n";
             } else {

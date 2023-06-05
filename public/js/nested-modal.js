@@ -15,7 +15,7 @@ function openNestedModalWithData(nestedModalId, selectElement) {
     // Set the 'editing' flag to true
     $('#' + nestedModalId).data('editing', true);
 
-    // Fill the nested modal with the data of the selected option if there is any. If not, its a second level nested modal and does neet to take the data from the father nested modal
+    // Fill the nested modal with the data of the selected option if there is any. If not, its a second level nested modal and does need to take the data from the father nested modal
     if (nestedModalObjects[mainModalSelectId] && nestedModalObjects[mainModalSelectId][itemId]) {
         itemData = nestedModalObjects[mainModalSelectId][itemId];
     } else {
@@ -42,7 +42,8 @@ function openNestedModalWithData(nestedModalId, selectElement) {
             inputField.val(itemData[fieldId]);
         }
     }
-
+    // Set the title of the nested modal to the selected option's text
+    $('#'+ nestedModalId+'ItemTitle > b')[0].innerHTML = itemData.ID;
     // Show the nested modal
     $('#' + nestedModalId).modal('show');
 }

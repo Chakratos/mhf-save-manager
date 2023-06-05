@@ -13,6 +13,7 @@ use MHFSaveManager\Model\GachaShop;
 use MHFSaveManager\Model\ShopItem;
 use MHFSaveManager\Service\EditorGeneratorService;
 use MHFSaveManager\Service\ItemsService;
+use MHFSaveManager\Service\ResponseService;
 use MHFSaveManager\Service\UIService;
 
 /**
@@ -31,7 +32,6 @@ class GachaStoreController extends AbstractController
         $UILocale = UIService::getForLocale();
         
         $data = [];
-        $entityManager = EM::getInstance();
         
         $gachaShops = EM::getInstance()->getRepository(self::$itemClass)->findAll();
         
@@ -119,9 +119,9 @@ class GachaStoreController extends AbstractController
             $UILocale['Name']          => ['type' => 'String', 'placeholder' => 'Name'],
             $UILocale['Min HR']        => ['type' => 'Int', 'min' => 1, 'max' => 999, 'placeholder' => '1-999'],
             $UILocale['Min GR']        => ['type' => 'Int', 'min' => 1, 'max' => 999, 'placeholder' => '1-999'],
-            $UILocale['URL Banner']    => ['type' => 'String', 'placeholder' => 'URL Banner'],
-            $UILocale['URL Feature']   => ['type' => 'String', 'placeholder' => 'URL Feature'],
-            $UILocale['URL Thumbnail'] => ['type' => 'String', 'placeholder' => 'URL Thumbnail'],
+            $UILocale['URL Banner']    => ['type' => 'String', 'placeholder' => 'URL Banner', 'nullable' => true],
+            $UILocale['URL Feature']   => ['type' => 'String', 'placeholder' => 'URL Feature', 'nullable' => true],
+            $UILocale['URL Thumbnail'] => ['type' => 'String', 'placeholder' => 'URL Thumbnail', 'nullable' => true],
             $UILocale['Wide']          => ['type' => 'Bool'],
             $UILocale['Recommended']   => ['type' => 'Bool'],
             $UILocale['Hidden']        => ['type' => 'Bool'],
@@ -213,32 +213,6 @@ class GachaStoreController extends AbstractController
             $fieldPositions, $data, $actions);
     }
     
-    
-    /**
-     * @return void
-     * @throws ORMException
-     * @throws OptimisticLockException
-     */
-    public static function EditGachaShopItem(): void
-    {
-        
-        self::SaveItem(static function ($item) {
-            $item->setItemid(hexdec(self::numberConvertEndian(hexdec($_POST[self::localeWS('Item')]), 2)));
-            $item->setMaxQuantity($_POST[self::localeWS('Maximum Quantity')]);
-            $item->setQuantity($_POST[self::localeWS('Trade Quantity')]);
-            $item->setMinGr($_POST[self::localeWS('GRank Req')]);
-            $item->setCost($_POST[self::localeWS('Cost')]);
-            $item->setShopid($_POST[self::localeWS('Category')]);
-            $item->setRoadFloors($_POST[self::localeWS('Road Floors Req')]);
-            $item->setRoadFatalis($_POST[self::localeWS('Weekly Fatalis Kills')]);
-            
-            $item->setShoptype(10);
-            $item->setMinHr(0);
-            $item->setMinSr(0);
-            $item->setStoreLevel(1);
-        });
-    }
-    
     public static function SaveGachaShopData()
     {
         $postData = $_POST;
@@ -249,8 +223,7 @@ class GachaStoreController extends AbstractController
         
         $entityManager = EM::getInstance();
         // Create and populate a new GachaShop object
-        $gachaShop = new GachaShop();
-        $gachaShop->setId($postData['ID'] === '' ? null : $postData['ID']);
+        $gachaShop = $entityManager->find(GachaShop::class, $postData['ID']) ?? new GachaShop();
         $gachaShop->setGachaType($postData['GachaType']);
         $gachaShop->setName($postData['Name']);
         $gachaShop->setMinHR($postData['MinHR']);
@@ -272,9 +245,8 @@ class GachaStoreController extends AbstractController
             if (!isset($entryData['Items'])) {
                 $entryData['Items'] = [];
             }
-            
-            $gachaEntry = new GachaEntry();
-            $gachaEntry->setId($entryData['ID'] === '' ? null : $entryData['ID']);
+    
+            $gachaEntry = $entityManager->find(GachaEntry::class, $entryData['ID']) ?? new GachaEntry();
             $gachaEntry->setGachaId($gachaShop->getId());
             $gachaEntry->setEntryType($entryData['EntryType']);
             $gachaEntry->setItemType($entryData['ItemType']);
@@ -286,30 +258,25 @@ class GachaStoreController extends AbstractController
             $gachaEntry->setFrontierPoints($entryData['FrontierPoints']);
             $gachaEntry->setDailyLimit($entryData['DailyLimit']);
             
-            // Associate the GachaEntry with the GachaShop
-            $gachaEntry->setGachaShop($gachaShop);
-            
             // Save the GachaEntry object
             $entityManager->persist($gachaEntry);
             $entityManager->flush();
             
             // Loop through the GachaItems in the GachaEntry
             foreach ($entryData['Items'] as $itemData) {
-                $gachaItem = new GachaItem();
-                $gachaItem->setId($itemData['ID'] === '' ? null : $itemData['ID']);
+                $gachaItem = $entityManager->find(GachaItem::class, $itemData['ID']) ?? new GachaItem();
                 $gachaItem->setEntryId($gachaEntry->getId());
                 $gachaItem->setItemType($itemData['ItemType']);
                 $gachaItem->setItemId(hexdec(self::numberConvertEndian(hexdec($itemData['ItemID']), 2)));
                 $gachaItem->setQuantity($itemData['Quantity']);
-                
-                // Associate the GachaItem with the GachaEntry
-                $gachaItem->setGachaEntry($gachaEntry);
                 
                 // Save the GachaItem object
                 $entityManager->persist($gachaItem);
                 $entityManager->flush();
             }
         }
+        
+        ResponseService::SendOk();
     }
     
     /**
