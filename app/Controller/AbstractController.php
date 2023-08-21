@@ -140,7 +140,7 @@ abstract class AbstractController
      */
     protected static function importFromCSV(string $deleteWhere = '1=1'): void
     {
-        $lines = preg_split('/\r\n|\r|\n/', file_get_contents($_FILES[static::$itemClass . 'CSV']["tmp_name"]));
+        $lines = preg_split('/\r\n|\r|\n/', file_get_contents($_FILES[static::$itemName . 'CSV']["tmp_name"]));
         $attributes = str_getcsv($lines[0]);
         unset($lines[0]);
         $em = EM::getInstance();

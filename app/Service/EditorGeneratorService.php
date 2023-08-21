@@ -142,7 +142,8 @@ HTML;
         }
         
         if ($field['type'] === 'Array') {
-            $options = array_map(fn($id, $option) => sprintf('<option value="%s">%s</option>', $id, is_array($option) ? sprintf('[%s] %s', $id, $option['name']) : $option), array_keys($field['options']), $field['options']);
+            //$options = array_map(fn($id, $option) => sprintf('<option value="%s">%s</option>', $id, sprintf('[%s] %s', $id, $option)), array_keys($field['options']), $field['options']);
+            $options = array_map(fn($id, $option) => sprintf('<option value="%s">%s</option>', $id, sprintf('[%s] %s', $id, is_array($option) ? $option['name'] : $option)), array_keys($field['options']), $field['options']);
             $output .= "<select class=\"{$inputClass}\" id=\"{$itemName}{$idKey}\">" . implode('', $options) . '</select>';
         } elseif ($field['type'] === 'Modal') {
             $nestedModalFieldInfo = $field['modalFieldInfo'];
@@ -228,7 +229,7 @@ HTML;
     
         $output .= sprintf('</tbody>
     </table>
-    <button id="create%1$sItem" class="btn btn-success">Create %1$s Item</button>
+    <button id="create%1$sItem" class="btn btn-success">Create %1$s Entry</button>
     <a class="btn btn-primary" href="/servertools/%2$s/export">Export</a>
     <button id="import%1$s" class="btn btn-warning">Import</button>
     <input type="file" id="import%1$sInput" style="display: none" accept=".csv">
@@ -428,7 +429,7 @@ $javascript = <<<JS
         });
     
         $('#import${ucItemName}').click(function() {
-            if (!window.confirm('This will overwrite every Roadshop Item. Beware!')) {
+            if (!window.confirm("This will overwrite every ${ucItemName}. Beware!")) {
                 return;
             }
     

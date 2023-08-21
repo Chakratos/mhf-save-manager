@@ -2,6 +2,7 @@
 
 use MHFSaveManager\Controller\CharacterController;
 use MHFSaveManager\Controller\DistributionsController;
+use MHFSaveManager\Controller\EventQuestController;
 use MHFSaveManager\Controller\GachaStoreController;
 use MHFSaveManager\Controller\SaveDataController;
 use MHFSaveManager\Controller\RoadShopController;
@@ -98,6 +99,26 @@ SimpleRouter::get('/servertools/gacha', function() {
 
 SimpleRouter::post('/servertools/GachaShop/save', function() {
     GachaStoreController::SaveGachaShopData();
+});
+
+SimpleRouter::get('/servertools/eventquest', function() {
+    EventQuestController::Index();
+});
+
+SimpleRouter::post('/servertools/eventquest/save', function() {
+    EventQuestController::EditEventQuest();
+});
+
+SimpleRouter::get('/servertools/eventquest/export', function() {
+    EventQuestController::ExportEventQuests();
+});
+
+SimpleRouter::post('/servertools/eventquest/import', function() {
+    if ($_FILES["eventquestCSV"]["error"] != UPLOAD_ERR_OK) {
+        ResponseService::SendServerError('Error while uploading, check storage permissions for the TMP folder!');
+    }
+    
+    EventQuestController::ImportEventQuests();
 });
 
 SimpleRouter::get('/servertools/roadshop', function() {

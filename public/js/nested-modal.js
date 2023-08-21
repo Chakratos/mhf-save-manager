@@ -43,7 +43,10 @@ function openNestedModalWithData(nestedModalId, selectElement) {
         }
     }
     // Set the title of the nested modal to the selected option's text
-    $('#'+ nestedModalId+'ItemTitle > b')[0].innerHTML = itemData.ID;
+    if (itemData !== undefined) {
+        $('#'+ nestedModalId+'ItemTitle > b')[0].innerHTML = itemData.ID;
+    }
+
     // Show the nested modal
     $('#' + nestedModalId).modal('show');
 }
@@ -123,7 +126,7 @@ function saveNestedModal(modalId) {
 
     let currentModalName = mainModalSelectId.replace(/.*?Modal/g, '');
     let fatherDataName = mainModalSelectId.replace('Modal' + currentModalName, '');
-    let fatherId = $('#' + fatherDataName).find(':selected').val();
+    let fatherId = $('#' + fatherDataName).find(':selected').val() || 0;
 
 
 
@@ -172,7 +175,12 @@ function saveNestedModal(modalId) {
             itemId = nestedModalObjects[nestedDataId].lastIndexOf(nestedModalObjects[nestedDataId].slice(-1)[0]);
             nestedModalObjects[nestedDataId][itemId] = itemData;
         } else {
-            itemId = Math.max(...Object.keys(nestedModalObjects[fatherDataName][fatherId][currentModalName]).map(Number)) + 1;
+            if (nestedModalObjects[fatherDataName] && nestedModalObjects[fatherDataName][fatherId] && nestedModalObjects[fatherDataName][fatherId][currentModalName]) {
+                itemId = Math.max(...Object.keys(nestedModalObjects[fatherDataName][fatherId][currentModalName]).map(Number)) + 1;
+            } else {
+                itemId = 0;
+            }
+
             nestedModalObjects[fatherDataName][fatherId][currentModalName][itemId] = itemData;
         }
 

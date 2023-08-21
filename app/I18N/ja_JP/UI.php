@@ -6,6 +6,7 @@ return [
     'Roadshop Editor' => 'Roadshop Editor',
     'Distribution Editor' => 'Distribution Editor',
     'Gacha Editor' => 'Gacha Editor',
+    'Event Quest Editor' => 'Event Quest Editor',
     'User ID' => 'ユｰザｰID',
     'Gender' => '性別',
     'New Character' => '新規キャラクター',
@@ -121,5 +122,10 @@ return [
     'Daily Limit' => '1日の制限回数',
     'Entry ID' => 'Entry ID',
     'Item ID' => 'Item ID',
+    //Event Quest Editor
+    'Quest ID' => 'Quest ID',
+    'Quest Type' => 'Quest Type',
+    'Max Players' => 'Max Players',
+    'Mark' => 'Mark',
     '' => '',
 ];
