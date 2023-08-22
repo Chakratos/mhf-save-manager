@@ -62,7 +62,7 @@ To add a new language
 4. Edit the .php files inside
 5. Schema is either 'ID' => 'Translation', or 'English Translation' => 'New Translation' e.g. 'Language' => 'Sprache', for german.
 6. To add you Language to the Dropdown:
-7. Edit app/Views/topnav.php and add a line there like <a class="dropdown-item" href="/language/YOUR_LOCALE">Language</a>
+7. Edit app/Views/topnav.php and add a line there like <a class="dropdown-shop" href="/language/YOUR_LOCALE">Language</a>
 8. Or create a pull request / send me the files and i will add them
 
 ---

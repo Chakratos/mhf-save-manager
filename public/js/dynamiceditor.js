@@ -51,8 +51,8 @@ $(document).ready(function () {
 
         let saveButton = $(this);
         saveButton.prop('disabled', true);
-        if (item.length === 0 || category.length === 0 || cost === "" || grank === "" || tradeQuantity === "" || maximumQuantity === "" || roadFloors === "" || fatalis === "") {
-            alert("Please fill all fields with valid data!");
+        if (item.length === 0 || category.length === 0 || cost === '' || grank === '' || tradeQuantity === '' || maximumQuantity === '' || roadFloors === '' || fatalis === '') {
+            alert('Please fill all fields with valid data!');
             saveButton.prop('disabled', false);
             return;
         }
@@ -74,8 +74,8 @@ $(document).ready(function () {
         };
 
         $.ajax({
-            url: "/servertools/roadshop/save",
-            type: "POST",
+            url: '/servertools/roadshop/save',
+            type: 'POST',
             data: data,
         }).then(function(response) {
             let button = $('.editRoadItem[data-id="' + id + '"]');
@@ -106,17 +106,17 @@ $(document).ready(function () {
     $('#roadshoptable').on('click', '.deleteRoadItem', function () {
         let formdata = new FormData();
         let itemId = $(this).attr('data-id');
-        formdata.append("item", itemId);
+        formdata.append('item', itemId);
 
-        if (!window.confirm("Are you sure you want to delete the entry with the ID : " + itemId)) {
+        if (!window.confirm('Are you sure you want to delete the entry with the ID : ' + itemId)) {
             return;
         }
 
         let rowToRemove = $(this).parents('tr');
 
         $.ajax({
-            url: "/servertools/roadshop/delete/" + itemId,
-            type: "POST",
+            url: '/servertools/roadshop/delete/' + itemId,
+            type: 'POST',
             data: formdata,
             processData: false,
             contentType: false,
@@ -130,7 +130,7 @@ $(document).ready(function () {
     });
 
     $('#importRoadShop').click(function() {
-        if (!window.confirm("This will overwrite every Roadshop Item. Beware!")) {
+        if (!window.confirm('This will overwrite every Roadshop Item. Beware!')) {
             return;
         }
 
@@ -144,11 +144,11 @@ $(document).ready(function () {
         }
 
         let file =$(this).prop('files')[0];
-        formdata.append("roadshopCSV", file);
+        formdata.append('roadshopCSV', file);
 
         $.ajax({
-            url: "/servertools/roadshop/import",
-            type: "POST",
+            url: '/servertools/roadshop/import',
+            type: 'POST',
             data: formdata,
             processData: false,
             contentType: false,

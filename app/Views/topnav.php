@@ -13,6 +13,8 @@
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                     <a class="dropdown-item" href="/servertools/roadshop"><?php echo $UILocale['Roadshop Editor']?></a>
                     <a class="dropdown-item" href="/servertools/distributions"><?php echo $UILocale['Distribution Editor']?></a>
+                    <!--<a class="dropdown-item" href="/servertools/gacha"><?php /*echo $UILocale['Gacha Editor']*/?></a>-->
+                    <a class="dropdown-item" href="/servertools/eventquest"><?php echo $UILocale['Event Quest Editor']?></a>
                 </div>
             </li>
             <li class="nav-item dropdown">

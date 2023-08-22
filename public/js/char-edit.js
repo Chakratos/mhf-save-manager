@@ -1,11 +1,11 @@
 $(document).ready(function () {
-    var total = $('.carousel-item').length;
-    var currentIndex = $('div.carousel-item.active').index() + 1;
+    var total = $('.carousel-shop').length;
+    var currentIndex = $('div.carousel-shop.active').index() + 1;
     $('#slidetext').html(currentIndex + '/'  + total);
 
 // This triggers after each slide change
     $('.carousel').on('slid.bs.carousel', function () {
-        currentIndex = $('div.carousel-item.active').index() + 1;
+        currentIndex = $('div.carousel-shop.active').index() + 1;
 
         // Now display this wherever you want
         var text = currentIndex + '/' + total;
@@ -120,7 +120,7 @@ $(document).ready(function () {
         theme: 'bootstrap4',
     });
 
-    $('.item-col').click(function() {
+    $('.shop-col').click(function() {
         $('#itemboxSlotEditTitle > b')[0].innerHTML = $(this).data('slot');
         $('#itemboxSlotQuantity').val($(this).data('quantity'));
         $('#itemboxSlotItem').val($(this).data('id'));
@@ -142,14 +142,14 @@ $(document).ready(function () {
             return;
         }
 
-        postData('item/itembox', slot, false, false,
+        postData('shop/itembox', slot, false, false,
         {
                 item_id: item.val(),
                 item_quantity: quantity
               }
         ).then(function(response) {
-            $('.item-col[data-slot="' + slot +'"]>img').attr('src', '/img/item/'+item.data('icon')+item.data('color')+'.png')
-            $('.item-col[data-slot="' + slot +'"]>span')[0].innerHTML = '<b>[x' + quantity + ']</b> ' + item.text()
+            $('.shop-col[data-slot="' + slot +'"]>img').attr('src', '/img/shop/'+item.data('icon')+item.data('color')+'.png')
+            $('.shop-col[data-slot="' + slot +'"]>span')[0].innerHTML = '<b>[x' + quantity + ']</b> ' + item.text()
             $('#itemboxSlotEdit').modal('hide');
             button.prop("disabled", false);
         }).catch(function(response) {

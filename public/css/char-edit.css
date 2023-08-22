@@ -9,3 +9,11 @@
 .item-row {
     padding-bottom: 0.05em;
 }
+
+.modal-xl {
+    max-width: 90%;
+}
+
+.form-check-input-reverse {
+    margin-left: 10px;
+}

@@ -3,90 +3,147 @@
 namespace MHFSaveManager\Controller;
 
 use Doctrine\Common\Collections\Criteria;
+use Doctrine\ORM\Exception\ORMException;
+use Doctrine\ORM\OptimisticLockException;
 use MHFSaveManager\Database\EM;
 use MHFSaveManager\Model\ShopItem;
-use MHFSaveManager\Service\ResponseService;
+use MHFSaveManager\Service\EditorGeneratorService;
+use MHFSaveManager\Service\ItemsService;
+use MHFSaveManager\Service\UIService;
 
+/**
+ *
+ */
 class RoadShopController extends AbstractController
 {
-    public static function Index()
+    protected static string $itemName = 'roadshop';
+    protected static string $itemClass = ShopItem::class;
+    /**
+     * @return void
+     */
+    public static function Index(): void
     {
-        $roadItems = EM::getInstance()->getRepository('MHFSaveManager\Model\ShopItem')->matching(
+        $UILocale = UIService::getForLocale();
+        
+        $data = [];
+        
+        $roadItems = EM::getInstance()->getRepository(self::$itemClass)->matching(
             Criteria::create()->where(Criteria::expr()->eq('shop_type', '10'))
         )->toArray();
-
-        include_once ROOT_DIR . '/app/Views/roadshop.php';
-    }
+        
+        $modalFieldInfo = [
+            $UILocale['ID']                   => [
+                'type'     => 'Hidden',
+                'disabled' => true,
+            ],
+            $UILocale['Category']             => [
+                'type'    => 'Array',
+                'options' => ShopItem::$categories,
+            ],
+            $UILocale['Item']                 => [
+                'type'    => 'Array',
+                'options' => ItemsService::getForLocale(),
+            ],
+            $UILocale['Cost']                 => ['type' => 'Int', 'min' => 1, 'max' => 999, 'placeholder' => '1-999'],
+            $UILocale['GRank Req']            => ['type' => 'Int', 'min' => 1, 'max' => 999, 'placeholder' => '1-999'],
+            $UILocale['Trade Quantity']       => ['type' => 'Int', 'min' => 1, 'max' => 999, 'placeholder' => '1-999'],
+            $UILocale['Maximum Quantity']     => ['type' => 'Int', 'min' => 1, 'max' => 999, 'placeholder' => '1-999'],
+            $UILocale['Road Floors Req']      => ['type' => 'Int', 'min' => 1, 'max' => 999, 'placeholder' => '1-999'],
+            $UILocale['Weekly Fatalis Kills'] => ['type' => 'Int', 'min' => 1, 'max' => 999, 'placeholder' => '1-999'],
+        ];
     
-    public static function EditRoadShopItem()
-    {
-        $item = new ShopItem();
-    
-        if (isset($_POST['id']) && $_POST['id'] > 0) {
-            $item = EM::getInstance()->getRepository('MHFSaveManager\Model\ShopItem')->find($_POST['id']);
-        } else {
-            $highestId = EM::getInstance()->getRepository('MHFSaveManager\Model\ShopItem')->matching(
-                Criteria::create()->orderBy(['id' => 'desc']))->first();
-            if (!empty($highestId)) {
-                $item->setId($highestId->getId()+1);
-            } else {
-                $item->setId(1);
-            }
-            
-            EM::getInstance()->persist($item);
+        $fieldPositions = [
+            'headline' => $UILocale['ID'],
+            [
+                
+                $UILocale['Category'],
+                $UILocale['Item'],
+            ],
+            [
+                $UILocale['Cost'],
+                $UILocale['GRank Req'],
+                $UILocale['Trade Quantity'],
+                $UILocale['Maximum Quantity'],
+                $UILocale['Road Floors Req'],
+                $UILocale['Weekly Fatalis Kills'],
+            ],
+        ];
+        
+        foreach ($roadItems as $roadItem) {
+            $itemId = self::numberConvertEndian($roadItem->getItemid(), 2);
+            $itemData = ItemsService::getForLocale()[$itemId];
+            $data[] = [
+                $UILocale['ID']                   => $roadItem->getId(),
+                $UILocale['Category']             =>
+                    [
+                        'id'   => $roadItem->getShopid(),
+                        'name' => $roadItem->getShopidFancy(),
+                    ],
+                $UILocale['Item']                 =>
+                    [
+                        'id'   => $itemId,
+                        'name' => $itemData['name'] ? : $UILocale['No Translation!'],
+                    ],
+                $UILocale['Cost']                 => $roadItem->getCost(),
+                $UILocale['GRank Req']            => $roadItem->getMinGr(),
+                $UILocale['Trade Quantity']       => $roadItem->getQuantity(),
+                $UILocale['Maximum Quantity']     => $roadItem->getMaxQuantity(),
+                $UILocale['Road Floors Req']      => $roadItem->getRoadFloors(),
+                $UILocale['Weekly Fatalis Kills'] => $roadItem->getRoadFatalis(),
+            ];
         }
-    
-        $item->setItemid(hexdec(self::numberConvertEndian(hexdec($_POST['item']), 2)));
-        $item->setMax_quantity($_POST['maximumQuantity']);
-        $item->setQuantity($_POST['tradeQuantity']);
-        $item->setMin_gr($_POST['grank']);
-        $item->setCost($_POST['cost']);
-        $item->setShopid($_POST['category']);
-        $item->setRoad_floors($_POST['roadFloors']);
-        $item->setRoad_fatalis($_POST['fatalis']);
         
-        $item->setShoptype(10);
-        $item->setMin_hr(0);
-        $item->setMin_sr(0);
-        $item->set_store_level(1);
+        $actions = [
+        ];
         
-        EM::getInstance()->flush();
-        
-        ResponseService::SendOk($item->getId());
+        echo EditorGeneratorService::generateDynamicTable('MHF Road Shop', static::$itemName, $modalFieldInfo, $fieldPositions, $data, $actions);
     }
     
-    public static function ExportRoadShopItems()
+    
+    
+    /**
+     * @return void
+     * @throws ORMException
+     * @throws OptimisticLockException
+     */
+    public static function EditRoadShopItem(): void
     {
-        $records = EM::getInstance()->getRepository('MHFSaveManager\Model\ShopItem')->matching(
-        Criteria::create()->where(Criteria::expr()->eq('shop_type', '10')));
-        self::arrayOfModelsToCSVDownload($records, "RoadShopItems");
+        self::SaveItem(static function ($item) {
+            $item->setItemid(hexdec(self::numberConvertEndian(hexdec($_POST[self::localeWS('Item')]), 2)));
+            $item->setMaxQuantity($_POST[self::localeWS('Maximum Quantity')]);
+            $item->setQuantity($_POST[self::localeWS('Trade Quantity')]);
+            $item->setMinGr($_POST[self::localeWS('GRank Req')]);
+            $item->setCost($_POST[self::localeWS('Cost')]);
+            $item->setShopid($_POST[self::localeWS('Category')]);
+            $item->setRoadFloors($_POST[self::localeWS('Road Floors Req')]);
+            $item->setRoadFatalis($_POST[self::localeWS('Weekly Fatalis Kills')]);
+    
+            $item->setShoptype(10);
+            $item->setMinHr(0);
+            $item->setMinSr(0);
+            $item->setStoreLevel(1);
+        });
     }
     
-    public static function ImportRoadShopItems()
+    /**
+     * @return void
+     */
+    public static function ExportRoadShopItems(): void
     {
-        self::importFromCSV('roadShopCSV', ShopItem::class, 'delete from MHFSaveManager\Model\NormalShopItem n where n.shop_type = 10');
         
-        exit();
-        $lines = preg_split('/\r\n|\r|\n/',  file_get_contents($_FILES["roadShopCSV"]["tmp_name"]));
-        $attributes = str_getcsv($lines[0]);
-        unset($lines[0]);
-        $em = EM::getInstance();
-        foreach ($lines as $line) {
-            if ($line == "") {
-                continue;
-            }
-            
-            $lineValues = str_getcsv($line);
-            $item = new ShopItem();
-            foreach ($attributes as $key => $attribute) {
-                $setter = "set".ucfirst($attribute);
-                $item->$setter($lineValues[$key]);
-            }
-            $em->persist($item);
-        }
-        $em->createQuery('delete from MHFSaveManager\Model\NormalShopItem n where n.shop_type = 10')->execute();
-        $em->flush();
+        $records = EM::getInstance()->getRepository(self::$itemClass)->matching(
+            Criteria::create()->where(Criteria::expr()->eq('shop_type', '10')));
         
-        ResponseService::SendOk();
+        self::arrayOfModelsToCSVDownload($records);
+    }
+    
+    /**
+     * @return void
+     * @throws ORMException
+     * @throws OptimisticLockException
+     */
+    public static function ImportRoadShopItems(): void
+    {
+        self::importFromCSV('n.shop_type = 10');
     }
 }
