@@ -23,10 +23,11 @@ class CharacterController
         $currentGear = SaveDataController::GetCurrentEquip($decompressed);
         $name = SaveDataController::GetName($decompressed);
         $zenny = SaveDataController::GetZenny($decompressed);
+        $itembox = SaveDataController::GetItembox($decompressed);
+        
         $gZenny = SaveDataController::GetGZenny($decompressed);
         $cp = SaveDataController::GetCP($decompressed);
         $keyquestFlag = SaveDataController::GetKeyQuestFlag($decompressed);
-        $itembox = SaveDataController::GetItembox($decompressed);
         $gcp = $character->getGcp();
         $npoints = $character->getNetcafePoints();
         $kouryou = $character->getKouryouPoint();

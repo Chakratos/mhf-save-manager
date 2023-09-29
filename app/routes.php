@@ -211,7 +211,7 @@ SimpleRouter::post('/character/{id}/edit/setname/', function($id) {
     ResponseService::SendOk();
 });
 
-SimpleRouter::post('/character/{id}/edit/shop/{box}/{slot}', function($id, $boxtype, $slot) {
+SimpleRouter::post('/character/{id}/edit/item/{box}/{slot}', function($id, $boxtype, $slot) {
     /** @var Character $character */
     $character = EM::getInstance()->getRepository('MHFSaveManager\Model\Character')->find($id);
     if (!$character) {
