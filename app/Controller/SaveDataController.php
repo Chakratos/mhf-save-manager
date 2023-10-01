@@ -9,9 +9,16 @@ use MHFSaveManager\Model\Item;
 use MHFSaveManager\Model\ItemPreset;
 use PhpBinaryReader\BinaryReader;
 
+/**
+ *
+ */
 class SaveDataController extends AbstractController
 {
-    public static function GetGender(string $saveData)
+    /**
+     * @param string $saveData
+     * @return string
+     */
+    public static function GetGender(string $saveData): string
     {
         $br = new BinaryReader($saveData);
         $br->setPosition(0x50);
@@ -22,7 +29,12 @@ class SaveDataController extends AbstractController
     public static function GetName(string $saveData)
     {
         $br = new BinaryReader($saveData);
-        $br->setPosition(0x58);
+        if (FORWARD_5_MODE) {
+            $br->setPosition(0x48);
+        } else {
+            $br->setPosition(0x58);
+        }
+        
         
         return mb_convert_encoding(hex2bin(explode('00', bin2hex($br->readBytes(12)))[0]), 'UTF-8','SJIS');
     }
@@ -54,6 +66,10 @@ class SaveDataController extends AbstractController
 
     public static function GetGzenny(string $saveData)
     {
+        if (FORWARD_5_MODE) {
+            return 0;
+        }
+        
         $br = new BinaryReader($saveData);
         $br->setPosition(0x1FF64);
     
@@ -62,12 +78,20 @@ class SaveDataController extends AbstractController
     
     public static function SetGzenny(string $saveData, $value)
     {
+        if (FORWARD_5_MODE) {
+            return $saveData;
+        }
+        
         $value = min($value, 9999999);
         return self::writeToFile($saveData, "1FF64", self::numberConvertEndian($value, 4));
     }
     
     public static function GetCP(string $saveData)
     {
+        if (FORWARD_5_MODE) {
+            return 0;
+        }
+        
         $br = new BinaryReader($saveData);
         $br->setPosition(0x212E4);
         
@@ -76,20 +100,36 @@ class SaveDataController extends AbstractController
     
     public static function SetCP(string $saveData, $value)
     {
+        if (FORWARD_5_MODE) {
+            return $saveData;
+        }
+        
         $value = min($value, 9999999);
         return self::writeToFile($saveData, '212E4', self::numberConvertEndian($value, 4));
     }
     
-    public static function GetEquipmentBox(string $saveData)
+    /**
+     * @param string $saveData
+     * @return Equip[]
+     */
+    public static function GetEquipmentBox(string $saveData): array
     {
         $br = new BinaryReader($saveData);
-        $br->setPosition(0x120);
+        if (FORWARD_5_MODE) {
+            $br->setPosition(0x110);
+        } else {
+            $br->setPosition(0x120);
+        }
+        
         $equips = [];
+        $i = 0;
         while(true) {
+            $i++;
             $equip = new Equip($br->readBytes(16));
             if ($equip->getId() === "0000") {
                 break;
             }
+            $equip->setSlot($i);
             $equips[] = $equip;
         }
     
@@ -99,12 +139,21 @@ class SaveDataController extends AbstractController
     public static function GetItembox(string $saveData)
     {
         $br = new BinaryReader($saveData);
-        $br->setPosition(0x11a60);
+        if (FORWARD_5_MODE) {
+            $br->setPosition(0x7E10);
+        } else {
+            $br->setPosition(0x11a60);
+        }
     
         $items = [];
         $itemsToRead = defined('ITEMBOX_ITEMS_READ') ? ITEMBOX_ITEMS_READ : 4000;
         for($i = 0; $i < $itemsToRead; $i++) {
-            $item = new Item($br->readBytes(8));
+            try {
+                $item = new Item($br->readBytes(8));
+            } catch (\Exception $e) {
+                break;
+            }
+            
             if ($item->getId() === "0000") {
                 //continue;
             }
@@ -117,7 +166,11 @@ class SaveDataController extends AbstractController
     
     public static function SetItemboxSlot($saveData, int $slot)
     {
-        $firstItemStart = 0x11a60;
+        if (FORWARD_5_MODE) {
+            $firstItemStart = 0x7E10;
+        } else {
+            $firstItemStart = 0x11a60;
+        }
         $itemByteSize = 0x8;
         $offsetForItem = $slot * $itemByteSize + $firstItemStart;
         
@@ -196,8 +249,12 @@ class SaveDataController extends AbstractController
     public static function GetCurrentEquip(string $saveData)
     {
         $br = new BinaryReader($saveData);
-        $br->setPosition(0x1F604);
         
+        if (FORWARD_5_MODE) {
+            $br->setPosition(0xEC54);
+        } else {
+            $br->setPosition(0x1F604);
+        }
         
         $tmpEquip = [];
         for ($i = 0; $i <= 5; $i++) {
@@ -213,6 +270,10 @@ class SaveDataController extends AbstractController
     
     public static function GetKeyquestflag($saveData)
     {
+        if (FORWARD_5_MODE) {
+            return 0;
+        }
+    
         $br = new BinaryReader($saveData);
         $br->setPosition(0x23D20);
     
@@ -221,6 +282,10 @@ class SaveDataController extends AbstractController
     
     public static function SetKeyquestflag($saveData, string $hexValue)
     {
+        if (FORWARD_5_MODE) {
+            return $saveData;
+        }
+    
         if (strlen($hexValue) != 16) {
             throw new \Exception('Key Quest Flag needs to be 8 Bytes');
         }
@@ -230,11 +295,19 @@ class SaveDataController extends AbstractController
     
     public static function SetStylevouchers($saveData, $value)
     {
+        if (FORWARD_5_MODE) {
+            return $saveData;
+        }
+    
         return self::writeToFile($saveData, "20104", "030000F4");
     }
     
     public static function GetDailyguild($saveData)
     {
+        if (FORWARD_5_MODE) {
+            return 0;
+        }
+    
         $br = new BinaryReader($saveData);
         $br->setPosition(0x21562);
     
@@ -243,6 +316,10 @@ class SaveDataController extends AbstractController
     
     public static function SetDailyguild($saveData, $value)
     {
+        if (FORWARD_5_MODE) {
+            return $saveData;
+        }
+    
         return self::writeToFile($saveData, "21562", "0000");
     }
 }

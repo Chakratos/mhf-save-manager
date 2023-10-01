@@ -1,16 +1,18 @@
 $(document).ready(function () {
-    var total = $('.carousel-shop').length;
-    var currentIndex = $('div.carousel-shop.active').index() + 1;
-    $('#slidetext').html(currentIndex + '/'  + total);
+    updateSlideIndex('#itemboxPagination');
+    updateSlideIndex('#equipboxPagination');
 
-// This triggers after each slide change
-    $('.carousel').on('slid.bs.carousel', function () {
-        currentIndex = $('div.carousel-shop.active').index() + 1;
+    function updateSlideIndex(carouselId) {
+        var total = $(carouselId + ' .carousel-item').length;
+        var currentIndex = $(carouselId + ' div.carousel-item.active').index() + 1;
+        $(carouselId + ' #slidetext').html(currentIndex + '/'  + total);
 
-        // Now display this wherever you want
-        var text = currentIndex + '/' + total;
-        $('#slidetext').html(text);
-    });
+        $(carouselId).on('slid.bs.carousel', function () {
+            currentIndex = $(carouselId + ' div.carousel-item.active').index() + 1;
+            var text = currentIndex + '/' + total;
+            $(carouselId + ' #slidetext').html(text);
+        });
+    }
 
     function postData(funcname, value, reload = false, alertResponse = true, data = {}) {
         return $.ajax({
@@ -120,7 +122,7 @@ $(document).ready(function () {
         theme: 'bootstrap4',
     });
 
-    $('.shop-col').click(function() {
+    $('.itembox-item').click(function() {
         $('#itemboxSlotEditTitle > b')[0].innerHTML = $(this).data('slot');
         $('#itemboxSlotQuantity').val($(this).data('quantity'));
         $('#itemboxSlotItem').val($(this).data('id'));
@@ -142,14 +144,14 @@ $(document).ready(function () {
             return;
         }
 
-        postData('shop/itembox', slot, false, false,
-        {
+        postData('item/itembox', slot, false, false,
+            {
                 item_id: item.val(),
                 item_quantity: quantity
-              }
+            }
         ).then(function(response) {
-            $('.shop-col[data-slot="' + slot +'"]>img').attr('src', '/img/shop/'+item.data('icon')+item.data('color')+'.png')
-            $('.shop-col[data-slot="' + slot +'"]>span')[0].innerHTML = '<b>[x' + quantity + ']</b> ' + item.text()
+            $('.item-col[data-slot="' + slot +'"]>img').attr('src', '/img/item/'+item.data('icon')+item.data('color')+'.png')
+            $('.item-col[data-slot="' + slot +'"]>span')[0].innerHTML = '<b>[x' + quantity + ']</b> ' + item.text()
             $('#itemboxSlotEdit').modal('hide');
             button.prop("disabled", false);
         }).catch(function(response) {
@@ -158,3 +160,4 @@ $(document).ready(function () {
         });
     });
 });
+

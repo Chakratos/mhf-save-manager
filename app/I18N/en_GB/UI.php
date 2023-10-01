@@ -51,6 +51,7 @@ return [
     'Daily Guild Reward' => 'Daily Guild Reward',
     'Login Boost' => 'Login Boost',
     'Itembox' => 'Itembox',
+    'Equipment Box' => 'Equipment Box',
     'Pouch' => 'Pouch',
     'Ammo Pouch' => 'Ammo Pouch',
     'Warehouse' => 'Warehouse',

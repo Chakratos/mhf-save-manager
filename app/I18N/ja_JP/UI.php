@@ -51,6 +51,7 @@ return [
     'Daily Guild Reward' => 'Daily Guild Reward',
     'Login Boost' => 'ログインブースト',
     'Itembox' => 'アイテムボックス',
+    'Equipment Box' => 'Equipment Box',
     'Pouch' => 'ポーチ',
     'Ammo Pouch' => '弾・ビン ポーチ',
     'Warehouse' => '倉庫',
