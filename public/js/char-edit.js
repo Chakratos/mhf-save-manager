@@ -1,16 +1,18 @@
 $(document).ready(function () {
-    var total = $('.carousel-item').length;
-    var currentIndex = $('div.carousel-item.active').index() + 1;
-    $('#slidetext').html(currentIndex + '/'  + total);
+    updateSlideIndex('#itemboxPagination');
+    updateSlideIndex('#equipboxPagination');
 
-// This triggers after each slide change
-    $('.carousel').on('slid.bs.carousel', function () {
-        currentIndex = $('div.carousel-item.active').index() + 1;
+    function updateSlideIndex(carouselId) {
+        var total = $(carouselId + ' .carousel-item').length;
+        var currentIndex = $(carouselId + ' div.carousel-item.active').index() + 1;
+        $(carouselId + ' #slidetext').html(currentIndex + '/'  + total);
 
-        // Now display this wherever you want
-        var text = currentIndex + '/' + total;
-        $('#slidetext').html(text);
-    });
+        $(carouselId).on('slid.bs.carousel', function () {
+            currentIndex = $(carouselId + ' div.carousel-item.active').index() + 1;
+            var text = currentIndex + '/' + total;
+            $(carouselId + ' #slidetext').html(text);
+        });
+    }
 
     function postData(funcname, value, reload = false, alertResponse = true, data = {}) {
         return $.ajax({
@@ -120,7 +122,7 @@ $(document).ready(function () {
         theme: 'bootstrap4',
     });
 
-    $('.item-col').click(function() {
+    $('.itembox-item').click(function() {
         $('#itemboxSlotEditTitle > b')[0].innerHTML = $(this).data('slot');
         $('#itemboxSlotQuantity').val($(this).data('quantity'));
         $('#itemboxSlotItem').val($(this).data('id'));

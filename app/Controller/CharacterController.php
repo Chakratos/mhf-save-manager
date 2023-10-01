@@ -24,6 +24,7 @@ class CharacterController
         $name = SaveDataController::GetName($decompressed);
         $zenny = SaveDataController::GetZenny($decompressed);
         $itembox = SaveDataController::GetItembox($decompressed);
+        $equipbox = SaveDataController::GetEquipmentBox($decompressed);
         
         $gZenny = SaveDataController::GetGZenny($decompressed);
         $cp = SaveDataController::GetCP($decompressed);

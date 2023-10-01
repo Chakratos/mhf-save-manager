@@ -43,6 +43,10 @@ class Equip extends AbstractBinaryModel
      * @var string
      */
     protected $weaponType = "";
+    /**
+     * @var int
+     */
+    protected $slot;
     
     public function __toString()
     {
@@ -149,5 +153,24 @@ class Equip extends AbstractBinaryModel
     public function getWeaponType(): string
     {
         return $this->weaponType;
+    }
+    
+    /**
+     * @return int
+     */
+    public function getSlot(): int
+    {
+        return $this->slot;
+    }
+    
+    /**
+     * @param int $slot
+     * @return Equip
+     */
+    public function setSlot(int $slot): Equip
+    {
+        $this->slot = $slot;
+        
+        return $this;
     }
 }

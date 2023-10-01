@@ -122,11 +122,14 @@ class SaveDataController extends AbstractController
         }
         
         $equips = [];
+        $i = 0;
         while(true) {
+            $i++;
             $equip = new Equip($br->readBytes(16));
             if ($equip->getId() === "0000") {
                 break;
             }
+            $equip->setSlot($i);
             $equips[] = $equip;
         }
     

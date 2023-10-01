@@ -25,7 +25,9 @@
         <div class="tab-pane fade" id="nav-items" role="tabpanel" aria-labelledby="nav-items-tab">
             <?php include VIEWS_DIR . 'edit' . DIRECTORY_SEPARATOR . 'edit-items-page.php';?>
         </div>
-        <div class="tab-pane fade" id="nav-equipment" role="tabpanel" aria-labelledby="nav-equipment-tab">...</div>
+        <div class="tab-pane fade" id="nav-equipment" role="tabpanel" aria-labelledby="nav-equipment-tab">
+            <?php include VIEWS_DIR . 'edit' . DIRECTORY_SEPARATOR . 'edit-equip-page.php';?>
+        </div>
     </div>
 </div>
 <script>var charid = <?php echo $character->getId();?></script>

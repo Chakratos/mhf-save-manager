@@ -7,6 +7,19 @@
         width: 117px;
     }
 
+    .carousel-inner {
+        min-height: 500px;
+        min-width: 780px;
+    }
+
+    #slidetext {
+        position: absolute;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+
 </style>
 
 <div id="itemboxSlotEdit" class="modal fade" data-backdrop="static">
@@ -59,7 +72,7 @@
                 if ($itemCount == 0) {
                     echo '<div class="row item-row">';
                 }
-                $tmpItem = \MHFSaveManager\Service\ItemsService::getForLocale()[$item->getId()];
+                $tmpItem = null;
                 if (isset(\MHFSaveManager\Service\ItemsService::getForLocale()[$item->getId()])) {
                     $tmpItem = \MHFSaveManager\Service\ItemsService::getForLocale()[$item->getId()];
                 } else {
@@ -70,7 +83,7 @@
                 }
                 
                 printf('
-                            <div class="col item-col" data-id="%s" data-quantity="%s" data-slot="%s">
+                            <div class="col item-col itembox-item" data-id="%s" data-quantity="%s" data-slot="%s">
                                 <img class="item-icon" src="/img/item/%s%s.png">
                                 <span style="font-size: 12px;"><b>[x%s]</b><br>%s</span>
                             </div>',
@@ -97,6 +110,14 @@
                     }
                 }
             }
+
+            if ($itemCount < 10 && $itemCount > 0) {
+                echo '</div>';
+            }
+
+            if ($rowCount < 10 && $rowCount > 0) {
+                echo '</div>';
+            }
             ?>
         </div>
         <a class="carousel-control-prev" href="#itemboxPagination" role="button" style="width: auto; background-color: black; height: 15%; margin-top: 25%;" data-slide="prev">
@@ -108,6 +129,6 @@
             <span class="sr-only">Next</span>
         </a>
         <br>
-        <h3 id="slidetext" style="  top: -25px;position: relative;"></h3>
+        <h3 id="slidetext"></h3>
     </div>
 
