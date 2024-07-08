@@ -69,10 +69,12 @@ class SaveDataController extends AbstractController
         if (FORWARD_5_MODE) {
             return 0;
         }
-        
         $br = new BinaryReader($saveData);
-        $br->setPosition(0x1FF64);
-    
+        if (G_91_MODE) {
+            $br->setPosition(0x172C4);
+        } else {
+            $br->setPosition(0x1FF64);
+        }
         return $br->readUInt32();
     }
     
@@ -81,9 +83,14 @@ class SaveDataController extends AbstractController
         if (FORWARD_5_MODE) {
             return $saveData;
         }
-        
+
         $value = min($value, 9999999);
-        return self::writeToFile($saveData, "1FF64", self::numberConvertEndian($value, 4));
+        if (G_91_MODE) {
+            $addr = "172C4";
+        } else {
+            $addr = "1FF64";
+        }
+        return self::writeToFile($saveData, $addr, self::numberConvertEndian($value, 4));
     }
     
     public static function GetCP(string $saveData)
@@ -91,10 +98,12 @@ class SaveDataController extends AbstractController
         if (FORWARD_5_MODE) {
             return 0;
         }
-        
         $br = new BinaryReader($saveData);
-        $br->setPosition(0x212E4);
-        
+        if (G_91_MODE) {
+            $br->setPosition(0x18644);
+        } else {
+            $br->setPosition(0x212E4);
+        }
         return $br->readUInt32();
     }
     
@@ -105,7 +114,12 @@ class SaveDataController extends AbstractController
         }
         
         $value = min($value, 9999999);
-        return self::writeToFile($saveData, '212E4', self::numberConvertEndian($value, 4));
+        if (G_91_MODE) {
+            $addr = "18644";
+        } else {
+            $addr = "212E4";
+        }
+        return self::writeToFile($saveData, $addr, self::numberConvertEndian($value, 4));
     }
     
     /**
@@ -141,6 +155,8 @@ class SaveDataController extends AbstractController
         $br = new BinaryReader($saveData);
         if (FORWARD_5_MODE) {
             $br->setPosition(0x7E10);
+        } else if (G_91_MODE) {
+            $br->setPosition(0xBCA0);
         } else {
             $br->setPosition(0x11a60);
         }
@@ -168,7 +184,9 @@ class SaveDataController extends AbstractController
     {
         if (FORWARD_5_MODE) {
             $firstItemStart = 0x7E10;
-        } else {
+        } else if (G_91_MODE) {
+            $firstItemStart = 0xBCA0;
+        }else {
             $firstItemStart = 0x11a60;
         }
         $itemByteSize = 0x8;
@@ -180,10 +198,15 @@ class SaveDataController extends AbstractController
     public static function GetItemPouch(string $saveData)
     {
         $br = new BinaryReader($saveData);
-        $br->setPosition(0x23E74);
+        if (G_91_MODE) {
+            $br->setPosition(0x168C4); 
+        } else {
+            $br->setPosition(0x23E74);
+        }
     
         $items = ['items' => [], 'ammo' => []];
         for ($i = 0; $i < 20 ; $i++) {
+
             $item = new Item($br->readBytes(8));
             if ($item->getId() === "0000") {
                 continue;
@@ -209,19 +232,27 @@ class SaveDataController extends AbstractController
         $br = new BinaryReader($saveData);
         $itemPresets = [];
         
-        //getNames 20byte name
-        $br->setPosition(0x23F68);
-        for ($i = 0; $i <= 24; $i++) {
-            $tmpName = hex2bin(explode('00', bin2hex($br->readBytes(20)))[0]);
-            if ($tmpName == "") {
-                continue;
+        if (G_91_MODE) {
+            $itemPresetsItemsLocation = 0x168C8;
+            $itemPresetsQuantityLocation = 0x185EC;
+            $itemPresets = array(new ItemPreset("Item Set 1"), 
+                new ItemPreset("Item Set 2"), 
+                new ItemPreset("Item Set 3"), 
+                new ItemPreset("Item Set 4"));
+        } else {
+            //getNames 20byte name
+            $br->setPosition(0x23F68);
+            for ($i = 0; $i <= 24; $i++) {
+                $tmpName = hex2bin(explode('00', bin2hex($br->readBytes(20)))[0]);
+                if ($tmpName == "") {
+                    continue;
+                }
+                
+                $itemPresets[$i] = new ItemPreset($tmpName);
             }
-            
-            $itemPresets[$i] = new ItemPreset($tmpName);
+            $itemPresetsItemsLocation = 0x24148;
+            $itemPresetsQuantityLocation = 0x246E8;
         }
-        
-        $itemPresetsItemsLocation = 0x24148;
-        $itemPresetsQuantityLocation = 0x246E8;
         foreach(array_keys($itemPresets) as $itemPresetCount) {
             //getItems 2byte ID's
             $br->setPosition($itemPresetsItemsLocation + ((30 * 2) * $itemPresetCount));
@@ -251,9 +282,10 @@ class SaveDataController extends AbstractController
     public static function GetCurrentEquip(string $saveData)
     {
         $br = new BinaryReader($saveData);
-        
         if (FORWARD_5_MODE) {
             $br->setPosition(0xEC54);
+        } else if (G_91_MODE) {
+            $br->setPosition(0x16964);
         } else {
             $br->setPosition(0x1F604);
         }
@@ -272,7 +304,7 @@ class SaveDataController extends AbstractController
     
     public static function GetKeyquestflag($saveData)
     {
-        if (FORWARD_5_MODE) {
+        if (FORWARD_5_MODE or G_91_MODE) {
             return 0;
         }
     
@@ -284,7 +316,7 @@ class SaveDataController extends AbstractController
     
     public static function SetKeyquestflag($saveData, string $hexValue)
     {
-        if (FORWARD_5_MODE) {
+        if (FORWARD_5_MODE or G_91_MODE) {
             return $saveData;
         }
     
@@ -300,13 +332,21 @@ class SaveDataController extends AbstractController
         if (FORWARD_5_MODE) {
             return $saveData;
         }
+
+        if (G_91_MODE) {
+            $addr = "17464";
+            $val = "020000F4";
+        } else {
+            $addr = "20104";
+            $val = "030000F4";
+        }
     
-        return self::writeToFile($saveData, "20104", "030000F4");
+        return self::writeToFile($saveData, $addr, $val);
     }
     
     public static function GetDailyguild($saveData)
     {
-        if (FORWARD_5_MODE) {
+        if (FORWARD_5_MODE or G_91_MODE) {
             return 0;
         }
     
@@ -318,7 +358,7 @@ class SaveDataController extends AbstractController
     
     public static function SetDailyguild($saveData, $value)
     {
-        if (FORWARD_5_MODE) {
+        if (FORWARD_5_MODE or G_91_MODE) {
             return $saveData;
         }
     
