@@ -33,13 +33,15 @@ class BinaryController
     public static function EditSavedata(Character $character)
     {
         $decompressed = CompressionService::Decompress($character->getSavedata());
-        var_dump(SaveDataController::GetCurrentEquip($decompressed));
+        $saveDataMap = SaveDataController::GetSaveDataMap();
+        var_dump(SaveDataController::GetCurrentEquip($saveDataMap, $decompressed));
     }
     
     public static function EditDecomyset(Character $character)
     {
         $decompressed = CompressionService::Decompress($character->getDecomyset());
-        $br = new BinaryReader($decompressed);
+        $saveDataMap = SaveDataController::GetSaveDataMap();
+        $br = new BinaryReader($saveDataMap, $decompressed);
         var_dump(SaveDataController::GetCurrentEquip($decompressed));
     }
 }

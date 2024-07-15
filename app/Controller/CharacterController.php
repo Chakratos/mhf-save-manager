@@ -20,17 +20,19 @@ class CharacterController
     public static function Edit(Character $character)
     {
         $decompressed = CompressionService::Decompress($character->getSavedata());
-        $currentGear = SaveDataController::GetCurrentEquip($decompressed);
-        $name = SaveDataController::GetName($decompressed);
-        $zenny = SaveDataController::GetZenny($decompressed);
-        $itembox = SaveDataController::GetItembox($decompressed);
-        $equipbox = SaveDataController::GetEquipmentBox($decompressed);
-        $itempouch = SaveDataController::GetItemPouch($decompressed)['items'];
-        $ammopouch = SaveDataController::GetItemPouch($decompressed)['ammo'];
+        $saveDataMap = SaveDataController::GetSaveDataMap();
+
+        $currentGear = SaveDataController::GetCurrentEquip($saveDataMap, $decompressed);
+        $name = SaveDataController::GetName($saveDataMap, $decompressed);
+        $zenny = SaveDataController::GetZenny($saveDataMap, $decompressed);
+        $itembox = SaveDataController::GetItembox($saveDataMap, $decompressed);
+        $equipbox = SaveDataController::GetEquipmentBox($saveDataMap, $decompressed);
+        $itempouch = SaveDataController::GetItemPouch($saveDataMap, $decompressed)['items'];
+        $ammopouch = SaveDataController::GetItemPouch($saveDataMap, $decompressed)['ammo'];
         
-        $gZenny = SaveDataController::GetGZenny($decompressed);
-        $cp = SaveDataController::GetCP($decompressed);
-        $keyquestFlag = SaveDataController::GetKeyQuestFlag($decompressed);
+        $gZenny = SaveDataController::GetGZenny($saveDataMap, $decompressed);
+        $cp = SaveDataController::GetCP($saveDataMap, $decompressed);
+        $keyquestFlag = SaveDataController::GetKeyQuestFlag($saveDataMap, $decompressed);
         $gcp = $character->getGcp();
         $npoints = $character->getNetcafePoints();
         $kouryou = $character->getKouryouPoint();
@@ -46,7 +48,9 @@ class CharacterController
     public static function WriteToSavedata(Character $character, string $function, $value)
     {
         $decompressed = CompressionService::Decompress($character->getSavedata());
-        $savefile = SaveDataController::$function($decompressed, $value);
+        $saveDataMap = SaveDataController::GetSaveDataMap();
+
+        $savefile = SaveDataController::$function($saveDataMap, $decompressed, $value);
         $compressed = CompressionService::Compress($savefile);
         $handle = fopen('php://memory', 'br+');
         fwrite($handle, $compressed);
