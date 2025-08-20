@@ -41,12 +41,6 @@ SimpleRouter::post('/servertools/distributions/save', function() {
         !isset($_POST['name']) ||
         !isset($_POST['desc']) ||
         !isset($_POST['deadline']) ||
-        !isset($_POST['minhr']) ||
-        !isset($_POST['maxhr']) ||
-        !isset($_POST['minsr']) ||
-        !isset($_POST['maxsr']) ||
-        !isset($_POST['mingr']) ||
-        !isset($_POST['maxgr']) ||
         !isset($_POST['items'])) {
         ResponseService::SendUnprocessableEntity();
     }
@@ -59,7 +53,7 @@ SimpleRouter::get('/servertools/distributions/export', function() {
 });
 
 SimpleRouter::post('/servertools/distributions/import', function() {
-    if ($_FILES["distributionCSV"]["error"] != UPLOAD_ERR_OK) {
+    if ($_FILES["distributionJSON"]["error"] != UPLOAD_ERR_OK) {
         ResponseService::SendServerError('Error while uploading, check storage permissions for the TMP folder!');
     }
     

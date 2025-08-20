@@ -1,15 +1,16 @@
 <?php
 
-
 namespace MHFSaveManager\Model;
 
+use JsonSerializable;
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity
  * @ORM\Table(name="distribution")
  */
-class Distribution
+class Distribution implements JsonSerializable, JsonDeserializable
 {
     /**
      * @ORM\Column(name="id", type="integer")
@@ -56,55 +57,53 @@ class Distribution
     protected $times_acceptable;
     
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", nullable=true)
      * @var int
      */
     protected $min_hr;
     
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", nullable=true)
      * @var int
      */
     protected $max_hr;
     
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", nullable=true)
      * @var int
      */
     protected $min_sr;
     
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", nullable=true)
      * @var int
      */
     protected $max_sr;
     
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", nullable=true))
      * @var int
      */
     protected $min_gr;
     
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", nullable=true))
      * @var int
      */
     protected $max_gr;
-    
+
     /**
-     * @ORM\Column(type="blob")
-     * @var resource
+     * @ORM\Column(type="integer", nullable=true))
+     * @var int
      */
-    protected $data;
-    
+    protected $rights;
+
     /**
-     * @return int
+     * @ORM\Column(type="boolean", nullable=true))
+     * @var bool
      */
-    public function getId(): int
-    {
-        return $this->id;
-    }
-    
+    protected $selection;
+        
     public static array $types = [
         0 => 'Bought',
         1 => 'Event',
@@ -115,6 +114,14 @@ class Distribution
         8 => 'Promo Item',
         9 => 'Subscription Item',
     ];
+
+    /**
+     * @return int
+     */
+    public function getId(): int
+    {
+        return $this->id;
+    }
     
     /**
      * @param int $id
@@ -279,7 +286,7 @@ class Distribution
     /**
      * @return int
      */
-    public function getMinHr(): int
+    public function getMinHr(): int|null
     {
         return $this->min_hr;
     }
@@ -298,7 +305,7 @@ class Distribution
     /**
      * @return int
      */
-    public function getMaxHr(): int
+    public function getMaxHr(): int|null
     {
         return $this->max_hr;
     }
@@ -317,7 +324,7 @@ class Distribution
     /**
      * @return int
      */
-    public function getMinSr(): int
+    public function getMinSr(): int|null
     {
         return $this->min_sr;
     }
@@ -336,7 +343,7 @@ class Distribution
     /**
      * @return int
      */
-    public function getMaxSr(): int
+    public function getMaxSr(): int|null
     {
         return $this->max_sr;
     }
@@ -355,7 +362,7 @@ class Distribution
     /**
      * @return int
      */
-    public function getMinGr(): int
+    public function getMinGr(): int|null
     {
         return $this->min_gr;
     }
@@ -374,7 +381,7 @@ class Distribution
     /**
      * @return int
      */
-    public function getMaxGr(): int
+    public function getMaxGr(): int|null
     {
         return $this->max_gr;
     }
@@ -389,29 +396,95 @@ class Distribution
         
         return $this;
     }
-    
+
     /**
-     * @return resource
+     * @return int
      */
-    public function getData()
+    public function getRights(): int
     {
-        return $this->data;
+        return $this->rights | 0;
     }
     
     /**
-     * @param resource $data
+     * @param int $rights
      * @return Distribution
      */
-    public function setData($data)
+    public function setRights($rights): Distribution
     {
-        if (!is_resource($data)) {
-            $handle = fopen('php://memory', 'br+');
-            fwrite($handle, hex2bin($data));
-            rewind($handle);
-            
-            $data = $handle;
+        $this->rights = $rights;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getSelection(): bool
+    {
+        return $this->selection | false;
+    }
+    
+    /**
+     * @param int $selection
+     * @return Distribution
+     */
+    public function setSelection($selection): Distribution
+    {
+        $this->selection = $selection;
+
+        return $this;
+    }
+
+    /**
+     * Serialize into a json object
+     * @return array
+     */
+    public function jsonSerialize(): array {
+        return [
+            'id' => $this->id,
+            'character_id' => $this->character_id,
+            'type' => $this->type,
+            'deadline' => $this->deadline ? $this->deadline->getTimestamp() : null,
+            'event_name' => $this->event_name,
+            'description' => $this->description,
+            'times_acceptable' => $this->times_acceptable,
+            'min_hr' => $this->min_hr,
+            'max_hr' => $this->max_hr,
+            'min_sr' => $this->min_sr,
+            'max_sr' => $this->max_sr,
+            'min_gr' => $this->min_gr,
+            'max_gr' => $this->max_gr,
+            'rights' => $this->rights,
+            'selection' => $this->selection,
+        ];
+    }
+
+    /**
+     * @param array $jsonObject
+     * @return Distribution
+     */
+    public function setFromJson(array $jsonObject) : Distribution
+    {
+        $this->id = $jsonObject['id'];
+        $this->character_id = $jsonObject['character_id'];
+        $this->type = $jsonObject['type'];
+        $this->event_name = $jsonObject['event_name'];
+        $this->description = $jsonObject['description'];
+        $this->times_acceptable = $jsonObject['times_acceptable'];
+        $this->min_hr = $jsonObject['min_hr'];
+        $this->max_hr = $jsonObject['max_hr'];
+        $this->min_sr = $jsonObject['min_sr'];
+        $this->max_sr = $jsonObject['max_sr'];
+        $this->min_gr = $jsonObject['min_gr'];
+        $this->max_gr = $jsonObject['max_gr'];
+        $this->rights = $jsonObject['rights'];
+        $this->selection = $jsonObject['selection'];
+
+        if($jsonObject['deadline']){
+            $dateData = new DateTime();
+            $dateData->setTimestamp($jsonObject['deadline']);
+            $this->deadline = $dateData;
         }
-        $this->data = $data;
         
         return $this;
     }

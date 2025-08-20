@@ -1,10 +1,11 @@
 <html lang="en">
 <head>
-    <?php use MHFSaveManager\Model\Distribution;
-    use MHFSaveManager\Model\DistributionItem;
+    <?php use MHFSaveManager\Database\EM;
+    use MHFSaveManager\Model\Distribution;
+    use MHFSaveManager\Model\DistributionItems;
     use MHFSaveManager\Service\ItemsService;
     use MHFSaveManager\Service\EquipService;
-
+    
     include_once "head.php"?>
     <link rel="stylesheet" href="/css/char-edit.css">
     <title>MHF Character Manager</title>
@@ -86,6 +87,10 @@
                         </div>
                         <button class="btn btn-sm btn-success w-25" id="addDistributionItem">+</button>
                         <button class="btn btn-sm btn-danger w-25" id="delDistributionItem">-</button>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="distributionSelection">
+                            <label class="form-check-label" for="distributionSelection"><?php echo $UILocale['Player selects one']?></label>
+                        </div>
                     </div>
                     <div class="col-6">
                         <h6><?php echo $UILocale['Valid for']?>:</h6>
@@ -100,35 +105,73 @@
                                 ?>
                             </select>
                         </div>
-                        <h6><?php echo $UILocale['Rank Limitations']?>, 65535 = <?php echo $UILocale['No Limit']?>:</h6>
+                        <h6><?php echo $UILocale['Rank Limitations'] . ", " . $UILocale['Blank'] . " = " . $UILocale['No Limit']?>:</h6>
                         <h6><?php echo $UILocale['Min HR']?>:</h6>
                         <div class="input-group mb-2">
-                            <input type="number" class="form-control" id="distributionMinHR" min="0" max="65535" placeholder="65535">
+                            <input type="number" class="form-control" id="distributionMinHR" min="0" max="65535">
                         </div>
         
                         <h6><?php echo $UILocale['Max HR']?>:</h6>
                         <div class="input-group mb-2">
-                            <input type="number" class="form-control" id="distributionMaxHR" min="0" max="65535" placeholder="65535">
+                            <input type="number" class="form-control" id="distributionMaxHR" min="0" max="65535">
                         </div>
         
                         <h6><?php echo $UILocale['Min SR']?>:</h6>
                         <div class="input-group mb-2">
-                            <input type="number" class="form-control" id="distributionMinSR" min="0" max="65535" placeholder="65535">
+                            <input type="number" class="form-control" id="distributionMinSR" min="0" max="65535">
                         </div>
         
                         <h6><?php echo $UILocale['Max SR']?>:</h6>
                         <div class="input-group mb-2">
-                            <input type="number" class="form-control" id="distributionMaxSR" min="0" max="65535" placeholder="65535">
+                            <input type="number" class="form-control" id="distributionMaxSR" min="0" max="65535">
                         </div>
         
                         <h6><?php echo $UILocale['Min GR']?>:</h6>
                         <div class="input-group mb-2">
-                            <input type="number" class="form-control" id="distributionMinGR" min="0" max="65535" placeholder="65535">
+                            <input type="number" class="form-control" id="distributionMinGR" min="0" max="65535">
                         </div>
         
                         <h6><?php echo $UILocale['Max GR']?>:</h6>
                         <div class="input-group mb-2">
-                            <input type="number" class="form-control" id="distributionMaxGR" min="0" max="65535" placeholder="65535">
+                            <input type="number" class="form-control" id="distributionMaxGR" min="0" max="65535">
+                        </div>
+                        
+                        <h6><?php echo $UILocale['Requires one course in']?>:</h6>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" id="distributionHunterLife">
+                            <label class="form-check-label" for="distributionHunterLife"><?php echo $UILocale['Hunter Life']?></label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" id="distributionExtra">
+                            <label class="form-check-label" for="distributionExtra"><?php echo $UILocale['Extra']?></label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" id="distributionAssist">
+                            <label class="form-check-label" for="distributionAssist"><?php echo $UILocale['Assist']?></label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" id="distributionHiden">
+                            <label class="form-check-label" for="distributionHiden"><?php echo $UILocale['Hiden']?></label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" id="distributionHunterSupport">
+                            <label class="form-check-label" for="distributionHunterSupport"><?php echo $UILocale['Hunter Support']?></label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" id="distributionNetcafe">
+                            <label class="form-check-label" for="distributionNetcafe"><?php echo $UILocale['Netcafe']?></label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" id="distributionOfficialNetcate">
+                            <label class="form-check-label" for="distributionOfficialNetcate"><?php echo $UILocale['Official Netcafe']?></label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" id="distributionHunterLifeCard">
+                            <label class="form-check-label" for="distributionHunterLifeCard"><?php echo $UILocale['Hunter Life Card']?></label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input type="checkbox" class="form-check-input" id="distributionExtraCard">
+                            <label class="form-check-label" for="distributionExtraCard"><?php echo $UILocale['Extra Card']?></label>
                         </div>
                     </div>
                 </div>
@@ -154,7 +197,7 @@
                 <div class="input-group mb-2">
                     <select class="form-control" id="distributionItemTypeSelect">
                         <?php
-                            foreach (DistributionItem::$types as $id => $type) {
+                            foreach (DistributionItems::$types as $id => $type) {
                                 printf('<option value="%s">%s</option>', $id, $type);
                             }
                         ?>
@@ -221,6 +264,7 @@
             <th><?php echo $UILocale['Max HR']?></th>
             <th><?php echo $UILocale['Min GR']?></th>
             <th><?php echo $UILocale['Max GR']?></th>
+            <th><?php echo $UILocale['Selection']?></th>
             <th><?php echo $UILocale['Actions']?></th>
         </tr>
         </thead>
@@ -241,8 +285,9 @@
                 <td>%16$s</td>
                 <td>%17$s</td>
                 <td>%18$s</td>
+                <td><div class="form-check"><input class="form-check-input" type="checkbox" id="isSelected" %21$s disabled></div></td>
                 <td>
-                <button data-id="%1$s" data-characterid="%2$s" data-type="%3$s" data-deadline="%4$s" data-name="%5$s" data-desc="%6$s" data-timesacceptable="%7$s" data-minhr="%8$s" data-maxhr="%9$s" data-minsr="%10$s" data-maxsr="%11$s" data-mingr="%12$s" data-maxgr="%13$s" data-namecolor="%19$s" data-desccolor="%20$s" class="editDistribution btn btn-sm btn-outline-success">
+                <button data-id="%1$s" data-characterid="%2$s" data-type="%3$s" data-deadline="%4$s" data-name="%5$s" data-desc="%6$s" data-timesacceptable="%7$s" data-minhr="%8$s" data-maxhr="%9$s" data-minsr="%10$s" data-maxsr="%11$s" data-mingr="%12$s" data-maxgr="%13$s" data-namecolor="%19$s" data-desccolor="%20$s" data-selection="%22$s" data-rights="%23$s" class="editDistribution btn btn-sm btn-outline-success"> 
                     <i class="fas fa-pencil"></i>
                 </button>
                 <button data-id="%1$s" class="duplicateDistribution btn btn-sm btn-outline-success">
@@ -268,12 +313,15 @@
             $distribution->getMinGr(),
             $distribution->getMaxGr(),
             Distribution::$types[$distribution->getType()],
-            $distribution->getMinHr() != 65535 ? $distribution->getMinHr() : '-',
-            $distribution->getMaxHr() != 65535 ? $distribution->getMaxHr() : '-',
-            $distribution->getMinGr() != 65535 ? $distribution->getMinGr() : '-',
-            $distribution->getMaxGr() != 65535 ? $distribution->getMaxGr() : '-',
+            $distribution->getMinHr() != null ? $distribution->getMinHr() : '-',
+            $distribution->getMaxHr() != null ? $distribution->getMaxHr() : '-',
+            $distribution->getMinGr() != null ? $distribution->getMinGr() : '-',
+            $distribution->getMaxGr() != null ? $distribution->getMaxGr() : '-',
             $distribution->getEventNameColor(),
-            $distribution->getDescriptionColor()
+            $distribution->getDescriptionColor(),
+            $distribution->getSelection() ? "checked" : "",
+            $distribution->getSelection(),
+            $distribution->getRights()
             );
         }
         ?>
@@ -282,26 +330,22 @@
     <button id="createDistribution" class="btn btn-success"><?php echo $UILocale['Create Distribution']?></button>
     <a class="btn btn-primary" href="/servertools/distributions/export"><?php echo $UILocale['Export']?></a>
     <button id="importDistribution" class="btn btn-warning"><?php echo $UILocale['Import']?></button>
-    <input type="file" id="importDistributionInput" style="display: none" accept=".csv">
+    <input type="file" id="importDistributionInput" style="display: none" accept=".json">
 </div>
 
 <script>
     let DistributionItems = {
         <?php
             foreach ($distributions as $distribution) {
-                $data = $distribution->getData();
-                $numberOfItems = hexdec(bin2hex(fread($data, 2)));
-                
-                if ($numberOfItems <= 0) {
-                    continue;
-                }
-                
+                $items = EM::getInstance()->getRepository(DistributionItems::class)->findBy(array('distribution_id' => $distribution->getId()));
                 printf('%s: {', $distribution->getId());
                 try {
-                for ($i = 0; $i < $numberOfItems; $i++) {
-                    $item = new DistributionItem(bin2hex(fread($data, 13)));
-                    printf('%s: {type: "%s", itemId: "%s", amount: "%s"},', $i, $item->getType(), $item->getItemId(), $item->getAmount());
-                }
+                    foreach ($items as $i=>$item) {
+                        $itemIdString = $item->getItemIdString();
+                        $itemType = $item->getItemType();
+                        printf('%s: {type: "%s", itemId: "%s", amount: "%s"},',
+                            $i+1, $itemType, $itemIdString, $item->getQuantity());
+                    }
                 } catch (\Exception $e) {
                     continue;
                 }
@@ -327,4 +371,4 @@
         });
     });
 </script>
-<script src="/js/distribution.js"></script>
+<script type="text/javascript" src="/js/distribution.js"></script>
