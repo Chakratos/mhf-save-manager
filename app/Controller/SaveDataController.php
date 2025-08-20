@@ -15,111 +15,151 @@ use PhpBinaryReader\BinaryReader;
 class SaveDataController extends AbstractController
 {
     /**
+     * @return array mapping of the binary fields
+     */
+    public static function GetSaveDataMap() {
+        $version = "ZZ";
+        if (defined('FORWARD_5_MODE') and FORWARD_5_MODE) {
+            $version = "FW_5";
+        } else if (defined('VERSION')) {
+            $version = VERSION;
+        }
+        $map = SAVEDATA_MAP_DIR . $version . '.php';
+        $defaultMap = SAVEDATA_MAP_DIR . 'ZZ.php';
+        if (!file_exists($map)) {
+            $map = $defaultMap;
+        }
+    
+        $map = require($map);
+        $defaultMap = require($defaultMap);
+        
+        foreach ($defaultMap as $key => $value) {
+            if (!isset($map[$key])) {
+                $map[$key]['addr'] = 0;
+            }
+        }
+        return $map;
+    }
+
+    /**
+     * @param array $saveDataMap
      * @param string $saveData
      * @return string
      */
-    public static function GetGender(string $saveData): string
+    public static function GetGender(array $saveDataMap, string $saveData): string
     {
+        $addr = $saveDataMap['gender']['addr'];
+
+        if ($addr === 0) {
+            return '?';
+        }
         $br = new BinaryReader($saveData);
-        $br->setPosition(0x50);
+        $br->setPosition($addr);
     
         return $br->readBytes(1) == "\x01" ? 'Male' : 'Female';
     }
     
-    public static function GetName(string $saveData)
+    public static function GetName(array $saveDataMap, string $saveData)
     {
+        $addr = $saveDataMap['name']['addr'];
         $br = new BinaryReader($saveData);
-        if (FORWARD_5_MODE) {
-            $br->setPosition(0x48);
-        } else {
-            $br->setPosition(0x58);
-        }
-        
+        $br->setPosition($addr);
         
         return mb_convert_encoding(hex2bin(explode('00', bin2hex($br->readBytes(12)))[0]), 'UTF-8','SJIS');
     }
     
-    public static function SetName(string $saveData, string $name)
+    public static function SetName(array $saveDataMap, string $saveData, string $name)
     {
+        $addr = $saveDataMap['name']['addr'];
+
         $nameHex = str_pad(self::stringToHex($name), 24, "0");
         
         if (strlen($nameHex) > 24) {
             throw new \Exception('Name can only be 12 characters long!');
         }
         
-        return self::writeToFile($saveData, "58", $nameHex);
+        return self::writeToFile($saveData, dechex($addr), $nameHex);
     }
     
-    public static function GetZenny(string $saveData)
+    public static function GetZenny(array $saveDataMap, string $saveData)
     {
+        $addr = $saveDataMap['zenny']['addr'];
+
         $br = new BinaryReader($saveData);
-        $br->setPosition(0xb0);
+        $br->setPosition($addr);
     
         return $br->readUInt32();
     }
     
-    public static function SetZenny(string $saveData, $value)
+    public static function SetZenny(array $saveDataMap, string $saveData, $value)
     {
+        $addr = $saveDataMap['zenny']['addr'];
+
         $value = min($value, 9999999);
-        return self::writeToFile($saveData, "b0", self::numberConvertEndian($value, 4));
+        return self::writeToFile($saveData, dechex($addr), self::numberConvertEndian($value, 4));
     }
 
-    public static function GetGzenny(string $saveData)
+    public static function GetGzenny(array $saveDataMap, string $saveData)
     {
-        if (FORWARD_5_MODE) {
+        $addr = $saveDataMap['gzenny']['addr'];
+
+        if ($addr === 0) {
             return 0;
         }
-        
         $br = new BinaryReader($saveData);
-        $br->setPosition(0x1FF64);
-    
+        $br->setPosition($addr);
         return $br->readUInt32();
     }
     
-    public static function SetGzenny(string $saveData, $value)
+    public static function SetGzenny(array $saveDataMap, string $saveData, $value)
     {
-        if (FORWARD_5_MODE) {
+        $addr = $saveDataMap['gzenny']['addr'];
+
+        if ($addr === 0) {
+            return $saveData;
+        }
+
+        $value = min($value, 9999999);
+        $addr = dechex($addr);
+        return self::writeToFile($saveData, $addr, self::numberConvertEndian($value, 4));
+    }
+    
+    public static function GetCP(array $saveDataMap, string $saveData)
+    {
+        $addr = $saveDataMap['cp']['addr'];
+
+        if ($addr === 0) {
+            return 0;
+        }
+        $br = new BinaryReader($saveData);
+        $br->setPosition($addr);
+        return $br->readUInt32();
+    }
+    
+    public static function SetCP(array $saveDataMap, string $saveData, $value)
+    {
+        $addr = $saveDataMap['cp']['addr'];
+
+        if ($addr === 0) {
             return $saveData;
         }
         
         $value = min($value, 9999999);
-        return self::writeToFile($saveData, "1FF64", self::numberConvertEndian($value, 4));
-    }
-    
-    public static function GetCP(string $saveData)
-    {
-        if (FORWARD_5_MODE) {
-            return 0;
-        }
-        
-        $br = new BinaryReader($saveData);
-        $br->setPosition(0x212E4);
-        
-        return $br->readUInt32();
-    }
-    
-    public static function SetCP(string $saveData, $value)
-    {
-        if (FORWARD_5_MODE) {
-            return $saveData;
-        }
-        
-        $value = min($value, 9999999);
-        return self::writeToFile($saveData, '212E4', self::numberConvertEndian($value, 4));
+        $addr = dechex($addr);
+        return self::writeToFile($saveData, $addr, self::numberConvertEndian($value, 4));
     }
     
     /**
+     * @param array $saveDataMap
      * @param string $saveData
      * @return Equip[]
      */
-    public static function GetEquipmentBox(string $saveData): array
+    public static function GetEquipmentBox(array $saveDataMap, string $saveData): array
     {
+        $addr = $saveDataMap['equip_box']['addr'];
+
         $br = new BinaryReader($saveData);
-        if (FORWARD_5_MODE) {
-            $br->setPosition(0x110);
-        } else {
-            $br->setPosition(0x120);
-        }
+        $br->setPosition($addr);
         
         $equips = [];
         $i = 0;
@@ -136,14 +176,12 @@ class SaveDataController extends AbstractController
         return $equips;
     }
     
-    public static function GetItembox(string $saveData)
+    public static function GetItembox(array $saveDataMap, string $saveData)
     {
+        $addr = $saveDataMap['item_box']['addr'];
+
         $br = new BinaryReader($saveData);
-        if (FORWARD_5_MODE) {
-            $br->setPosition(0x7E10);
-        } else {
-            $br->setPosition(0x11a60);
-        }
+        $br->setPosition($addr);
     
         $items = [];
         $itemsToRead = defined('ITEMBOX_ITEMS_READ') ? ITEMBOX_ITEMS_READ : 4000;
@@ -164,26 +202,31 @@ class SaveDataController extends AbstractController
         return $items;
     }
     
-    public static function SetItemboxSlot($saveData, int $slot)
+    public static function SetItemboxSlot(array $saveDataMap, $saveData, int $slot)
     {
-        if (FORWARD_5_MODE) {
-            $firstItemStart = 0x7E10;
-        } else {
-            $firstItemStart = 0x11a60;
-        }
+        $addr = $saveDataMap['item_box']['addr'];
+
+        $firstItemStart = $addr;
         $itemByteSize = 0x8;
         $offsetForItem = $slot * $itemByteSize + $firstItemStart;
         
         return self::writeToFile($saveData, dechex((float)$offsetForItem), sprintf("00000000%s%s", $_POST['item_id'], self::numberConvertEndian($_POST['item_quantity'], 2)));
     }
     
-    public static function GetItemPouch(string $saveData)
+    public static function GetItemPouch(array $saveDataMap, string $saveData)
     {
+        $addr = $saveDataMap['item_pouch']['addr'];
+        $addr_ammo = $saveDataMap['ammo_pouch']['addr'];
+
         $br = new BinaryReader($saveData);
-        $br->setPosition(0x23E74);
     
         $items = ['items' => [], 'ammo' => []];
+        if($addr === 0) {
+            return $items;
+        }
+        $br->setPosition($addr);
         for ($i = 0; $i < 20 ; $i++) {
+
             $item = new Item($br->readBytes(8));
             if ($item->getId() === "0000") {
                 continue;
@@ -192,6 +235,10 @@ class SaveDataController extends AbstractController
             $items['items'][] = $item;
         }
     
+        if($addr_ammo === 0) {
+            return $items;
+        }
+        $br->setPosition($addr_ammo);
         for ($i = 0; $i < 10 ; $i++) {
             $item = new Item($br->readBytes(8));
             if ($item->getId() === "0000") {
@@ -204,24 +251,39 @@ class SaveDataController extends AbstractController
         return $items;
     }
     
-    public static function GetItemPresets(string $saveData)
+    public static function GetItemPresets(array $saveDataMap, string $saveData)
     {
+        $addr_name = $saveDataMap['item_preset_name']['addr'];
+        $addr_item = $saveDataMap['item_preset_item']['addr'];
+        $addr_qty = $saveDataMap['item_preset_qty']['addr'];
+
         $br = new BinaryReader($saveData);
         $itemPresets = [];
         
-        //getNames 20byte name
-        $br->setPosition(0x23F68);
-        for ($i = 0; $i <= 24; $i++) {
-            $tmpName = hex2bin(explode('00', bin2hex($br->readBytes(20)))[0]);
-            if ($tmpName == "") {
-                continue;
-            }
-            
-            $itemPresets[$i] = new ItemPreset($tmpName);
+        if ($addr_item === 0) {
+            return $itemPresets;
         }
         
-        $itemPresetsItemsLocation = 0x24148;
-        $itemPresetsQuantityLocation = 0x246E8;
+        if ($addr_name === 0) {
+            $itemPresets = array(new ItemPreset("Item Set 1"), 
+                new ItemPreset("Item Set 2"), 
+                new ItemPreset("Item Set 3"), 
+                new ItemPreset("Item Set 4"));
+        } else {
+            //getNames 20byte name
+            $br->setPosition($addr_name);
+            for ($i = 0; $i <= 24; $i++) {
+                $tmpName = hex2bin(explode('00', bin2hex($br->readBytes(20)))[0]);
+                if ($tmpName == "") {
+                    continue;
+                }
+                
+                $itemPresets[$i] = new ItemPreset($tmpName);
+            }
+        }
+        
+        $itemPresetsItemsLocation = $addr_item;
+        $itemPresetsQuantityLocation = $addr_qty;
         foreach(array_keys($itemPresets) as $itemPresetCount) {
             //getItems 2byte ID's
             $br->setPosition($itemPresetsItemsLocation + ((30 * 2) * $itemPresetCount));
@@ -248,15 +310,11 @@ class SaveDataController extends AbstractController
         return $itemPresets;
     }
     
-    public static function GetCurrentEquip(string $saveData)
+    public static function GetCurrentEquip(array $saveDataMap, string $saveData)
     {
+        $addr = $saveDataMap['current_equip']['addr'];
         $br = new BinaryReader($saveData);
-        
-        if (FORWARD_5_MODE) {
-            $br->setPosition(0xEC54);
-        } else {
-            $br->setPosition(0x1F604);
-        }
+        $br->setPosition($addr);
         
         $tmpEquip = [];
         for ($i = 0; $i <= 5; $i++) {
@@ -270,21 +328,23 @@ class SaveDataController extends AbstractController
         return [$tmpEquip[0], $tmpEquip[2], $tmpEquip[3], $tmpEquip[4], $tmpEquip[5], $tmpEquip[1]]; //Sorting gear like it would be in game
     }
     
-    public static function GetKeyquestflag($saveData)
+    public static function GetKeyquestflag(array $saveDataMap, $saveData)
     {
-        if (FORWARD_5_MODE) {
+        $addr = $saveDataMap['keyquest_flags']['addr'];
+        if ($addr === 0) {
             return 0;
         }
     
         $br = new BinaryReader($saveData);
-        $br->setPosition(0x23D20);
+        $br->setPosition($addr);
     
         return bin2hex($br->readBytes(8));
     }
     
-    public static function SetKeyquestflag($saveData, string $hexValue)
+    public static function SetKeyquestflag(array $saveDataMap, $saveData, string $hexValue)
     {
-        if (FORWARD_5_MODE) {
+        $addr = $saveDataMap['keyquest_flags']['addr'];
+        if ($addr === 0) {
             return $saveData;
         }
     
@@ -292,36 +352,43 @@ class SaveDataController extends AbstractController
             throw new \Exception('Key Quest Flag needs to be 8 Bytes');
         }
         
-        return self::writeToFile($saveData, "23D20", $hexValue);
+        return self::writeToFile($saveData, dechex($addr), $hexValue);
     }
     
-    public static function SetStylevouchers($saveData, $value)
+    public static function SetStylevouchers(array $saveDataMap, $saveData, $value)
     {
-        if (FORWARD_5_MODE) {
+        $addr = $saveDataMap['style_vouchers']['addr'];
+        if ($addr === 0) {
             return $saveData;
         }
+        $val = $saveDataMap['style_vouchers']['val'];
+
+        $addr = dechex($addr);
+        $val = $val;
     
-        return self::writeToFile($saveData, "20104", "030000F4");
+        return self::writeToFile($saveData, $addr, $val);
     }
     
-    public static function GetDailyguild($saveData)
+    public static function GetDailyguild(array $saveDataMap, $saveData)
     {
-        if (FORWARD_5_MODE) {
+        $addr = $saveDataMap['daily_guild']['addr'];
+        if ($addr === 0) {
             return 0;
         }
     
         $br = new BinaryReader($saveData);
-        $br->setPosition(0x21562);
+        $br->setPosition($addr);
     
         return bin2hex($br->readBytes(2));
     }
     
-    public static function SetDailyguild($saveData, $value)
+    public static function SetDailyguild(array $saveDataMap, $saveData, $value)
     {
-        if (FORWARD_5_MODE) {
+        $addr = $saveDataMap['daily_guild']['addr'];
+        if ($addr === 0) {
             return $saveData;
         }
     
-        return self::writeToFile($saveData, "21562", "0000");
+        return self::writeToFile($saveData, dechex($addr), "0000");
     }
 }

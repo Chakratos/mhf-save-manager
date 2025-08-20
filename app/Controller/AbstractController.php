@@ -19,6 +19,7 @@ abstract class AbstractController
 {
     protected static string $itemName;
     protected static string $itemClass;
+    protected static array $subItemClasses = [];
     
     /**
      * @param string $string
@@ -131,6 +132,24 @@ abstract class AbstractController
             ResponseService::SendDownloadResource($handle, static::$itemName . '.csv');
         }
     }
+
+    /**
+     * Method for exporting more complex data
+     * @param string $data
+     * @return void
+     * @throws ORMException
+     * @throws OptimisticLockException
+     */
+    public static function downloadJson($data): void
+    {
+        $length = strlen($data);
+        if ($length > 0) {
+            $handle = fopen('php://memory', 'w');
+            fwrite($handle, $data, $length);
+            rewind($handle);
+            ResponseService::SendDownloadResource($handle, static::$itemName . '.json');
+        }
+    }
     
     /**
      * @param string $deleteWhere
@@ -162,6 +181,36 @@ abstract class AbstractController
         $em->flush();
         
         ResponseService::SendOk();
+    }
+
+    /**
+     * Replace all the data from the database with the content of the Json file
+     * $class and $subItemClasses must implement JsonDeserializable
+     * @return void
+     * @throws ORMException
+     * @throws OptimisticLockException
+     * @throws BadMethodCallException
+     */
+    protected static function importFromJson(): void
+    {
+        $fileData = json_decode(file_get_contents($_FILES[static::$itemName . 'JSON']['tmp_name']));
+        foreach ($fileData as $class => $classData) {
+
+            EM::getInstance()->createQuery('delete from ' . $class . ' n')->execute();
+
+            //Disable sequence so that id based references don't break
+            $metadata = EM::getInstance()->getClassMetaData($class);
+            $metadata->setIdGeneratorType(\Doctrine\ORM\Mapping\ClassMetadata::GENERATOR_TYPE_NONE);
+            $metadata->setIdGenerator(new \Doctrine\ORM\Id\AssignedGenerator());
+
+            foreach ($classData as $itemData) {
+                $item = new $class;
+                $item->setFromJson(get_object_vars($itemData));
+                EM::getInstance()->persist($item);
+            }
+            EM::getInstance()->flush();
+        }
+        
     }
     
     /**

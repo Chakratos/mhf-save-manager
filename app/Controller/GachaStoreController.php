@@ -6,7 +6,7 @@ use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\Exception\ORMException;
 use Doctrine\ORM\OptimisticLockException;
 use MHFSaveManager\Database\EM;
-use MHFSaveManager\Model\DistributionItem;
+use MHFSaveManager\Model\DistributionItems;
 use MHFSaveManager\Model\GachaEntry;
 use MHFSaveManager\Model\GachaItem;
 use MHFSaveManager\Model\GachaShop;
@@ -45,7 +45,7 @@ class GachaStoreController extends AbstractController
                 $UILocale['Entry ID']  => ['type' => 'Int', 'disabled' => 'disabled'],
                 $UILocale['Item Type']       => [
                     'type'    => 'Array',
-                    'options' => DistributionItem::$types,
+                    'options' => DistributionItems::$types,
                 ],
                 $UILocale['Item ID']   => ['type' => 'Int'],
                 $UILocale['Quantity']  => ['type' => 'Int'],
@@ -74,7 +74,7 @@ class GachaStoreController extends AbstractController
                 $UILocale['Entry Type']      => ['type' => 'Int'],
                 $UILocale['Item Type']       => [
                     'type'    => 'Array',
-                    'options' => DistributionItem::$types,
+                    'options' => DistributionItems::$types,
                 ],
                 $UILocale['Item Number']     => ['type' => 'Int'],
                 $UILocale['Item Quantity']   => ['type' => 'Int'],

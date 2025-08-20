@@ -17,7 +17,7 @@
     "require": {
         "php": "^8.1",
         "doctrine/orm": "*",
-      "ext-json": "*",
+        "ext-json": "*",
         "mdurrant/php-binary-reader": "^1.0",
         "doctrine/cache": "^1.11.3",
         "doctrine/annotations": "^1.13",
