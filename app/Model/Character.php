@@ -112,11 +112,6 @@ class Character
      * @ORM\Column(type="blob")
      * @var resource
      */
-    protected $minidata;
-    /**
-     * @ORM\Column(type="blob")
-     * @var resource
-     */
     protected $scenariodata;
     /**
      * @ORM\Column(type="blob")
@@ -664,22 +659,6 @@ class Character
         $this->kouryou_point = $kouryou_point;
         
         return $this;
-    }
-    
-    /**
-     * @return resource
-     */
-    public function getMinidata()
-    {
-        return $this->minidata;
-    }
-    
-    /**
-     * @param resource $minidata
-     */
-    public function setMinidata($minidata): void
-    {
-        $this->minidata = $minidata;
     }
     
     /**

@@ -24,7 +24,6 @@ class BinaryController
             'rengokudata',
             'savemercenary',
             'skinhist',
-            'minidata',
             'scenariodata',
             'savefavoritequest',
         ];
